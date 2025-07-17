@@ -1,0 +1,45 @@
+---
+title: Editing an Action Type
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/95fc0fba-36b6-472a-857a-1b5a582c85b1/f163bc46-1a2e-43e3-9b51-dd57aa3fdd89/images/b0e806af-9cf7-4c56-8fb5-92e7a7ef7f7e.gif)
+
+To edit the existing action type in Bytebeam console,
+
+<Steps>
+  <Step title="Access Settings Tab">
+    Navigate to the **Settings Tab** by clicking on your username at the top right
+  </Step>
+  <Step title="Go to Action Types Tab and Initiate Action Type Edit">
+    Navigate to the **Action Types** tab and click on the **edit** icon against the target action type
+  </Step>
+  <Step title="Fill Details">
+    Select the [payload](#payload-in-action-types), icon and the timeout duration and click on **Submit** button to edit the action type.
+</Step>
+</Steps>
+
+<Warning>Only timeout duration can be changed for default action types like update_firmware, update_config etc.</Warning>
+
+## <a id="payload-in-action-types"></a>Payload in Action Types
+There are 3 payload options in 4 variations available.
+
+<AccordionGroup>
+  <Accordion title="None" icon="circle">
+    You can choose this for action types like Shutdown which don't need any payload to be sent to the device while triggering the action.
+  </Accordion>
+
+  <Accordion title="JSON" icon="file-code">
+    You can choose this for action types which need the JSON payload to be sent to the device while triggering the action.
+
+  </Accordion>
+
+  <Accordion title="JSON Data via form" icon="file-signature">
+    You can choose this for action types like Update CAN Config which enables the JSON data to be sent via form to the device while triggering the action.
+    
+    To choose this option, choose **JSON** option from the dropdown, enable the **Allow user to input data via form** toggle and enter the **JSON Schema** along with **JSON UI Schema** while creating or editing the action type
+  </Accordion>
+
+  <Accordion title="Text" icon="pencil">
+    You can choose this for action types which need the payload in text format to be sent to the device while triggering the action.
+  </Accordion>
+</AccordionGroup>
