@@ -1,0 +1,81 @@
+---
+title: R9 10-May-2023
+slug: eNDM-r
+description: Product Update by 10 May 2023,Introduction to Action V2, Updates in Dashboard settings, Locate device panel and other changes
+createdAt: Tue May 09 2023 04:54:21 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+### Actions V2
+
+A new user interface has been released for viewing Action status, featuring improved visual representation and more detailed information. While the existing Action functionality will continue to operate as usual, it will gradually be phased out as the new UI adds additional capabilities and becomes more stable.
+
+Check out documentation for more details: [Actions V2](<../Bytebeam docs/Actions.md>)&#x20;
+
+![](/assets/9g09iiXY0IjnyD9LSEg3H_screenshot-2023-05-10-at-53719-pm.png)
+
+![](/assets/3h2ZGMkYA9jP6aXNRjYoi_screenshot-2023-05-10-at-54935-pm.png)
+
+![](/assets/4I-jQBs1hfADSko25EfKO_screenshot-2023-05-10-at-61610-pm.png)
+
+### Dashboard setting to connect with other dashboards
+
+It is now possible to add links to other dashboards within the current dashboard. These links will appear in the header and, when clicked, will open the linked dashboard in a new tab.
+
+![](/assets/fjX3NYE_ggov3c345F08I_linkdashboard1.png)
+
+![](/assets/ITvmJ9JpyRA0HWeo-9heW_linkdashboard2.png)
+
+### Enable access to multiple device dashboards from the 'Locate Device' panel
+
+![](/assets/w5YC0aeM5FdN6Nrr15P-x_multilocate1.png)
+
+![](/assets/p5_G6u8cajfDXpqjRJEqK_multilocate2.png)
+
+### Filters in Timeseries panel
+
+Timeseries panel now has option to add filters (where query). *Eg.* *In the screenshot below we are viewing ****device\_shadow**** stream data where SOC value is greater than 80.*
+
+![](/assets/2U1fR8SCY6uQuuGCP9EBe_screenshot-2023-05-10-at-51511-pm.png)
+
+![](/assets/Y5Xp5HJzrV8PH1KcYccaA_screenshot-2023-05-10-at-51705-pm.png)
+
+### Timeseries panel to use fixed range on using pagination
+
+When a user interacts with the timeseries panel, a fixed time range will be applied and displayed alongside the pagination. The time range will remain static until reset by clicking the refresh button.
+
+![](/assets/IWjAD9UE4Z7VmJfJTI32A_screenshot-2023-05-11-at-24138-am.png)
+
+### Developer API Key
+
+The API key can now be generated from the Admin settings UI, which allows for specific actions and data retrieval directly from our servers. The creation and viewing of API keys are restricted to Admins only.
+
+![](/assets/qmdIcCDZcQ1mAPh5DHRh0_screenshot-2023-05-11-at-20234-am.png)
+
+### Remote shell full screen mode
+
+Remote shell can be accessed in full screen mode for deep work sessions
+
+![](/assets/2FCFxzEsk6-cqG5Hgxy-8_ezcom-video-to-.gif)
+
+### File size in firmware UI
+
+On the firmware list page, file size is also displayed using binary units of measurement that includes kibibyte (KiB), mebibyte (MiB)
+
+![](/assets/7ParyV-rimJLVFUFec__g_screenshot-2023-05-11-at-21302-am.png)
+
+### Broker&#x20;
+
+- Reduction in memory resource usage&#x20;
+- Efficient TLS connection handling&#x20;
+- Improved logging for debugging purposes&#x20;
+
+### Bug fixes & Minor changes
+
+- Fixed: Not connected to internet shows up frequently even when connection is stable
+- Fixed: Abrupt logout when user performs any invalid action without access
+- RBAC has been updated to include additional flags for view/edit files and changing settings, allowing for finer-grained control of access.
+- Some minor UI and bugfixes when adding metadata.
+
+
+

@@ -1,0 +1,114 @@
+---
+title: Pushing data to Bytebeam
+slug: EuDF-pus
+createdAt: 2024-03-18T10:54:31.564Z
+updatedAt: 2024-03-18T17:24:31.830Z
+---
+
+<Card title="TL;DR" >
+Publish data to `/tenants/{tenant_id}/devices/{device_id}/events/{stream_name}/jsonarray` in JSON array format.
+</Card>
+
+# Introduction
+
+The previous section shown us how to connect to bytebeam. It is now time to start pushing some data.
+
+All communication with Bytebeam happens using JSON. On Bytebeam data is organised into [Streams](https://bytebeamio.mintlify.app/platform-guide/streams-tables/introduction-to-streams). Each stream is mapped to an MQTT topic. Go through the [Creating a Stream](https://bytebeamio.mintlify.app/platform-guide/streams-tables/creating-a-stream) guide to create a stream.
+
+Every project in bytebeam comes with a default stream called [Device Shadow](https://bytebeamio.mintlify.app/getting-started/device-shadow). We will be illustring how to push data using this stream.
+
+# MQTT topic and payload structure
+
+### Topic structure
+To push data to any stream, you need to publish data to the MQTT topic:
+
+`/tenants/{tenant_id}/devices/{device_id}/events/{stream_name}/jsonarray`
+
+Replace `{tenant_id}` with your project name and `{device_id}` with the device id. You can find these in the JSON file downloaded in the previous section.
+
+Say we are on `demo` project and device id is `1`, so in our case, topic for device shadow will be:
+
+`/tenants/demo/devices/1/events/device_shadow/jsonarray`
+
+<Note> Data should be published with QoS 0 or 1 only, QoS 2 is not supported yet. </Note>
+
+### Payload
+
+The payload must be a jsonarray, which is an array of data point, where data point is just a JSON object with following fields:
+
+- `sequence`: an auto incrementing number for each packet
+- `timestamp`: Timestamp in milliseconds
+- other fields of the stream ( note: Field names are case sensitive )
+
+so example of a payload for our device_shadow which contains field `Status` will look like:
+
+```json
+[
+  {
+    "sequence": 1,
+    "timestamp": 1710760059006,
+    "Status": "On"
+  }
+]
+```
+
+<Note> *A device should only publish data to the tenant it is connected*. <br /> **_Device will be disconnected**  if device connected to tenant `demo`, tries to publish to other tenant, say `mytenant`,
+e.g. `/tenants/mytenant/devices/1/events/device_shadow/jsonarray`</Note>
+
+### Batching Data
+
+As the payload that server accepts is a JSON array. If your client is expected to generate a large amount of data it will be more efficient to batch data and send it to the cloud instead of sending a single packet with each message.
+
+For example:
+
+```json
+[
+  {
+    "sequence": 1,
+    "timestamp": 1710760059006,
+    ...
+  },
+  {
+    "sequence":2,
+    "timestamp": 1710775681047,
+    ...
+  }
+]
+```
+
+### Compressing Data
+
+If you are sending larger batches of data you can save on data size by sending `zlib` or `lz4` compressed data.
+
+<AccordionGroup>
+  <Accordion title="zlib">
+  zlib compressed data for stream should be published to:
+  ```
+  /tenants/{tenant_id}/devices/{device_id}/events/{stream_name}/jsonarray/zlibdeflate
+  ```
+  ( Notice the `zlibdeflate` at end of topic )
+
+  </Accordion>
+
+  <Accordion title="lz4">
+  LZ4 compressed data for stream should be published to:
+
+  ```
+  /tenants/{tenant_id}/devices/{device_id}/events/{stream_name}/jsonarray/lz4
+  ```
+  ( Notice the `lz4` at end of topic )
+
+  <Note> Data must be compressed in **LZ4 Frame** format! You can verify it by magic bytes, i.e. the initial bytes of compressed data, they shoud be `04 22 4d 18` </Note>
+  </Accordion>
+</AccordionGroup>
+
+
+# Trying it out with MQTTX
+
+You can try publishing data using MQTTX as shown below. Notice the QoS1 setting:
+
+![](https://archbee-image-uploads.s3.amazonaws.com/KgoQSkw-NkQJykt01OVJo/A-L1Vb_lX8_oILcPVSEK9_image.png)
+
+You should see the Status change on Bytebeam now:
+
+![](https://archbee-image-uploads.s3.amazonaws.com/KgoQSkw-NkQJykt01OVJo/Se5Rryvfhu3wCt6pkjxZH_image.png)

@@ -1,0 +1,11 @@
+---
+title: Device Setup
+slug: Nlc7aqKqFF4vkq0hpCaZg
+description: Learn how to setup our device sdk on your android devices
+createdAt: Wed Apr 12 2023 05:54:05 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Jan 14 2025 05:59:52 GMT+0000 (Coordinated Universal Time)
+---
+
+[uplink](https://github.com/bytebeamio/uplink) is our device side sdk. It is an executable that is supposed to run on the device as a system service. It will handle communication with our backend, buffering of uploaded data to disk in case of bad network, OTAs and features like remote shell.
+
+You can check out an example setup for android [here](https://github.com/bytebeamio/uplink/tree/main/examples/android). The entry point for this example setup is `service.sh`. There are a couple of configuration options in `env.sh`.

@@ -1,0 +1,52 @@
+---
+title: Pushing data to Bytebeam
+slug: KXHX-pushing-data-to-bytebeam
+description: Learn how to push data to streams using ByteBeam Client with this comprehensive document. Includes a Rust code example for publishing data, emphasizing the need for JSON serialization. Discover the best practices, including omitting "id" and "timestamp" f
+createdAt: Thu Feb 02 2023 07:01:07 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+You can use ByteBeam Client to push data to [Streams](https://bytebeamio.mintlify.app/platform-guide/streams-tables/introduction-to-streams).  Follow [Creating a Stream](https://bytebeamio.mintlify.app/platform-guide/streams-tables/creating-a-stream)  guide to create streams.
+
+```rust
+pub fn publish_to_stream(
+        &self, // Bytebeam Client
+        stream_name: &str,
+        sequence: u32,
+        payload: impl Serialize,
+    ) -> anyhow::Result<u32>
+```
+
+Payload you want to publish must be something that can be Serialized to JSON.&#x20;
+
+Lets say you have "**led\_status**" stream with field "**status**". You can create a struct and use **serde::Serialize** attribute.
+
+```rust
+#[derive(Serialize)]
+struct LedStream {
+    // your custom fields!
+    status: String,
+}
+
+fn main() {
+    // ....
+    let bytebeam_client = ByteBeamClient::init()?;
+
+    let sequence = 1;
+    let message = LedStream {
+        status: "ON".into(),
+    };
+
+    // You can remove .expect and handle the error
+    bytebeam_client
+        .publish_to_stream("led_status", sequence, message)
+        .expect("published successfully");
+    //...
+}
+
+```
+
+*NOTE: Every stream has ****id**** and ****timestamp**** fields as well, we add them internally, so it is recommended to not include them in your custom struct!*
+
+**
+

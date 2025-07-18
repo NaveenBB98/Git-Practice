@@ -1,0 +1,98 @@
+---
+title: Live Action Overview & Management
+---
+
+You can view and manage all ongoing actions here, with the ability to filter, sort, and perform specific operations on each action.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/10606449-fe98-4040-b266-197a669a040a/eefa4276-ed59-4365-ba04-b5c9cb47e67b/images/12752022-20a7-442e-aa62-a64ebff4e5c2.gif)
+
+## Data Visualizations
+The action details page includes the following graphs for visualizing action progress:
+
+**Status Distribution Graph**: Displays the number of devices in each state for the action.
+
+**Failure Distribution Graph**: Shows the reasons for any device failures during the action.
+
+**Latency Histogram**: Displays the time, devices spend in each state across phases. 
+
+<Note>To view the Latency Histogram, click on the forward (>) icon.</Note>
+
+## Adding Phases
+You can add additional phases to an action to include more devices, set a custom trigger time, and execute the action on the newly added devices.
+
+To add a phase: 
+<Steps> 
+<Step title="Access any Action"> Select the action in **Action Details** page</Step> 
+<Step title="Click Add Phase"> Click on **Add Phase** at the top. </Step> 
+<Step title="Fill Details"> Choose the devices and set a **Custom Time** using the **Calendar dropdown**, then click **Submit**. </Step> 
+</Steps> 
+<Warning>Devices already included in previous phases cannot be selected for a new phase.</Warning>
+
+## Filters at Actions List
+When there are many ongoing actions, finding a specific one can be difficult. The Bytebeam console provides a Filters option to streamline this process.
+
+Follow these steps to apply filters:
+
+<Steps> 
+<Step title="Access Actions Tab"> Click the **Actions** tab at the top. </Step> 
+<Step title="Apply Filters"> Click the **Filters** option within the actions list. </Step> 
+<Step title="Select Filter Criteria"> Choose the Ids, Creators, or Action Types and select the corresponding dropdown option. </Step> 
+<Step title="Apply the Filter"> Choose the desired filter option to apply. </Step> 
+</Steps>
+Once applied, the selected filters will appear at the top with the chosen keys and values. <Note>You can combine multiple filters to narrow down your search.</Note>
+
+## Sort by Incomplete Actions
+You can prioritize incomplete actions by sorting them to the top of the list. Simply enable the Sort by Incomplete Actions toggle in the Action Details to view incomplete actions first, followed by completed ones.
+
+## Cancel Phase
+
+You can cancel an entire phase if it is no longer needed by selecting the phase at the top, clicking **Cancel Phase**, and confirming. 
+
+<Note>This option is disabled if all devices in the phase are already in completed or failed states.</Note>
+
+## Retry Phase
+
+You can manually retry a failed phase by selecting the phase at the top, clicking **Retry Phase**, and confirming. 
+
+<Note>This option is disabled if any of the device is in a state other than 'Failed'.</Note>
+
+## Managing Live Actions
+For any ongoing action, click the 3 dots next to it to perform the following operations:
+
+<AccordionGroup>
+<Accordion title="View Details">
+
+You can access the detailed page of the action, which includes the list of devices on which the action was triggered by simply clicking on **View Details** option.
+</Accordion>
+
+<Accordion title="Cancel Action">
+
+You can cancel an action by simply clicking on **Cancel Action** and confirm the cancellation. 
+<Note>This option will be disabled if the action has already been completed or failed.</Note>
+</Accordion>
+
+<Accordion title="Retry Action">
+
+You can retry any failed action by clickng on **Retry Action** to retry the operation. 
+<Note>This option is only available if the action's status is 'Failed'.</Note>
+</Accordion>
+
+<Accordion title="Mark Action as Completed">
+
+To mark the entire action that is triggered on all devices as completed, click **Mark Action as Completed** and confirm. 
+<Note>This option will be disabled if the action is already completed or failed.</Note>
+</Accordion>
+
+<Accordion title="View Payload">
+
+You can view the **payload** associated with the selected action by simply clicking on **View Payload** option. 
+<Note>This option will be disabled if the action has no payload.</Note>
+</Accordion>
+
+<Accordion title="Release Notes">
+
+You can view the release notes added during the triggering of the action by simply clicking on **Release Notes** option.
+
+<Note>Release notes option is available exclusively for **Update Firmware** action.</Note>
+</Accordion>
+</AccordionGroup>

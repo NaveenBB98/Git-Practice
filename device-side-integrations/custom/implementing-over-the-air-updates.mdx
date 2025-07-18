@@ -1,0 +1,55 @@
+---
+title: Implementing over the air updates
+slug: YJPt-io
+createdAt: Mon Mar 18 2024 15:50:46 GMT+0000 (Coordinated Universal Time)
+updatedAt: Mon Mar 18 2024 17:29:05 GMT+0000 (Coordinated Universal Time)
+---
+
+<Card title="TL;DR" >
+Receive and handle `update_firmware` action on device side which downloads the firmware and perform the update.
+Also publish the progress of OTA via the action status.
+</Card>
+
+Over the air updates is a special kind of action. Read the sections on [Creating a new Firmware Version](/platform-guide/actions/inventory-management/firmware-files/without-device-components/creating-a-new-firmware-version) and [Triggering OTA update](/platform-guide/device-management/triggering-ota-update) to learn how to upload a firmware file and push it to the device from the cloud. The payload for the OTA action `update_firmware` is as below:
+
+```json
+{
+  "name": "update_firmware",
+  "id": "3620755",
+  "payload": "{\"content-length\":304,\"checksum\":null,\"status\":false,\"url\":\"https://firmware.cloud.bytebeam.io/api/v1/firmwares/v3.0.0/artifact\",\"version\":\"v3.0.0\"}",
+}
+```
+
+Notice that payload is json inside a string. Payload json has the following fields of interest:
+
+- `content-length`: The size of the firmware file
+- `url`: The url from which the firmware file needs to be downloaded
+- `version` The version of the file being downloaded
+
+Ignore the `checksum` and `status` fields. These fields are not implemented on cloud.bytebeam.io and are used by some of our enterprise clients
+
+The client needs to download the file at the url extracted from the payload above using https. Mutual TLS is implemented here as well i.e both the server and the client authenticate each other.
+The same certificates downloaded in the [Connect to Bytebeam cloud](/device-side-integrations/custom/connecting-to-bytebeam-cloud) section and used for settting up the MQTT connection need to be used here as well.
+
+# Implementing OTA in your client
+
+You can implement OTAs in your client as follows
+
+1. As in the previous guide on [Receiving Actions](/device-side-integrations/custom/receiving-actions) subscribe to the actions topic
+2. When an action with name `update_firmware` is received handle it as an OTA action:
+   1. Parse the payload as json
+   2. Extract the url field
+   3. Download the firmware using the certificates and private key from the json file downloaded earlier. Optionally send the download progress back to the cloud.
+   4. Implement the actual update. Send progress back during the update and at the end.
+
+It is useful to either have a factory version of the firmware or to store one previous version of the firmware to rollback in case the step 4 fails. In this case it is usefult to send the status as "Failed" and set the errors field to \["Rolled back to version xyz"] to the cloud.
+
+# Downloading the firmware file using curl
+
+We could not find a good GUI tool that supports custom certificates to show how to download the above files. However the curl command line tool is available for [different platforms](https://curl.se/download.html) and can be used for this purpose. Once curl has been installed you can run the below command to download the firmware file:
+
+```shell
+curl --cacert ./ca_certificate.pem --cert ./device_certificate.pem --key ./device_private_key.pem https://firmware.cloud.bytebeam.io/api/v1/firmwares/v3.0.0/artifact -o ./file.bin
+```
+
+In the above command replace `./ca_certificate.pem`, `./device_certificate.pem`, `./device_private_key.pem` and `./file.bin` with the full paths of these files on your system.

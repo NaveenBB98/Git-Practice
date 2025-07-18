@@ -1,0 +1,27 @@
+---
+title: Introduction to Action Types
+---
+
+## What are action types?
+
+Action types are commands that can be executed on a device directly from the Bytbeam console. These actions must be predefined in the device firmware. 
+## Uses of action types
+
+They can be used for tasks such as updating firmware or changing device configurations remotely, as well as for custom commands like shutting down the device.
+
+
+<CardGroup cols={2}>
+  <Card title="Create an Action Type" icon="plus" href="/platform-guide/actions/action-settings/creating-an-action-type">
+  You can create an action type and trigger the action on devices either from Device Management or from New Action section.
+</Card>
+  <Card title="Edit an Action Type" icon="pencil" href="/platform-guide/actions/action-settings/editing-an-action-type">
+  You can edit the existing action type and change details like payload, icon and timeout duration.
+</Card>
+  <Card title="Delete an Action Type" icon="trash" href="/platform-guide/actions/action-settings/deleting-an-action-type">
+  You can delete the action types that are no longer needed.
+</Card>
+</CardGroup>
+
+<Note>
+  By default, every new project includes five pre-created action types: **update_firmware**, **update_config**, **update_geofence**, **cancel_action**, and **launch_shell**.
+</Note>

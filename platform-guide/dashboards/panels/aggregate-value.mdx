@@ -1,0 +1,46 @@
+---
+title: Aggregate Value
+slug: wYIf-aggregate-value
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 29 2023 18:07:42 GMT+0000 (Coordinated Universal Time)
+---
+
+The Aggregate Value Panel is designed to display aggregated metrics from selected streams, offering a summary of data through operations such as sum, average, maximum, and minimum. 
+
+This panel is ideal for visualizing the overall performance or health of systems based on aggregated values, such as total usage, average temperature, or other key metrics that require aggregation across time or categories.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/82e0f96e-b5b9-4539-a75f-2850d6826d6c/11c16c61-c4b0-470d-b4f6-e00725ce5d83/images/56556f7a-d068-4582-890d-3c6302c766a4.gif)
+
+## Add Aggregate Value Panel
+
+<Steps>
+  <Step title="Navigate to Dashboards">
+    Go to the **Dashboards** tab, select the desired dashboard, and click on the **+ Panel** button to create a new panel.
+  </Step>
+  <Step title="Select Aggregate Value Panel">
+    Choose **Aggregate Value Panel** from the list of available panels.  
+  </Step>
+  <Step title="Configure General Settings">
+    You will be presented with options to configure:
+    - **Title**: Add a meaningful title for the panel.
+    - **Stream**: Select the stream or data source to pull values from.
+    - **Field**: Select the field or column to apply aggregation to.
+    - **Aggregator**: Choose the aggregation type (**max, min, avg, sum, count, count distinct**).
+    - **Second Aggregator**: Choose the second aggregation type
+    - **Enable Groupby on Second Aggregator**: Enable the toggle for grouping on second aggregator
+    - **Prefix and Suffix**: Optionally, add prefixes and suffixes to enhance the display.
+    <Note>On selecting an aggregator (e.g., min) and a second aggregator (e.g., max), it creates combinations like max(min). 
+    With the Group by Second Aggregator toggle enabled, the grouping operation is applied to the secondary aggregator.</Note>
+    <Note>Both second aggregator and the toggle to group by on second aggregator are available exclusively for fleet dashboards</Note>
+  </Step>
+  <Step title="Customize View Settings">
+    Switch to the **View** tab to adjust the appearance of the panel:
+    - **Enable Units**: Show appropriate units for the aggregate value.
+    - **Round Off Values**: Set the number of decimal places to display.
+    - **Auto Resize Text**: Automatically adjust font size for better readability.  
+  </Step>
+  <Step title="Submit the Panel">
+    After completing the configurations and customizations, click **Submit** to add the Aggregate Panel to the dashboard.  
+  </Step>
+</Steps>
+

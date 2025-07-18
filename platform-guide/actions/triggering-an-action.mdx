@@ -1,0 +1,40 @@
+---
+title: Triggering an Action
+slug: 86Fv-triggering-an-action
+description: Steps on how to trigger an action in Bytebeam console
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Mon Oct 30 2023 17:41:17 GMT+0000 (Coordinated Universal Time)
+---
+
+To trigger an Action:
+
+**Step 1: **Navigate to the ***Devices*** tab under ***Device Management***
+
+![](/assets/OMP50o8FfDinui91YkZkI_screenshot-56.jpg)
+
+**Step 2: **Select the list of Devices you want to trigger the Action on by clicking on the checkboxes in each Device row
+
+![](/assets/C4zWdn1XVTySKulBUfvYM_screenshot-57.jpg)
+
+**Step 3: **Click on the Action button you want to trigger. In this screenshot, we have selected four Devices and triggered the '*lock' *Action on them. It will ask for confirmation before triggering the Action.
+
+![](/assets/RSN00mQulffbEOqQHkKfg_2023-10-3023-01.png)
+
+![](/assets/HWPXgT8pRjqlEZTEMA3aj_screenshot-61.jpg)
+
+The Action will be sent to the selected Devices now. If the device is offline when the Action is triggered, the system will retry sending Actions to the device every 5s. On the Device, you can receive Actions using the Bytebeam SDK and send progress back to the cloud.
+
+You can monitor the progress of the Action from the Devices tab itself
+
+![](/assets/kaGFxxvBo4r5RsKzH5p63_screenshot-62.jpg)
+
+Optionally, you can also monitor the progress of the Action from the Action status tab, see: [Monitor the progress of Actions](<../Bytebeam docs/Monitor the progress of Actions.md>)&#x20;
+
+To trigger actions on all Devices, select the all check box at the top of the devices table:
+
+![](/assets/IK0Tr6PaLcq6IH4Va-wDG_screenshot-64.jpg)
+
+This will send the action to all Devices including those not being shown on the current page on the UI.
+
+You can also use the search box to the top right to filter Devices before sending an action.
+

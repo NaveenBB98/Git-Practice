@@ -1,0 +1,66 @@
+---
+title: No Signal Alerts
+---
+
+## What Are No-Signal Alerts?
+No-signal alerts are alerts which get triggered when expected data stops arriving from a particular source or stream. 
+
+Unlike traditional signal-based alerts, which are based on specific conditions like thresholds or values, no-signal alerts monitor the continuity of data. They are designed to notify you when a data stream that is expected to be active is not receiving any updates, indicating a potential issue with the data flow or source.
+
+## Uses of No-Signal Alerts
+The key purpose of no-signal alerts is to monitor the availability and health of data streams in real-time. 
+
+These alerts are critical in IoT systems, where continuous data flow is essential for monitoring device performance, user activity, or sensor readings. 
+
+When a stream stops unexpectedly, it could signal a malfunction, network issue, or system failure, and immediate action may be required.
+
+## Creating No Signal Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/4bf6a2c8-8ce9-4a8c-988f-d52af51cc9d4.gif)
+
+To create a No Signal Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Creation"> Click on the **+ Alert Rule** button and select the **No Signal Alert** option. </Step> 
+<Step title="Fill Details"> Choose the specific stream and set the duration after which an alert will trigger if no data is received. Then, specify additional parameters such as alert name, criticality, alert group, [activation threshold](/platform-guide/alert-system/alert-rules/activation-and-deactivation-thresholds-in-alerts), select the dashboard to link from the dropdown list and click **Submit**. </Step> 
+</Steps>
+Your new Alert Rule will appear in the table under the selected **Alert Group** on the **Alert Rules** tab.
+
+<Note>To activate the alert, click the Start icon next to it.</Note>
+<Note>You can stop any active alert by clicking the Stop icon next to it.</Note>
+<information>Hover over the alert rule name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</information>
+
+## Editing No Signal Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/b890033e-2f93-4b2b-aeb3-a084c5ba3a73.gif)
+
+To edit an existing No Signal Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Edit"> Find the alert within any **Alert Groups** and click the **Edit** icon next to it. </Step> 
+<Step title="Modify Details"> Update details such as alert name, alert group, [activation threshold](/platform-guide/alert-system/alert-rules/activation-and-deactivation-thresholds-in-alerts), criticality, change the linked dashboard using dropdown list or clear the linked dashboard  and click **Submit**. </Step> 
+</Steps>
+
+<Note>If you change the alert group, check the corresponding alert group as the alert will be moved there.</Note>
+
+## Deleting No Signal Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/e1cc6e09-ec24-4987-b9db-32c435fd314e.gif)
+
+To delete an existing No Signal Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Deletion"> Find the alert within any **Alert Groups** and click the **Delete** icon next to it. </Step> 
+<Step title="Confirm Deletion"> Enter the correct alert rule name and click **Submit** to delete the alert. </Step> 
+</Steps>
+
+<Note>Alert rules cannot be deleted while they are running.</Note>
+<Warning>Deleting an alert rule will also delete all the associated notification rules.</Warning>
+
+
+
+
+

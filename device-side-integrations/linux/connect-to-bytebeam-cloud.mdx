@@ -1,0 +1,48 @@
+---
+title: Connect to Bytebeam cloud
+slug: Nlc7aqKqFF4vkq0hpCaZg
+description: Learn how to connect your device to the Bytebeam cloud with this step-by-step guide. Start by creating an account on Bytebeam, then download the device configuration JSON file. Rename the file to "device.json" and store it in the "download" partition of y
+createdAt: Wed Apr 12 2023 05:54:05 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Nov 17 2023 18:59:52 GMT+0000 (Coordinated Universal Time)
+---
+
+
+
+This page assumes that you have gone through the [Getting Started guide](https://bytebeamio.mintlify.app/getting-started/signup) for creating an account.&#x20;
+
+# Provisioning the device
+
+Each device needs to be provisioned with a unique JSON file `device.json` that is used for authentication. Refer to the [Device Provisioning Guide](https://bytebeamio.mintlify.app/platform-guide/device-management/provisioning-a-device) to download the device configuration file.&#x20;
+
+Rename the downloaded file to device.json and place it in the "download" partition(/mnt/download) of the device. If you are connecting to the device via ssh you can use the below `scp` command. First, provide permission to the /mnt/download partition using `chmod` command.
+
+```shell
+chmod 777 /mnt/download
+```
+
+and then use `scp` command&#x20;
+
+```shell
+scp /home/bytebeam/Downloads/device.json user@<IP address of device>:/mnt/download
+```
+
+# Running Uplink
+
+Start uplink and enable it to run at boot.
+
+```shell
+sudo systemctl start uplink
+sudo systemctl enable uplink
+
+```
+
+To verify that the uplink is up and running, check the status in systemd, using the following command.
+
+```shell
+sudo systemctl status uplink
+```
+
+You should see the status as "active" like in the screenshot below:
+
+![](/assets/_rrZyzouNKMHKY0ZJNJmm_linuxdocs1.png)
+

@@ -1,0 +1,71 @@
+---
+title: Action Timeout
+slug: adgo-triggering-ota-update
+createdAt: Sun Mar 12 2023 22:58:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Oct 24 2023 20:36:28 GMT+0000 (Coordinated Universal Time)
+---
+## Overview
+Action Timeout allows you to set a timeout period for actions on a device if they remain stuck in any state other than "Completed" or "Failed."
+
+## Why Use Action Timeouts?
+In certain situations, an action may get stuck in a particular state, preventing subsequent actions from executing. By setting an action timeout, you can mark these stuck actions as "Failed" to free up the device for future tasks.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/ce5451ce-97b4-4427-bbc6-9c9407629c36/a08e682b-19f1-4823-a6e7-0ed5696922a3/images/e863c3a3-547a-4252-9d20-d888e3548065.gif)
+
+## Timeout Configuration Options
+Timeouts can be configured in three places:
+
+**Action Types** - Specific to individual action types.
+
+**Global Settings** - Applies to all action types.
+
+**Advanced Settings** - Global for all action types but only affects actions in the "Scheduled" state.
+
+## Action Types Timeout
+Set timeouts for individual action types, applicable if they’re stuck in any state other than "Scheduled," "Failed," or "Completed."
+
+To set a timeout for an action type: 
+
+<Steps> 
+<Step title="Access Settings Tab"> Navigate to the Settings tab by clicking on your username at the top right. </Step> 
+<Step title="Go to Action Types and Edit"> Go to [Action Types](/platform-guide/action-types/action-types) and click on the edit icon next to the action type you want to update. </Step> 
+<Step title="Set Timeout"> In the Timeout dropdown, select a duration from the list or set a custom time, then click Submit. </Step> 
+</Steps>
+
+## Global Timeout
+The global timeout applies to all action types that are stuck in any state other than "Scheduled," "Failed," or "Completed."
+
+<Note>The default global timeout for new projects is set to 30 days.</Note>
+
+To configure the global timeout: 
+
+<Steps> 
+<Step title="Access Settings Tab"> Navigate to the Settings tab by clicking on your username at the top right. </Step> 
+<Step title="Edit Global Timeout"> Go to the [General](/platform-guide/general-settings) tab, and click the edit icon next to Default Action Timeout. </Step> 
+<Step title="Set Timeout"> Select a duration from the Timeout dropdown, or set a custom time, then click the Save icon. </Step> 
+</Steps>
+
+## Advanced Settings Timeout
+This timeout applies globally to all action types but only affects actions that are stuck in the "Scheduled" state.
+
+Use Case: If you have a phased action with a success-rate dependency, and a prior phase does not meet its criteria, the next phase may get stuck in "Scheduled." This timeout will help mark those phases as "Failed" to allow progression.
+
+<Note>The default for scheduled actions is set to "Never".</Note>
+
+To set a timeout for scheduled actions using Advanced Settings: 
+
+<Steps> 
+<Step title="Access Advanced Settings"> In the Advanced Settings section, enable the Advanced Settings Toggle. </Step> 
+<Step title="Set Timeout"> Choose a timeout value from the dropdown, or set a custom time, then trigger the action. </Step> 
+</Steps>
+
+## Summary of Timeout Precedence
+For actions stuck in any state other than "Scheduled," "Completed," or "Failed," the timeout is checked in this order:
+
+1. Action Types Timeout (if configured)
+
+2. Global Timeout (if action types timeout is not configured)
+
+For actions in the "**Scheduled**" state, only the **Advanced Settings Timeout** applies, overriding any Action Types or Global timeouts.
+
+This approach ensures that actions can proceed smoothly without getting indefinitely delayed in unresponsive states.

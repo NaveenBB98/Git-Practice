@@ -1,0 +1,48 @@
+---
+title: Update Configurations
+slug: ecww-update-configurations
+description: Guide on how you can remotely update the device configuration in the field at any time,  this will make sure that the device has optimal configurartion all time.
+createdAt: Sat Mar 18 2023 07:15:34 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Jul 24 2024 05:14:47 GMT+0000 (Coordinated Universal Time)
+---
+
+With Bytebeam you can remotely update the device configuration in the field at any time, this will make sure that the device has optimal configurartion at all time. You can use the `bytebeam_add_action_handler` function to add the handler for `update_config` action.
+
+```cpp
+
+// handler for update_config action
+int handle_update_config(bytebeam_client_t *bytebeam_client, char *args, char *action_id)
+{
+  // log the received arguments and action id to serial for the refrence
+  ESP_LOGI(TAG, "UpdateConfig Action Received !");
+  ESP_LOGI(TAG, "<--- args : %s, actionId : %s --->\n", args, actionId);
+
+  //
+  // parse the received json here
+
+  //
+
+  //
+  // update the actual device configurations here
+  //
+
+  //
+  // publish action status here
+  //
+
+  return 0;
+}
+
+// add the handler for update config action
+bytebeam_add_action_handler(&bytebeam_client, handle_update_config, "update_config");
+
+```
+
+Have a look at [update\_config](https://github.com/bytebeamio/bytebeam-esp-idf-sdk/tree/main/examples/receive_data/update_config) example app for a full-fledged example showing how you can update the device configurations and publish the status response to bytebeam cloud.
+
+Follow the below steps to trigger device config updates :)
+
+- Add device configurations and create a new device config version on Bytebeam as per the instructions mentioned in the [Creating a new JSON Configuration version](/platform-guide/actions/inventory-management/json-configurations/creating-a-new-json-configuration-version) guide.&#x20;
+- Once, new device config version is created, trigger device config update as per the instructions mentioned in the [Trigger new action](/platform-guide/actions/action-details/triggering-new-action) guide.
+- Progress of the device config update can be monitored on Bytebeam platform using **Action status.**
+

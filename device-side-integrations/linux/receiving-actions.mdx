@@ -1,0 +1,366 @@
+---
+title: Receiving Actions
+slug: FrQvZUkdXfUd65TUHFPrN
+description: Learn how to effectively use the actions feature of Bytebeam cloud on your Linux device with this comprehensive guide. Discover step-by-step instructions on creating a "reboot" action and gaining control over the uplink through essential commands. Harness
+createdAt: Thu Apr 27 2023 10:02:33 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Nov 23 2023 13:34:13 GMT+0000 (Coordinated Universal Time)
+---
+
+This guide shows you how to receive [Actions](/platform-guide/actions/action-details/introduction) (Commands) from the Cloud and execute them.
+
+Let us have a look at how to create a "reboot" action that restarts the device.&#x20;
+
+To do this we need to first register this action with uplink using its configuration file `config.toml`. If you have followed the guide this file will be present in `/usr/local/share/bytebeam` folder.&#x20;
+
+Edit this file to add the line actions=\[{name="reboot"}] under \[tcpapps.1] section.
+
+```shell
+persistence_path = "/tmp/uplink"
+action_redirections={update_firmware="install_firmware"}
+[tcpapps.1]
+port=5050
+actions=[{name="reboot"}]
+
+[downloader]
+path="/tmp/uplink/download"
+actions=[{name="update_firmware", timeout=610}, {name="send_file"}]
+
+[apis]
+enabled=true
+port=3333
+
+[ota_installer]
+path="/tmp/uplink/installer"
+actions=[{name="install_firmware", timeout=610}]
+uplink_port=5050
+
+[logging]
+tags=["sshd", "systemd"]
+stream_size=1
+min_level=7
+```
+
+Restart the uplink using the following commands
+
+```shell
+sudo systemctl restart uplink
+```
+
+
+
+Create a new action type called "Reboot" by following the [Creating new Action Types](/platform-guide/actions/action-settings/creating-an-action-type) guide:
+
+![](/assets/E7tb9LJNN7_v-PWLXRcVu_linuxdocsconfigureupdates4.png)
+
+The reboot action should now be visible on the device management page.
+
+![](/assets/LvttsjgGWRk_Xy1BDS9JT_linuxdocsconfigureupdates5.png)
+
+Do not trigger the action yet. We need to first integrate the action into our application. Below you can find a sample application code for receiving actions.&#x20;
+
+
+
+:::codeblocktabs
+```python
+import socket
+import json
+import time
+import os
+import threading
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("localhost", 5050))
+
+
+# Converts JSON data received over TCP into a python dictionary
+def receive_action(s):
+    return json.loads(s.recv(2048))
+
+
+# Constructs a payload and sends it over TCP to uplink
+def send_data(s, payload):
+    send = json.dumps(payload) + "\n"
+    s.sendall(bytes(send, encoding="utf-8"))
+
+
+# Constructs a JSON `action_status` as a response to received action on completion
+def action_complete(id):
+    return {
+        "stream": "action_status",
+        "sequence": 0,
+        "timestamp": int(time.time() * 1000000),
+        "action_id": id,
+        "state": "Completed",
+        "progress": 100,
+        "errors": [],
+    }
+
+
+# Reboots the device
+def reboot(action):
+    payload = json.loads(action["payload"])
+    print(payload)
+    resp = action_complete(action["action_id"])
+    print(resp)
+    send_data(s, resp)
+    os.system("sudo reboot")
+
+
+def receive_actions():
+    while True:
+        action = receive_action(s)
+        print(action)
+
+        if action["name"] == "reboot":
+            print("reboot action received")
+            reboot(action)
+
+
+print("Starting Uplink Bridge App")
+threading.Thread(target=receive_actions).start()
+
+```
+
+```javascript
+const net = require("net");
+
+const client = new net.Socket();
+client.connect(5050, "localhost", () => {
+  console.log("Connected to server");
+});
+
+// Converts JSON data received over TCP into a JavaScript object
+function receiveAction() {
+  return new Promise((resolve, reject) => {
+    client.once("data", (data) => {
+      try {
+        resolve(JSON.parse(data));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+}
+
+// Constructs a payload and sends it over TCP to uplink
+function sendData(payload) {
+  const send = JSON.stringify(payload) + "\n";
+  client.write(send, "utf-8");
+}
+
+// Constructs a JSON `action_status` as a response to received action on completion
+function actionComplete(id) {
+  return {
+    stream: "action_status",
+    sequence: 0,
+    timestamp: Date.now() * 1000,
+    action_id: id,
+    state: "Completed",
+    progress: 100,
+    errors: [],
+  };
+}
+
+// Reboots the device
+function reboot(action) {
+  const payload = JSON.parse(action.payload);
+  console.log(payload);
+  const resp = actionComplete(action.action_id);
+  console.log(resp);
+  sendData(resp);
+  exec("sudo reboot", (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
+}
+
+async function receiveActions() {
+  while (true) {
+    const action = await receiveAction();
+    console.log(action);
+
+    if (action.name === "reboot") {
+      console.log("reboot action received");
+      reboot(action);
+    }
+  }
+}
+
+console.log("Starting Uplink Bridge App");
+receiveActions();
+
+```
+
+```rust
+use serde_json::{json, Value};
+use std::io::{Read, Write};
+use std::net::TcpStream;
+use std::process::Command;
+use std::{thread, time};
+
+fn main() {
+    let mut stream = TcpStream::connect("localhost:5050").expect("Could not connect to server");
+
+    // Start a thread to receive actions
+    let mut stream_clone = stream.try_clone().expect("Failed to clone stream");
+    thread::spawn(move || {
+        receive_actions(&mut stream_clone);
+    });
+}
+
+fn receive_action(stream: &mut TcpStream) -> Value {
+    let mut buffer = [0; 2048];
+    stream
+        .read(&mut buffer)
+        .expect("Failed to read from stream");
+    serde_json::from_slice(&buffer).expect("Failed to parse JSON")
+}
+
+fn send_data(stream: &mut TcpStream, payload: Value) {
+    let send = payload.to_string() + "\n";
+    stream
+        .write_all(send.as_bytes())
+        .expect("Failed to write to stream");
+}
+
+fn action_complete(id: i64) -> Value {
+    json!({
+        "stream": "action_status",
+        "sequence": 0,
+        "timestamp": time::SystemTime::now()
+            .duration_since(time::UNIX_EPOCH)
+            .expect("Time went backwards")
+            .as_micros() as i64,
+        "action_id": id,
+        "state": "Completed",
+        "progress": 100,
+        "errors": []
+    })
+}
+
+fn reboot(action: &Value) {
+    let payload = &action["payload"];
+    println!("{:?}", payload);
+    let resp = action_complete(action["action_id"].as_i64().unwrap());
+    println!("{:?}", resp);
+    send_data(&mut stream, resp);
+    Command::new("sudo")
+        .arg("reboot")
+        .output()
+        .expect("failed to execute process");
+}
+
+fn receive_actions(stream: &mut TcpStream) {
+    loop {
+        let action = receive_action(stream);
+        println!("{:?}", action);
+
+        if action["name"] == "reboot" {
+            println!("reboot action received");
+            reboot(&action);
+        }
+    }
+}
+
+```
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net"
+	"os"
+	"os/exec"
+	"strconv"
+	"time"
+)
+
+func main() {
+	conn, err := net.Dial("tcp", "localhost:5050")
+	if err != nil {
+			fmt.Println("Error connecting:", err.Error())
+			os.Exit(1)
+	}
+
+	// Start a goroutine for receiving actions
+	go receiveActions(conn)
+
+	fmt.Println("Starting Uplink Bridge App")
+}
+
+// receiveAction reads and decodes JSON data from the connection
+func receiveAction(conn net.Conn) map[string]interface{} {
+	buffer := make([]byte, 2048)
+	length, _ := conn.Read(buffer)
+	var data map[string]interface{}
+	json.Unmarshal(buffer[:length], &data)
+	return data
+}
+
+// sendData encodes the payload to JSON and sends it over the connection
+func sendData(conn net.Conn, payload map[string]interface{}) {
+	send, _ := json.Marshal(payload)
+	conn.Write(append(send, '\n'))
+}
+
+// actionComplete constructs a JSON action_status response
+func actionComplete(id interface{}) map[string]interface{} {
+	return map[string]interface{}{
+			"stream":    "action_status",
+			"sequence":  0,
+			"timestamp": time.Now().UnixNano() / int64(time.Microsecond),
+			"action_id": id,
+			"state":     "Completed",
+			"progress":  100,
+			"errors":    []string{},
+	}
+}
+
+// reboot performs a system reboot
+func reboot(action map[string]interface{}) {
+	payload := action["payload"].(map[string]interface{})
+	fmt.Println(payload)
+	resp := actionComplete(action["action_id"])
+	fmt.Println(resp)
+	sendData(conn, resp)
+	cmd := exec.Command("sudo", "reboot")
+	cmd.Run()
+}
+
+// receiveActions listens for actions and processes them
+func receiveActions(conn net.Conn) {
+	for {
+			action := receiveAction(conn)
+			fmt.Println(action)
+
+			if action["name"] == "reboot" {
+					fmt.Println("reboot action received")
+					reboot(action)
+			}
+	}
+}
+```
+:::
+
+Once your app has been modified and is running, you can go to Bytebeam Cloud and click on the Reboot action button to trigger the action. Next, you will see the following message
+
+![](/assets/Ht4IRHuuitXWiTHUo_Mv-_linuxdocsconfigureupdates6.png)
+
+Click on **Yes.** Next, on the action panel, you can monitor the status of your last triggered action
+
+![](/assets/BHqiQSh7RmSho_K9PcSOn_linuxdocsconfigureupdates7.png)
+
+After completion of an action, the *Action Status* changes to **Completed** and you should see your device reboot
+
+![](/assets/eoUSkhcZ5UWnvGY0i3OHX_linuxdocsreceivingactionwhite1.png)
+
+
+
+
+

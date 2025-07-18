@@ -1,0 +1,52 @@
+---
+title: Device Pulse
+slug: vKhx-device-pulse
+createdAt: Tue Mar 14 2023 09:14:13 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 29 2023 20:35:06 GMT+0000 (Coordinated Universal Time)
+---
+
+The Device Pulse panel helps monitor the health of devices by visualizing the last heartbeat of each device.
+
+<Note>
+This panel is available only for fleet dashboards.
+</Note>
+
+## Add Device Pulse Panel
+
+<Steps>
+  <Step title="Navigate to Dashboards">
+    Go to the **Dashboards** tab, select the desired dashboard, and click on the **+ Panel** button to create a new panel.
+  </Step>
+  <Step title="Select Device Pulse Panel">
+    Choose **Device Pulse Panel** from the list of available panels.  
+    ![](/assets/80gRJlL0Sft66Nf6I9kKD_screenshot-from-2023-10-29-19-38-19.png)
+  </Step>
+  <Step title="Configure General Settings">
+    In the **General** tab:
+    - **Stream**: Select the stream, e.g., `device_shadow`.
+    - **Thresholds**: Add thresholds (in seconds) to categorize device pulses. By default, the following thresholds are configured:
+      - Pulse less than 10 seconds
+      - Pulse less than a minute
+      - Pulse less than 10 minutes
+      - Pulse less than an hour
+      - Pulse less than a day
+      - Pulse more than a day  
+
+    These thresholds can be customized to meet your monitoring needs.  
+    ![](/assets/6tggkdXV5fun60g0bXXQU_screenshot-30.jpg)
+  </Step>
+  <Step title="Device Count Interaction">
+    - **Clicking on a Device Count**: When you click on any of the device counts in a pulse category, a modal will open displaying the list of devices along with their metadata.
+    - **Device ID or VIN**: Clicking on any Device ID or VIN in the modal will redirect you to the corresponding device dashboard for detailed insights.
+    - **Download Metadata**: The modal also has an option to download metadata for the listed devices by clicking on the **Download Metadata** button.  
+    ![](/assets/device-count-modal-example.png)
+  </Step>
+  <Step title="Click to View Device Dashboard">
+    You can click on any pulse category in the panel to navigate to the device dashboard of the corresponding device for monitoring and troubleshooting.  
+    ![](/assets/FVOQ7cXAtq3HPkG8BwFN1_devicepulseenhancements.gif)
+  </Step>
+  <Step title="Submit the Panel">
+    Once all configurations are complete, click **Submit** to add the Device Pulse Panel to the dashboard.  
+    The panel will now visualize device health categorized by the configured thresholds, with interactive options to explore devices in detail.
+  </Step>
+</Steps>

@@ -1,0 +1,41 @@
+---
+title: Integrate Over the air updates
+description: Learn how to implement Over the Air (OTA) Firmware Upgrades using bytebeam-esp-idf-sdk with this comprehensive guide. Find out how to enable OTA updates through an action handler and follow a step-by-step process to trigger updates. Discover how to create
+createdAt: 2022-09-20T07:07:59.000Z
+updatedAt: 2024-07-24T05:18:31.606Z
+---
+
+OTA update has become a critical requirement for devices being deployed remotely. This guide covers everything you need to know about Over the Air Firmware Upgrades with **bytebeam-esp-idf-sdk**.
+
+## Enabling OTA Updates
+
+OTA updates can be integrated into application by adding action handler for OTA updates.
+
+```cpp
+/* Below function call adds action handler for "update_firmware" action */
+/* handle_ota is the pointer to action handler*/
+
+bytebeam_add_action_handler(&bytebeam_client, handle_ota, "update_firmware");
+
+/* Use the bytebeam_remove_action_handler api to remove the handler for the update
+ * firmware action at any point of time in the code , Also you can  mantain the add
+ * update firmware action handler and remove update firmware action handler flow as per
+ * you application needs.
+ */
+// bytebeam_remove_action_handler(&bytebeam_client, "update_firmware");
+```
+
+Have a look at <a href="https://github.com/bytebeamio/esp-bytebeam-sdk/tree/main/examples/basic_ota" target="_blank">basic\_ota</a> example app for reference.
+
+Follow the below steps to trigger OTA updates-
+
+1. Upload a .bin file and create a new firmware version on Bytebeam as per the instructions mentioned in the [Creating a new Firmware Version](/platform-guide/actions/inventory-management/firmware-files/without-device-components/creating-a-new-firmware-version) guide. &#x20;
+2. &#x20;Once, new firmware version is created, trigger OTA update as per the instructions mentioned in the [Triggering OTA update](/platform-guide/device-management/triggering-ota-update) guide.&#x20;
+3. Progress of the firmware update can be monitored on Bytebeam platform using **Action status.**
+
+## OTA Rollback
+
+You can create a checkpoint in your app to either mark the newly updated firmware image as active or rollback to previous firmware version. Have a look at <a href="https://github.com/bytebeamio/bytebeam-esp-idf-sdk/tree/main/examples/basic_ota_rollback" target="_blank">basic\_ota\_rollback</a> example app for reference.
+
+**Note:** For production cases,
+&#x20;please tune the checkpoint behavior as per end application requirement.

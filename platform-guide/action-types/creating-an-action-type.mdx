@@ -1,0 +1,45 @@
+---
+title: Creating an Action Type
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/95fc0fba-36b6-472a-857a-1b5a582c85b1/f163bc46-1a2e-43e3-9b51-dd57aa3fdd89/images/ff6bfae5-59f2-4006-8e9e-c4598fdc1b0b.gif)
+
+To create a new action type in Bytebeam console,
+
+<Steps>
+  <Step title="Access Settings Tab">
+    Navigate to the **Settings Tab** by clicking on your username at the top right
+  </Step>
+  <Step title="Go to Action Types Tab and Initiate Action Type Creation">
+    Navigate to the **Action Types** tab and click on the **Create Action Type** button
+  </Step>
+  <Step title="Fill Details">
+    Enter the action type name, choose the [payload](#payload-in-action-types), select an icon, and optionally set a timeout duration from the dropdown. Then, click on the Submit button to create the metadata key.
+</Step>
+</Steps>
+
+## <a id="payload-in-action-types"></a>Payload in Action Types
+There are 3 payload options in 4 variations available.
+
+<AccordionGroup>
+  <Accordion title="None" icon="circle">
+    You can choose this for action types like Shutdown which don't need any payload to be sent to the device while triggering the action.
+  </Accordion>
+
+  <Accordion title="JSON" icon="file-code">
+    You can choose this for action types which need the JSON payload to be sent to the device while triggering the action.
+
+  </Accordion>
+
+  <Accordion title="JSON Data via form" icon="file-signature">
+    You can choose this for action types like Update CAN Config which enables the JSON data to be sent via form to the device while triggering the action.
+    
+    To choose this option, choose **JSON** option from the dropdown, enable the **Allow user to input data via form** toggle and enter the **JSON Schema** along with **JSON UI Schema** while creating or editing the action type
+  </Accordion>
+
+  <Accordion title="Text" icon="pencil">
+    You can choose this for action types which need the payload in text format to be sent to the device while triggering the action.
+  </Accordion>
+</AccordionGroup>
+
+

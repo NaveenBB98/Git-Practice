@@ -1,0 +1,49 @@
+---
+title: Locate Devices
+slug: gfes-locate-devices
+createdAt: Tue Mar 14 2023 09:14:25 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Nov 01 2023 08:05:06 GMT+0000 (Coordinated Universal Time)
+---
+
+The Locate Devices panel enables you to visualize the current location of your devices on a map. This panel is particularly useful for:
+
+- Real-time tracking of assets or vehicles.
+- Displaying the geographic distribution of devices.
+- Analyzing device movements and patterns.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/82e0f96e-b5b9-4539-a75f-2850d6826d6c/11c16c61-c4b0-470d-b4f6-e00725ce5d83/images/4eac80c7-51da-4e0e-b213-e3f003be7c4e.gif)
+
+## Add Locate Devices Panel
+
+<Steps>
+  <Step title="Navigate to Dashboards">
+    Go to the **Dashboards** tab, select the desired dashboard, and click on the **+ Panel** button to create a new panel.
+  </Step>
+  <Step title="Select Locate Devices Panel">
+    Choose **Locate Device Panel** from the list of available panels.  
+  </Step>
+  <Step title="Configure General Settings">
+    You will be presented with options to configure:
+    - **Title**: Add a descriptive title for the panel.
+    - **Stream**: Select the data stream containing the location data.
+    - **Latitude Field and Longitude Field**: Choose the fields representing latitude and longitude values.
+    - **Device Dashboard Links**: Add links to device dashboards for easy navigation.
+    - **Metadata to Show**: Add metadata to display additional details about each device.
+    - **Device Shadow Data to Show**: Include shadow data to provide more context for each device.
+
+    Clicking on a marker allows you to view device shadow details, metadata, and links to device dashboards.
+  </Step>
+  <Step title="Customize View Settings">
+    Switch to the **View** tab to adjust the appearance and functionality of the map:
+    - **Show Map Layers**: Enable or disable layers such as:
+      - **Traffic Layer**: Display real-time traffic information on the map.
+      - **Satellite Layer**: Show satellite imagery for better geographical context.
+    - **Select Icon**: Choose a marker icon to represent the devices (e.g., vehicle, pin).  
+    - **Select Icon Color**: Set a color for the marker icons or dynamically configure the color based on the device's shadow status.  
+  </Step>
+  <Step title="Submit the Panel">
+  <Note>Clicking on the location icon on the map shows the added metadata, dashboards and device shadow data.</Note>
+    After completing the configurations and customizations, click **Submit** to add the Locate Device Panel to the dashboard.  
+    The map with the device markers will now appear, displaying real-time device locations.
+  </Step>
+</Steps>

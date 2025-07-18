@@ -1,0 +1,37 @@
+---
+title: Integrate Over The Air Updates
+slug: 1C2ugT8MBUwxGojcSGTMv
+description: Learn about the different types of OTA updates offered by Bytebeam for IoT devices, including app updates, app updates with rollback, deb updates, and rootfs updates. Discover the step-by-step process involved, from creating the update tar file to trigger
+createdAt: 2023-04-12T06:27:26.000Z
+updatedAt: 2023-11-11T11:43:50.848Z
+---
+
+OTA update has become a critical requirement for devices being deployed remotely. This guide covers how to integrate Over the Air Upgrades using uplink. There are four steps to trying out OTA updates with Bytbeam.
+
+
+
+![](https://archbee-image-uploads.s3.amazonaws.com/KgoQSkw-NkQJykt01OVJo/2yt8p2xbn2YEQTchWttPr_algorithm-flowchart-example-3.jpeg)
+
+## **Step 1:** Create the update artifact
+
+Update artifacts with Bytebeam are simple tar files containing an executable script called updater. Uplink download the tar file, extract it, and run the updater script.&#x20;
+
+Currently, we support four types of updates. App update is the simplest form of update, to start with. Refer to the appropriate update sections to create the tar file for each update type.
+
+- [App Update](https://bytebeamio.mintlify.app/device-side-integrations/linux/integrate-over-the-air-updates/app-update): App update replaces the old app binary on the device with the new binary uploaded to the Bytebeam cloud.&#x20;
+- [App Update with rollback](https://bytebeamio.mintlify.app/device-side-integrations/linux/integrate-over-the-air-updates/app-update-with-rollback): This is similar to an app update but with a rollback feature. This allows the device to roll back to the previous version of the app if the update fails.&#x20;
+- [Deb Update](https://bytebeamio.mintlify.app/device-side-integrations/linux/integrate-over-the-air-updates/deb-update): Deb update installs the provided deb package onto the device.
+- [Rootfs Update](https://bytebeamio.mintlify.app/device-side-integrations/linux/integrate-over-the-air-updates/rootfs-update) This updates the entire rootfs, kernel, and firmware files(in the boot partition) as well.&#x20;
+
+**Step 2**: Upload the update file&#x20;
+--------------------------------------
+
+Refer to the guide on [Creating a new Firmware Version](docId\:IsAoIC5-7ftNjTTcO55ih)
+
+## **Step 3**: Trigger an OTA update from the cloud.
+
+Refer to the guide on [Triggering OTA update](docId\:adgo-fN2Yj0Q5lPtiBRQO)
+
+## **Step 4:** Uplink runs updater script&#x20;
+
+Uplink downloads the tar file, extracts the contents, and runs the updater script.

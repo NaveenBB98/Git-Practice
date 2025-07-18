@@ -1,0 +1,224 @@
+---
+title: Customising device shadow
+slug: G2wJ-device-shadow
+description: Learn about streams and device shadows in client applications with this document. Discover how default parameters like timestamp and sequence number are pushed to the device shadow stream. Explore the possibility of creating custom device shadow streams w
+createdAt: Fri Sep 22 2023 04:52:19 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Nov 23 2023 13:33:30 GMT+0000 (Coordinated Universal Time)
+---
+
+
+
+Every project in Bytebeam comes with a default [Device Shadow](https://bytebeamio.mintlify.app/getting-started/device-shadow) stream. The stream by default contains just three fields `Status`, `timestamp`, and `sequence`.&#x20;
+
+This guide shows how to create additional fields and write data to this stream from your application.
+
+For that, Click on the **username** at the top right corner of the Bytebeam  cloud console and navigate to **Settings** 
+
+![](/assets/h0MTw_6XmXTHynPAL2jfa_linuxdocspushingwhite2.png)
+
+Here under the **Stream** Tab, you can find “**device\_shadow**”
+
+For example, add two new columns `device_name` and `arch` to the device shadow. You can do this by entering the field name and type and clicking the + button.
+
+
+
+![](/assets/bqrhoi_WDm7uOmqrevetH_linuxdocsconfigureuodatewhite1.png)
+
+After adding both fields your device shadow will look like the below:
+
+
+
+![](/assets/gA96Z3lRdRv76FtY52O-Q_linuxdocsconfigureupdateswhite2.png)
+
+Now update your application to push this data to the device.
+
+:::codeblocktabs
+```python
+import socket
+import json
+import time
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("localhost", 5050))
+
+
+# Constructs a payload and sends it over TCP to uplink
+def send_data(s, payload):
+    send = json.dumps(payload) + "\n"
+    s.sendall(bytes(send, encoding="utf-8"))
+
+
+# Add more parameters to device shadow
+def send_device_shadow(s, sequence):
+    timestamp = int(time.time() * 1000)
+    payload = {
+        "stream": "device_shadow",
+        "sequence": sequence,
+        "timestamp": timestamp,
+        "device_name": "Beaglebone Black Rev. C",
+        "arch": "armv7",
+    }
+    print(payload)
+    send_data(s, payload)
+
+
+print("Starting Uplink Bridge App")
+
+sequence = 1
+while True:
+    time.sleep(10)
+    send_device_shadow(s, sequence)
+    sequence += 1
+
+```
+
+```javascript
+const net = require("net");
+
+// Connect to the server
+const client = new net.Socket();
+client.connect(5050, "localhost", () => {
+  console.log("Connected to server");
+});
+
+// Constructs a payload and sends it over TCP to uplink
+function sendData(payload) {
+  const send = JSON.stringify(payload) + "\n";
+  client.write(send);
+}
+
+// Send device shadow data
+function sendDeviceShadow(sequence) {
+  let timestamp = Date.now();
+  let payload = {
+    stream: "device_shadow",
+    sequence: sequence,
+    timestamp: timestamp,
+    device_name: "Beaglebone Black Rev. C",
+    arch: "armv7",
+  };
+  console.log(payload);
+  sendData(payload);
+}
+
+console.log("Starting Uplink Bridge App");
+
+let sequence = 1;
+setInterval(() => {
+  sendDeviceShadow(sequence);
+  sequence++;
+}, 10000);
+
+```
+
+```rust
+use std::net::TcpStream;
+use std::io::{Read, Write};
+use std::thread;
+use std::time::{Duration, SystemTime};
+use serde_json::{Value, json};
+
+async fn send_data(mut stream: &TcpStream, payload: serde_json::Value) {
+    let send = format!("{}\n", payload.to_string());
+    stream.write_all(send.as_bytes()).await.unwrap();
+}
+
+async fn send_device_shadow(mut stream: &TcpStream, sequence: u64) {
+    let timestamp = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .unwrap()
+        .as_millis();
+
+    let payload = json!({
+        "stream": "device_shadow",
+        "sequence": sequence,
+        "timestamp": timestamp,
+        "device_name": "Beaglebone Black Rev. C",
+        "arch": "armv7"
+    });
+
+    println!("{:?}", payload);
+    send_data(&mut stream, payload).await;
+}
+
+#[tokio::main]
+async fn main() {
+    let addr = "localhost:5050";
+    let mut stream = TcpStream::connect(&addr).await.unwrap();
+
+    println!("Starting Uplink Bridge App");
+
+    let mut sequence = 1;
+    loop {
+        thread::sleep(Duration::from_secs(5));
+        send_device_shadow(&mut stream, sequence);
+        sequence += 1;
+    }
+}
+```
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net"
+	"os"
+	"strconv"
+	"time"
+)
+
+// DeviceShadow represents the payload structure
+type DeviceShadow struct {
+	Stream      string `json:"stream"`
+	Sequence    int    `json:"sequence"`
+	Timestamp   int64  `json:"timestamp"`
+	DeviceName  string `json:"device_name"`
+	Arch        string `json:"arch"`
+}
+
+func sendData(conn net.Conn, payload interface{}) {
+	data, _ := json.Marshal(payload)
+	fmt.Println(string(data))
+	conn.Write(append(data, '\n'))
+}
+
+// sendDeviceShadow constructs and sends a device shadow payload
+func sendDeviceShadow(conn net.Conn, sequence int) {
+	t := time.Now().UnixNano() / int64(time.Millisecond)
+	payload := DeviceShadow{
+			Stream:      "device_shadow",
+			Sequence:    sequence,
+			Timestamp:   t,
+			DeviceName:  "Beaglebone Black Rev. C",
+			Arch:        "armv7",
+	}
+	fmt.Println(payload)
+	sendData(conn, payload)(conn, payload)
+}
+
+func main() {
+	conn, err := net.Dial("tcp", "localhost:5050")
+	if err != nil {
+			fmt.Println("Error connecting:", err.Error())
+			os.Exit(1)
+	}
+	defer conn.Close()
+
+	fmt.Println("Starting Uplink Bridge App")
+
+	sequence := 1
+	for {
+			time.Sleep(5 * time.Second)
+			sendDeviceShadow(conn, sequence)
+			sequence++
+	}
+}
+```
+:::
+
+You should now be able to see the new fields on Bytebeam cloud:
+
+![](/assets/NiIS15t94RnJ2DUgqiq_L_linuxdocsconfigureupdateswhite3.png)
+

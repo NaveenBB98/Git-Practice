@@ -1,0 +1,23 @@
+---
+title: Pushing data to Bytebeam
+slug: cRLUtGLYcJXLiGislRZ11
+description: Learn how you can push data to Bytebeam console.
+createdAt: 2022-09-20T07:07:59.000Z
+updatedAt: 2023-09-01T07:23:14.114Z
+---
+
+To push data to Bytebeam you need to first create a stream. You can do this by following the [Creating a Stream](https://bytebeamio.mintlify.app/platform-guide/streams-tables/creating-a-stream) guide. Once you have created a stream you can use the `publishToStream` method to publish data to the stream.
+
+```cpp
+
+// Publish data to the bytebeam stream
+
+//
+// streamName: Name of the stream to publish the payload
+// payload: Data to be published
+//
+
+bool Bytebeam.publishToStream(char* streamName, const char* payload);
+```
+
+Bytebeam expects the payload to be in the <a href="https://en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> format. Have a look at the <a href="https://github.com/bytebeamio/bytebeam-arduino-sdk/tree/main/examples/ESP32/PushData" target="_blank">PushData</a> example sketch for a full fledged example showing how to use this function.

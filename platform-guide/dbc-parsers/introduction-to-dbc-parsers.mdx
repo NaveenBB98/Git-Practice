@@ -1,0 +1,33 @@
+---
+title: Introduction to DBC Parsers
+slug: E7q2-dbc
+createdAt: Mon Apr 01 2024 12:44:27 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Apr 02 2024 01:12:48 GMT+0000 (Coordinated Universal Time)
+---
+
+## Overview
+
+A DBC parser is a software tool that decodes the messages transmitted on your IoT device's Controller Area Network (CAN) bus.  DBC files define the structure, signals (meaningful data units), and scaling factors within these messages. The DBC parser references this file to interpret raw CAN data into clear, actionable information.
+
+## Use of DBC Parsers
+
+You can use DBC parsers to track and analyze vehicle data for real-time monitoring and reporting.
+For instance, a logistics company can use a DBC parser to decode GPS data, engine RPM, and load information from trucks. This data can be displayed on a dashboard, helping managers track shipments and make data-driven decisions on routing and fuel efficiency.
+
+<CardGroup cols={2}>
+  <Card title="Create a DBC Parser" icon="plus" href="/platform-guide/dbc-parsers/creating-a-dbc-parser">
+  You can create a DBC parser by choosing one of the 3 DBC types: custom, obd, j1939.
+</Card>
+  <Card title="Update a DBC Parser" icon="check" href="/platform-guide/dbc-parsers/updating-a-dbc-parser">
+  You can update the existing DBC parser by uploading a new DBC file.
+</Card>
+  <Card title="Edit a DBC Parser" icon="pencil" href="/platform-guide/dbc-parsers/editing-a-dbc-parser">
+  You can edit the existing DBC parser to change details like DBC Name, DBC Version etc.
+</Card>
+<Card title="View a Parsed DBC" icon="eye" href="/platform-guide/dbc-parsers/viewing-parsed-dbc">
+  You can view the parsed DBC and download the custom DBC files that were uploaded while creating the parser.
+</Card>
+<Card title="Delete a DBC Parser" icon="trash" href="/platform-guide/dbc-parsers/deleting-a-dbc-parser">
+  You can delete the existing DBC parsers that are no longer needed.
+</Card>
+</CardGroup>

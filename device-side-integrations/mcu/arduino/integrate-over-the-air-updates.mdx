@@ -1,0 +1,56 @@
+---
+title: Integrate Over the Air Updates
+slug: Q5xM-integrate-over-the-air-updates
+description: Guide that covers everything you need to know about Over the Air Firmware Upgrades with Bytebeam Arduino.
+createdAt: 2022-09-20T07:07:59.000Z
+updatedAt: 2023-11-06T10:37:54.690Z
+---
+
+OTA update has become a critical requirement for devices being deployed remotely. This guide covers everything you need to know about Over the Air Firmware Upgrades with **BytebeamArduino**.
+
+## Enabling OTA updates
+
+OTA updates can be integrated into application by adding a single line of code!
+
+```cpp
+//
+// Enable OTA updates for your device
+//
+
+Bytebeam.enableOTA();
+```
+
+Have a look at <a href="https://github.com/bytebeamio/bytebeam-arduino-sdk/tree/main/examples/ESP32/BasicOTA" target="_blank">BasicOTA</a> sketch for Wifi based OTA and  <a href="https://github.com/bytebeamio/bytebeam-arduino-sdk/tree/main/examples/ESP32/BasicOTA_GSM" target="_blank">BasicOTA\_GSM </a> sketch if you are using a GSM Modem for connectivity
+
+Follow the below steps to trigger OTA updates:
+
+- Upload a .bin file and create a new firmware version on Bytebeam as per the instructions mentioned in the [Creating a new Firmware Version](/platform-guide/actions/inventory-management/firmware-files/without-device-components/creating-a-new-firmware-version) guide.&#x20;
+- Once, new firmware version is created, trigger OTA update as per the instructions mentioned in the [Triggering OTA update](/platform-guide/device-management/triggering-ota-update) guide.
+- Progress of the firmware update can be monitored on Bytebeam platform using **Action status.**
+
+## Disabling OTA updates
+
+If your device does not require OTA updates you can disable them. If you opt for the No OTA partition scheme, make sure you have the selected file system partition (say SPIFFS) for device provisioning. See Tools > Partition Scheme within the Arduino IDE.
+
+![](https://archbee-image-uploads.s3.amazonaws.com/KgoQSkw-NkQJykt01OVJo/ao6tG50JOn7Mpjb-zxIb-_img5.png)
+
+### Disabling OTA updates at Run Time
+
+You can use the `disableOTA` method to disable the OTA updates at any point of time in the code:
+
+```cpp
+//
+// Disable OTA updates for your device
+//
+
+Bytebeam.disableOTA();
+```
+
+### Disable OTA updates at Compile Time
+
+This approach will disable the OTA updates by excluding the OTA related stuff from the build thereby saving some flash size. Follow the below steps to do so:
+
+- Open the Arduino `libraries` location.
+- Step into `BytebeamArduino\src` folder.
+- Open BytebeamArduino.h in your favourite text editor.
+- Set `BYTEBEAM_OTA_ENABLE` macro to `false`.

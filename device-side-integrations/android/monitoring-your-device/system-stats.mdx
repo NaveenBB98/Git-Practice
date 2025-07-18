@@ -1,0 +1,24 @@
+---
+title: System Stats
+slug: 46LFiNHy8CjK4KmweEvQV
+description: Learn about the valuable data provided by the "uplink_system_stats" stream, such as kernel version, running processes, device uptime, memory usage, and load averages. Enhance your understanding of system performance to optimize operations and improve effi
+createdAt: Mon Jun 19 2023 10:17:51 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Nov 14 2023 06:08:24 GMT+0000 (Coordinated Universal Time)
+---
+
+System stats contain information regarding the kernel version, memory usage, uptime, load average, etc. These details are pushed to the `uplink_system_stats` stream.  This stream has the following fields:
+
+| Field name         | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| kernel\_version    | The version of the currently running kernel.            |
+| no\_processes      | Count of the currently running processes in the system. |
+| uptime             | Time elapsed in seconds since the device has booted.    |
+| total\_memory      | Total memory (RAM) present on the device in bytes       |
+| used\_memory       | Amount of memory being used by the device in bytes      |
+| available\_memory  | Memory available (unused) on the device in bytes        |
+| load\_avg\_one     | One-minute load average of the system                   |
+| load\_avg\_five    | Five-minute load average of the system                  |
+| load\_avg\_fifteen | Fifteen-minute load average of the system               |
+
+![](/assets/eCOUVGr9vHGe3PjG_eQAK_linuxdocsmonitor2.png)
+

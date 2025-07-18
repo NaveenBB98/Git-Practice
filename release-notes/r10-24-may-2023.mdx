@@ -1,0 +1,73 @@
+---
+title: R10 24-May-2023
+slug: F0t4-r
+description: Product Update by 24 May 2023, Pinning Metadata in Device Management, Changes in bar chart panel and other changes
+createdAt: Sun May 21 2023 18:35:05 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Sep 14 2023 19:40:40 GMT+0000 (Coordinated Universal Time)
+---
+
+### Ability to pin metadata in device management
+
+The metadata fields have a new feature that allows them to be pinned, ensuring their immediate visibility at the top of the devices list table. By hovering over the metadata name, you can select the Pin icon to easily pin that specific metadata. Up to three metadata fields can be pinned.
+
+![](/assets/AYVl6GXMwD_0Hm4CDzscM_pinmetadata.png)
+
+### Locate device panel improvements
+
+Locate device panel has been enhanced with the following abilities:
+
+&#x20;  1\. **Choose the icon for the map marker**
+
+![](/assets/uGDL0ZOSJyMxsS3pvvNXY_screenshot-2023-05-24-at-23627-am.png)
+
+**   2. Select multiple device dashboards to link to the device**
+
+![](/assets/dCGYfAmcIQbt_VH42s1CD_screenshot-2023-05-24-at-24036-am.png)
+
+**   3. Configure Icon color based on Status in device\_shadow**
+
+![](/assets/SbPoTpzAhEmG-aVmXjEVx_screenshot-2023-05-24-at-34806-am.png)
+
+**   4. Show device\_shadow data and metadata on the device popup in the map**
+
+![](/assets/bBJ9ozBAe0UJL2HuVf8kh_locate3.png)
+
+### Bar chart panel
+
+We are excited to reintroduce the bar chart panel, which enables you to monitor device data grouped by parameters such as firmware or config version. This powerful tool can also be utilized to track common parameters across multiple devices in the Fleet dashboard.&#x20;
+
+![](/assets/wo2bGtxMNIcmCpIBOLmHQ_screenshot-2023-05-24-at-25922-am.png)
+
+### Dual y-axis in the line chart
+
+A dual y-axes chart **allows you to summarize or plot two y-axes variables that have different domains**.
+
+![](/assets/UqVZ3y8AaSLX8ZgYx-WH-_yaxis.png)
+
+### Select the number of devices visible on the Device management page
+
+Choose the desired number of devices to be displayed on the Device Management page.
+
+![](/assets/_MYTnwNPRjDIDfcQnFDPz_pagenum.png)
+
+### Unselect all from the device count bubble
+
+If you have selected multiple devices to trigger an action, you can swiftly deselect all devices by clicking on the bubble displaying the device count.
+
+![](/assets/Gkp5tH58vXgYv2Hezddaz_unselectall.png)
+
+### Text type payload in actions
+
+Previously, there was no way to pass parameters to an action. However, in the preceding releases, we introduced action types that enabled Actions with custom JSON payloads. In our latest release, we are introducing **text-type actions**, which allow you to pass plain text as a payload to the action.
+
+![](/assets/xtfi5IBGYzdGYMVbbvB4n_text.png)
+
+### Bug fixes & Minor changes
+
+- Fixed some issues related to the y-axis custom range on a line chart
+- Bugfixes in adding and saving roles
+- Changed Admin tab name to Settings for avoiding confusion with the role name
+- Showing user email Id and role name, on clicking the username
+- Improved loading time of Streams tab in settings
+- Validations in filters in the Timeseries panel
+

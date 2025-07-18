@@ -1,0 +1,79 @@
+---
+title: Receiving Actions
+slug: Ezyk-receiving-actions
+description: Learn how to handle actions in our platform with this informative document. Understand the importance of defining and registering an action handler, and discover examples of using the "publish_action_status" function for progress updates. Find step-by-ste
+createdAt: 2023-02-02T08:43:42.000Z
+updatedAt: 2023-09-01T07:23:14.114Z
+---
+
+[Actions](/platform-guide/actions/action-details/introduction) are commands that platform sends to the client. The JSON format for Actions would look like :
+
+```json
+{
+    "name": "toggle_board_led",
+    "id": "101",
+    "kind": "process",
+    "payload": {
+        "status": "ON",
+    },
+}
+```
+
+*NOTE: ****payload**** is optional, so it may or mayn't be there*
+
+To handle an incoming action, you need to define and register an action handler. An action handle must take **Action** and **\&ByteBeamClient** as arguments :
+
+```rust
+let bytebeam_client = ByteBeamClient::init()?;
+
+// You can pass a closure
+bytebeam_client.register_action_handle(
+    "example_action".into(),
+    &|action: Action, bytebeam_client: &ByteBeamClient| {
+        // handler body
+    },
+);
+
+// or you can also pass down a function
+bytebeam_client.register_action_handle("toggle".into(), &toggle);
+
+// Function signature
+fn toggle(action: Action, bytebeam_client: &ByteBeamClient) {
+    // function body
+}
+```
+
+We can also send the progress updates for actions using **publish\_action\_status** :
+
+```rust
+pub fn publish_action_status(
+        &self,
+        action_id: &str,
+        percentage: u32,
+        status: &str,
+        error_messages: Option<&[&str]>,
+    ) -> anyhow::Result<u32> {
+
+```
+
+For example :
+
+```rust
+fn toggle(action: Action, bytebeam_client: &ByteBeamClient) {
+    let mut onboard_led = ONBOARD_LED.lock().unwrap();
+    let onboard_led = onboard_led.get_mut().as_mut().unwrap();
+
+    match onboard_led.toggle() {
+        Ok(_) => bytebeam_client.publish_action_status(&action.id, 100, "Toggled", None),
+        Err(_) => bytebeam_client.publish_action_status(
+            &action.id,
+            0,
+            "Failed",
+            Some(&["Failed to toggle LED"]),
+        ),
+    }
+    .ok(); // just to satisfy clippy for now!
+}
+```
+
+Check out <a href="https://github.com/bytebeamio/bytebeam-esp-rs-sdk/tree/main/examples" target="_blank">examples</a> for more details

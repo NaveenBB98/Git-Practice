@@ -1,0 +1,6462 @@
+openapi: 3.0.1
+info:
+  title: Consoled REST APIs
+  description: "Once you have gone through the documentation on Bytebeam Cloud, \n\
+    \                                          you might want to integrate Bytebeam\
+    \ programmatically in your own applications. \n                              \
+    \            Our REST API is available to you for performing all operations you\
+    \ can do on the Cloud platform UI."
+  termsOfService: https://bytebeam.io/terms
+  version: 0.0.1
+externalDocs:
+  description: Product Documentation
+  url: https://bytebeam.io/docs
+servers:
+  - url: https://cloud.bytebeam.io/
+security:
+  - apiKeyAuth: []
+    tenantAuth: []
+tags:
+  - name: admin
+    description: Admin APIs
+  - name: devices
+    description: Device Management
+  - name: data
+    description: Data Access APIs
+  - name: logs
+    description: Audit Logs
+  - name: misc
+    description: Miscellaneous
+paths:
+  /api/v1/devices:
+    get:
+      tags:
+        - devices
+      summary: Get the list of devices - paginated.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+        - name: action-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: sortkey
+          in: query
+          schema:
+            type: string
+        - name: sortorder
+          in: query
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+      responses:
+        "200":
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceSearchItem'
+            application/transit+msgpack:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceSearchItem'
+            application/transit+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceSearchItem'
+            application/edn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceSearchItem'
+            id:
+              example: 1
+            status:
+              example: active
+            state:
+              example:
+                mode: "on"
+                speed: 100
+            metadata:
+              example:
+                make: Tesla
+                model: Model S
+            action:
+              example:
+                progress: 0
+                user_name: Mock User
+                user_email: user@bytebeam.io
+                errors: "[]"
+                updated_at: 2024-05-11T02:43:54Z
+                status: Queued
+                type: update_geofence
+                created_at: 2024-05-11T02:43:54Z
+                action_id: 154
+                icon: update_geofence_icon
+  /api/v1/devices/count:
+    get:
+      tags:
+        - devices
+      summary: Return the count of devices for pagination
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+        - name: key
+          in: query
+          schema:
+            type: string
+        - name: query
+          in: query
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/state-keys:
+    get:
+      tags: []
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/{device-id}:
+    put:
+      tags:
+        - devices
+      summary: Allows update status of a device
+      parameters:
+        - name: device-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdate'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdate'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdate'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdate'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: DeviceUpdate
+  /api/v1/devices/search:
+    get:
+      tags:
+        - devices
+      summary: Find devices by device state keys
+      parameters:
+        - name: key
+          in: query
+          schema:
+            type: string
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+            enum:
+              - state
+              - metadata
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: string
+        - name: action-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags: []
+      summary: Search device by metadata
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceFilters'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/DeviceFilters'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/DeviceFilters'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/DeviceFilters'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: DeviceFilters
+  /api/v1/devices/action/status:
+    post:
+      tags: []
+      summary: Updates the status of the action triggered on the device
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RumqttMessage'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/RumqttMessage'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/RumqttMessage'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/RumqttMessage'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: RumqttMessage
+  /api/v1/devices/filter-options:
+    get:
+      tags: []
+      summary: Get metadata key and available options
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/{device_id}/actions:
+    get:
+      tags: []
+      summary: Get device actions given device id
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: sort_order
+          in: query
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+        - name: action_ids
+          in: query
+          schema:
+            type: string
+        - name: incomplete
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: action_types
+          in: query
+          schema:
+            type: string
+        - name: sort_column
+          in: query
+          schema:
+            type: string
+            enum:
+              - errors
+              - type
+              - user_email
+              - action_id
+              - updated_at
+              - status
+              - user_name
+        - name: creators
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+  /api/v1/devices/{device_id}/actions/filter-options:
+    get:
+      tags: []
+      summary: Returns available filters for searching actions of a device
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: incomplete
+          in: query
+          schema:
+            type: boolean
+        - name: action_types
+          in: query
+          schema:
+            type: string
+        - name: creators
+          in: query
+          schema:
+            type: string
+        - name: action_ids
+          in: query
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/{id}/actions/mark_as_completed:
+    put:
+      tags: []
+      summary: Mark all device actions given device id as completed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response677'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response677'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response677'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response677'
+  /api/v1/device_components:
+    get:
+      tags: []
+      summary: Get all device components
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - inactive
+              - all
+              - active
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response678'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response678'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response678'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response678'
+  /api/v1/actions:
+    get:
+      tags: []
+      summary: Show overall progress of actions triggered
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: incomplete
+          in: query
+          schema:
+            type: boolean
+        - name: action_types
+          in: query
+          schema:
+            type: string
+        - name: creators
+          in: query
+          schema:
+            type: string
+        - name: ids
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionsResponse'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/ActionsResponse'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/ActionsResponse'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/ActionsResponse'
+    post:
+      tags:
+        - devices
+      summary: Trigger an action on a bunch of devices.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response682'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response682'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response682'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response682'
+      x-codegen-request-body-name: ActionsRequest
+  /api/v1/actions/filter-options:
+    get:
+      tags: []
+      summary: Takes a filter and returns parameters matching that filter
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: incomplete
+          in: query
+          schema:
+            type: boolean
+        - name: action_types
+          in: query
+          schema:
+            type: string
+        - name: creators
+          in: query
+          schema:
+            type: string
+        - name: ids
+          in: query
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/actions/{id}:
+    get:
+      tags:
+        - devices
+      summary: Get action for device
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+  /api/v1/actions/{id}/params:
+    get:
+      tags:
+        - devices
+      summary: Get params for an action
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response686'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response686'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response686'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response686'
+  /api/v1/actions/{id}/progress_histogram:
+    get:
+      tags:
+        - devices
+      summary: Return stats about the progress of various devices this action was
+        triggered on
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionProgressStats'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/ActionProgressStats'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/ActionProgressStats'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/ActionProgressStats'
+  /api/v1/actions/{action-id}/device_actions/{device-id}/logs:
+    get:
+      tags:
+        - devices
+      summary: Return logs of actions per device
+      parameters:
+        - name: timestamp
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: action-id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: device-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/actions/{id}/device_actions:
+    get:
+      tags:
+        - devices
+      summary: Return paginated progress of actions per device
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: phase
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/DeviceActionsResponse'
+  /api/v1/actions/request:
+    post:
+      tags:
+        - devices
+      summary: Request to trigger actions; someone with permission will approve
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ActionsRequest'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response689'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response689'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response689'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response689'
+      x-codegen-request-body-name: ActionsRequest
+  /api/v1/actions/{id}/approve:
+    put:
+      tags:
+        - devices
+      summary: Approve an action
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/actions/mark_as_completed:
+    put:
+      tags:
+        - devices
+      summary: Mark all actions for devices matching the filters as completed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body647'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body647'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body647'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body647'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body647
+  /api/v1/actions/{id}/mark_as_completed:
+    put:
+      tags:
+        - devices
+      summary: Mark a subset of devices for an action as completed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+                - {}
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+          application/transit+msgpack:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+                - {}
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+          application/transit+json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+                - {}
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+          application/edn:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+                - {}
+                - $ref: '#/components/schemas/MarkActionAsCompletedSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: MarkActionAsCompletedSchema
+  /api/v1/actions/{action_id}/cancel:
+    post:
+      tags:
+        - devices
+      summary: Attempt cancelling this action
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+          application/transit+msgpack:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+          application/transit+json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+          application/edn:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+                - $ref: '#/components/schemas/CancelActionSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: CancelActionSchema
+  /api/v1/actions/{id}/error-stats:
+    get:
+      tags:
+        - devices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response690'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response690'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response690'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response690'
+  /api/v1/actions/{action_id}/device-latencies:
+    post:
+      tags:
+        - devices
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body648'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body648'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body648'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body648'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response692'
+            application/transit+msgpack:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response692'
+            application/transit+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response692'
+            application/edn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response692'
+      x-codegen-request-body-name: Body648
+  /api/v1/actions/{action-id}/device-latencies/states:
+    get:
+      tags:
+        - devices
+      parameters:
+        - name: action-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/transit+msgpack:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/transit+json:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/edn:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/actions/{action_id}/retry:
+    post:
+      tags:
+        - devices
+      summary: Retry an action on some devices
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+          application/transit+msgpack:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+          application/transit+json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+          application/edn:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+                - $ref: '#/components/schemas/RetryActionSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: RetryActionSchema
+  /api/v1/pending-actions:
+    post:
+      tags:
+        - devices
+      summary: Return all pending actions for devices matching the given filters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body649'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body649'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body649'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body649'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response694'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response694'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response694'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response694'
+      x-codegen-request-body-name: Body649
+  /api/v1/action-types:
+    get:
+      tags:
+        - devices
+      summary: Returns a list of all action types
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - devices
+      summary: Creates a new action-type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionTypeSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ActionTypeSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ActionTypeSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ActionTypeSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ActionTypeSchema
+  /api/v1/action-types/{action-type-name}/reactivate:
+    put:
+      tags:
+        - devices
+      summary: Updates an existing action type
+      parameters:
+        - name: action-type-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/action-types/{action-type-name}:
+    put:
+      tags:
+        - devices
+      summary: Updates an existing action type
+      parameters:
+        - name: action-type-name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/BaseSchema'
+          application/transit+msgpack:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/BaseSchema'
+          application/transit+json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/BaseSchema'
+          application/edn:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/BaseSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: EditActionTypeSchema
+    delete:
+      tags:
+        - devices
+      summary: Delete an action-type
+      parameters:
+        - name: action-type-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/metadata:
+    post:
+      tags:
+        - devices
+      summary: Update metadata(s) for a device(s)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/UpdateDeviceMetadata'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/UpdateDeviceMetadata'
+          application/transit+msgpack:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/UpdateDeviceMetadata'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/UpdateDeviceMetadata'
+          application/transit+json:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/UpdateDeviceMetadata'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/UpdateDeviceMetadata'
+          application/edn:
+            schema:
+              type: object
+              x-oneOf:
+                - $ref: '#/components/schemas/UpdateDeviceMetadata'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/UpdateDeviceMetadata'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: UpdateDeviceMetadata
+  /api/v1/devices/metadata-bulk:
+    post:
+      tags:
+        - devices
+      summary: Takes a csv file and updates the metadata for a device
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: ""
+                  format: binary
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/metadata-keys/{existing-key}/mark-as-serial:
+    put:
+      tags:
+        - devices
+      summary: Mark an existing metadata-key as serial number
+      parameters:
+        - name: existing-key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/metadata-keys/{existing-key}/unmark-as-serial:
+    put:
+      tags:
+        - devices
+      summary: Mark an existing metadata-key as serial number
+      parameters:
+        - name: existing-key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/metadata-bulk-template:
+    get:
+      tags:
+        - devices
+      summary: Returns a csv file template for updating metadata for a device
+      responses:
+        "200":
+          description: ""
+          content:
+            file/csv:
+              schema:
+                type: string
+                format: binary
+  /api/v1/devices/metadata-keys:
+    get:
+      tags:
+        - devices
+      summary: Get a list of metadata-keys
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - devices
+      summary: Create a metadata-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataKeysSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/MetadataKeysSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/MetadataKeysSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/MetadataKeysSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: MetadataKeysSchema
+  /api/v1/devices/metadata-keys/{metadata-key}:
+    delete:
+      tags:
+        - devices
+      summary: Delete a metadata-key
+      parameters:
+        - name: metadata-key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/devices/provision:
+    post:
+      tags:
+        - devices
+      summary: Provision a device. returns cert & keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ProvisionSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ProvisionSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ProvisionSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ProvisionSchema
+  /api/v1/devices/{device-id}/cert:
+    get:
+      tags:
+        - devices
+      summary: Download cert for a device given device-id
+      parameters:
+        - name: device-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmwares:
+    get:
+      tags:
+        - devices
+      summary: Return the list of all firmwares
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - devices
+      summary: Create firmware version
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+                - version-number
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: ""
+                  format: binary
+                version-number:
+                  type: string
+                  description: ""
+                component-name:
+                  type: string
+                  description: ""
+                uncompressed-size:
+                  type: integer
+                  description: ""
+                  format: int64
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmwares/{version-number}:
+    put:
+      tags:
+        - devices
+      summary: 'Updates firmware version to be activated or deactivated '
+      parameters:
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FirmwareSchema
+  /api/v1/firmwares/component/{component-name}/{version-number}:
+    put:
+      tags:
+        - devices
+      summary: 'Updates firmware version to be activated or deactivated '
+      parameters:
+        - name: component-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FirmwareSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FirmwareSchema
+  /api/v1/firmwares/{version-number}/artifact:
+    get:
+      tags:
+        - devices
+      summary: Download a firmware by version
+      parameters:
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    head:
+      tags:
+        - devices
+      summary: HEAD endpoint to check metadata about file download
+      parameters:
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmwares/component/{component-name}/{version-number}/artifact:
+    get:
+      tags:
+        - devices
+      summary: Download a firmware by component name and version
+      parameters:
+        - name: component-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    head:
+      tags:
+        - devices
+      summary: HEAD endpoint to check metadata about file download
+      parameters:
+        - name: component-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version-number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmwares/components:
+    get:
+      tags:
+        - devices
+      summary: Return the list of firmwares for components
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmwares/component/{component-name}:
+    get:
+      tags:
+        - devices
+      summary: Return the list of all firmware versions of given component
+      parameters:
+        - name: component-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmware-bundles:
+    get:
+      tags: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response697'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response697'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response697'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response697'
+    post:
+      tags: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleCreate'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleCreate'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleCreate'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleCreate'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundleCreated'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundleCreated'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundleCreated'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundleCreated'
+      x-codegen-request-body-name: FirmwareBundleCreate
+  /api/v1/firmware-bundles/id/{firmware-bundle-id}:
+    get:
+      tags: []
+      parameters:
+        - name: firmware-bundle-id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+    put:
+      tags: []
+      parameters:
+        - name: firmware-bundle-id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FirmwareBundleUpdate
+    delete:
+      tags: []
+      parameters:
+        - name: firmware-bundle-id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmware-bundles/version/{version}:
+    get:
+      tags: []
+      parameters:
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/FirmwareBundle'
+    put:
+      tags: []
+      parameters:
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FirmwareBundleUpdate'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FirmwareBundleUpdate
+    delete:
+      tags: []
+      parameters:
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/firmware-bundles/{firmware-bundle-id}/artifact:
+    get:
+      tags: []
+      parameters:
+        - name: firmware-bundle-id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        default:
+          description: ""
+          content: {}
+    head:
+      tags: []
+      parameters:
+        - name: firmware-bundle-id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/file:
+    get:
+      tags:
+        - data
+      summary: Return the list of all uploaded files (respects RBAC)
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - data
+      summary: Create a new file (respects RBAC)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+                - fileName
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: ""
+                  format: binary
+                fileName:
+                  type: string
+                  description: ""
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/file/{id}/artifact:
+    get:
+      tags:
+        - data
+      summary: The Endpoint the device hits to download the file (respects RBAC)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/device-configs:
+    get:
+      tags:
+        - devices
+      summary: Get the list of Device Configurations
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - devices
+      summary: Create new Device Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body652'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body652'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body652'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body652'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body652
+  /api/v1/device-configs/{version-name}:
+    get:
+      tags:
+        - devices
+      summary: Get device config by version name
+      parameters:
+        - name: version-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/me:
+    get:
+      tags:
+        - admin
+      summary: Get current User object
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/server/settings:
+    get:
+      tags:
+        - admin
+      summary: Get settings
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/me/settings:
+    put:
+      tags:
+        - admin
+      summary: Update user settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body654'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body654'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body654'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body654'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body654
+  /api/v1/me/tenant/settings:
+    put:
+      tags:
+        - admin
+      summary: Update tenant settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body655'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body655'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body655'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body655'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body655
+  /api/v1/users:
+    get:
+      tags:
+        - admin
+      summary: Get users and their roles
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response698'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response698'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response698'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response698'
+    post:
+      tags:
+        - admin
+      summary: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: UserSchema
+  /api/v1/users/{user-id}:
+    get:
+      tags:
+        - admin
+      summary: Get user given existing id
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    put:
+      tags:
+        - admin
+      summary: Update a user given existing id
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/UserSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: UserSchema
+    delete:
+      tags:
+        - admin
+      summary: Delete a user given existing id
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/tenants:
+    get:
+      tags: []
+      summary: Returns list of tenants
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantsSchema'
+            application/transit+msgpack:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantsSchema'
+            application/transit+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantsSchema'
+            application/edn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantsSchema'
+    post:
+      tags: []
+      summary: Create a new tenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/CreateTenantSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/CreateTenantSchema'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response700'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response700'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response700'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response700'
+      x-codegen-request-body-name: CreateTenantSchema
+  /api/v1/tenants/{tenant-id}/auth:
+    get:
+      tags: []
+      summary: Get auth details given tenant id
+      parameters:
+        - name: tenant-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    put:
+      tags: []
+      summary: Store tenant's end user authentication method
+      parameters:
+        - name: tenant-id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndUserAuthSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/EndUserAuthSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/EndUserAuthSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/EndUserAuthSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: EndUserAuthSchema
+  /api/v1/auth-end-user:
+    post:
+      tags: []
+      summary: Request authorization for tenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/AuthSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/AuthSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/AuthSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: AuthSchema
+  /api/v1/roles:
+    get:
+      tags:
+        - admin
+      summary: Get list of roles
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - admin
+      summary: Create role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: RoleSchema
+  /api/v1/roles/{role-id}:
+    get:
+      tags:
+        - admin
+      summary: Get a single role given role-id
+      parameters:
+        - name: role-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+    put:
+      tags:
+        - admin
+      summary: Update role given role-id
+      parameters:
+        - name: role-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/RoleSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: RoleSchema
+    delete:
+      tags:
+        - admin
+      summary: Delete role given role-id
+      parameters:
+        - name: role-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/logs/device-certs:
+    get:
+      tags:
+        - logs
+      summary: Logs for device certifactes
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/logs/device-certs/{device-id}:
+    get:
+      tags:
+        - logs
+      summary: Logs for device certifactes by device id
+      parameters:
+        - name: device-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams:
+    get:
+      tags:
+        - admin
+      summary: Get all existing streams in clickhouse database
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - admin
+      summary: Creates a stream on clickhouse database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StreamSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/StreamSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/StreamSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/StreamSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: StreamSchema
+  /api/v1/streams/{stream-name}/fields:
+    get:
+      tags:
+        - admin
+      summary: Get all fields given existing stream name in clickhouse database
+      parameters:
+        - name: stream-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/{stream-name}:
+    delete:
+      tags:
+        - admin
+      summary: Delete a stream on clickhouse database
+      parameters:
+        - name: stream-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/{stream-name}/fields/{field-name}:
+    delete:
+      tags:
+        - admin
+      summary: Delete a field given existing stream name in clickhouse database
+      parameters:
+        - name: stream-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: field-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/fields:
+    post:
+      tags:
+        - admin
+      summary: Create a field given a existing stream name in clickhouse database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FieldSchema
+  /api/v1/streams/{stream-name}/fields/{field-name}/rename:
+    put:
+      tags:
+        - admin
+      summary: Rename a stream field
+      parameters:
+        - name: stream-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: field-name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body661'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body661'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body661'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body661'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body661
+  /api/v1/streams/fields/update:
+    post:
+      tags:
+        - admin
+      summary: Update an existing field's type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/FieldSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: FieldSchema
+  /api/v1/streams/fixprotobuff:
+    post:
+      tags:
+        - admin
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/queries/{query-id}:
+    get:
+      tags:
+        - admin
+      parameters:
+        - name: query-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/queries:
+    get:
+      tags:
+        - admin
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/protobuff:
+    get:
+      tags:
+        - admin
+      summary: Return protobuff for all streams in clickhouse database
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/streams/computed_streams:
+    post:
+      tags:
+        - admin
+      summary: Creates computed stream
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComputedStreamSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ComputedStreamSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ComputedStreamSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ComputedStreamSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ComputedStreamSchema
+  /api/v1/streams/detailed:
+    get:
+      tags:
+        - admin
+      summary: "Return full detail of streams with fields including if they are computed,\
+        \ along with their code and parent streams"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedStreamSchema'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/DetailedStreamSchema'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/DetailedStreamSchema'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/DetailedStreamSchema'
+  /api/v1/dashboards:
+    get:
+      tags:
+        - data
+      summary: Get dashboards API
+      parameters:
+        - name: full-data
+          in: query
+          schema:
+            type: boolean
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - data
+      summary: Create dashboard API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+  /api/v1/dashboards/{id}:
+    get:
+      tags:
+        - data
+      summary: Get dashboard API
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags:
+        - data
+      summary: Update dashboard
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body664'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Body664'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Body664'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Body664'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: Body664
+    delete:
+      tags:
+        - data
+      summary: Delete dashboard API
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/panel-data:
+    post:
+      tags:
+        - data
+      summary: Get data for panels given in body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PanelDataRequest'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/PanelDataRequest'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/PanelDataRequest'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/PanelDataRequest'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: PanelDataRequest
+  /api/v1/timezones:
+    get:
+      tags: []
+      summary: Get list of timezones supported by dashboard CSV export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response704'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Response704'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Response704'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Response704'
+  /api/v1/panel-data-csv:
+    post:
+      tags:
+        - data
+      summary: Get data for a single panel given in the body
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - json
+              type: object
+              properties:
+                json:
+                  type: string
+                  description: ""
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/log-tags:
+    get:
+      tags: []
+      parameters:
+        - name: table
+          in: query
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/micelio-stats-panel-details:
+    post:
+      tags: []
+      summary: Detailed data for micelio stats panel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+  /api/v1/dashboard-share-options:
+    get:
+      tags: []
+      summary: Get share options for the user
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/stream_info:
+    get:
+      tags: []
+      summary: Get tables and columns available for querying
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/apikeys:
+    get:
+      tags:
+        - admin
+      summary: Get all apikeys
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApikeysResponse'
+            application/transit+msgpack:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApikeysResponse'
+            application/transit+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApikeysResponse'
+            application/edn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApikeysResponse'
+    post:
+      tags:
+        - admin
+      summary: Create a new apikey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApikeySchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/ApikeySchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/ApikeySchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/ApikeySchema'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApikeysResponse'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/ApikeysResponse'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/ApikeysResponse'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/ApikeysResponse'
+      x-codegen-request-body-name: ApikeySchema
+  /api/v1/apikeys/{key-or-name}:
+    delete:
+      tags:
+        - admin
+      summary: Deactivate an apikey; soft-delete
+      parameters:
+        - name: key-or-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-types:
+    get:
+      tags: []
+      summary: Get all alert types
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-rules:
+    get:
+      tags: []
+      summary: Get all alert rules
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags: []
+      summary: Create alert rule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRulesSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/AlertRulesSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/AlertRulesSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/AlertRulesSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: AlertRulesSchema
+  /api/v1/alert-groups:
+    get:
+      tags: []
+      summary: Get all alert groups
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-rules/{alert-id}/alert-notification-rules/{notification-id}:
+    get:
+      tags: []
+      summary: Get alert notification rule
+      parameters:
+        - name: alert-id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: notification-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    put:
+      tags: []
+      summary: Update alert notification rule
+      parameters:
+        - name: alert-id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: notification-id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+    delete:
+      tags: []
+      summary: Delete alert notification rule
+      parameters:
+        - name: alert-id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: notification-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-rules/{id}/alert-notification-rules:
+    post:
+      tags: []
+      summary: Create alert notification rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertNotificationRuleSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/AlertNotificationRuleSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/AlertNotificationRuleSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/AlertNotificationRuleSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: AlertNotificationRuleSchema
+  /api/v1/alert-rules/{id}/test-alert-notification-rule:
+    post:
+      tags: []
+      summary: Test alert notification rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+  /api/v1/alert-rules/{id}:
+    put:
+      tags: []
+      summary: Update alert rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+    delete:
+      tags: []
+      summary: Delete alert rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-rules/{id}/start:
+    put:
+      tags: []
+      summary: Start alert rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/alert-rules/{id}/stop:
+    put:
+      tags: []
+      summary: Stop alert rule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/session-types:
+    get:
+      tags: []
+      summary: Get all session types
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags: []
+      summary: Create session type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+  /api/v1/session-types/{name}/start:
+    put:
+      tags: []
+      summary: Start session type
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/session-types/{name}/stop:
+    put:
+      tags: []
+      summary: Stop session type
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/session-types/{name}:
+    delete:
+      tags: []
+      summary: Delete session type
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dkron/update-schedule-status/{action_id}:
+    post:
+      tags: []
+      summary: Called by dkron repeatedly for a scheduled action until it is finished.
+        It retries failed actions if needed and updates schedule status
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/actions/{action_id}/append_phase:
+    post:
+      tags: []
+      summary: append fixed-list phase to a schedule
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phase'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/Phase'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/Phase'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/Phase'
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+      x-codegen-request-body-name: Phase
+  /api/v1/actions/{action_id}/schedule:
+    get:
+      tags: []
+      summary: get schedule for an action
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/transit+msgpack:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/transit+json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/edn:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /api/v1/dbcs:
+    get:
+      tags: []
+      summary: Get all DBCs for tenant
+      responses:
+        default:
+          description: ""
+          content: {}
+    post:
+      tags: []
+      summary: Creates a DBC
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/diff:
+    post:
+      tags: []
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/update:
+    put:
+      tags: []
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}:
+    get:
+      tags: []
+      summary: Get info about a single DBC given id
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+    put:
+      tags: []
+      summary: Update DBC settings
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+          application/transit+msgpack:
+            schema:
+              type: object
+          application/transit+json:
+            schema:
+              type: object
+          application/edn:
+            schema:
+              type: object
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: ""
+    delete:
+      tags: []
+      summary: Delete a single DBC given id
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/dbc:
+    get:
+      tags: []
+      summary: Get dbc file for a DBC given id
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/json:
+    get:
+      tags: []
+      summary: Get parsed version of a DBC given id
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/start:
+    put:
+      tags: []
+      summary: Start Parser
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v1/dbcs/{dbc-id}/stop:
+    put:
+      tags: []
+      summary: Stop Parser
+      parameters:
+        - name: dbc-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v2/devices:
+    get:
+      tags: []
+      summary: Get the list of devices - paginated.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+        - name: action-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: sortkey
+          in: query
+          schema:
+            type: string
+        - name: sortorder
+          in: query
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+      responses:
+        default:
+          description: ""
+          content: {}
+  /api/v2/devices/search:
+    get:
+      tags: []
+      summary: Find devices by device state keys
+      parameters:
+        - name: key
+          in: query
+          schema:
+            type: string
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+            enum:
+              - state
+              - metadata
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: string
+        - name: action-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - inactive
+              - active
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/test:
+    get:
+      tags: []
+      summary: Just a test route
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs:
+    get:
+      tags: []
+      summary: Get all audit Logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/dashboard:
+    get:
+      tags: []
+      summary: Get all the Dashboard logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/dashboard/{dashboard-id}:
+    get:
+      tags: []
+      summary: Get logs of a specific dashboard
+      parameters:
+        - name: dashboard-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/metadata:
+    get:
+      tags: []
+      summary: Get all the Metadata logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: device-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/metadata/{metadata-key}:
+    get:
+      tags: []
+      summary: Get Metadata log for a key
+      parameters:
+        - name: metadata-key
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: device-id
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/roles:
+    get:
+      tags: []
+      summary: Get all Role logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/logs/role/{role-name}:
+    get:
+      tags: []
+      summary: Get logs of a role
+      parameters:
+        - name: role-name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/api/v1/actions/{id}:
+    get:
+      tags: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: ""
+          content: {}
+  /mock/api/v1/actions:
+    post:
+      tags: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLegacyActionSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/CreateLegacyActionSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/CreateLegacyActionSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/CreateLegacyActionSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: CreateLegacyActionSchema
+  /mock/api/v2/actions:
+    post:
+      tags: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActionSchema'
+          application/transit+msgpack:
+            schema:
+              $ref: '#/components/schemas/CreateActionSchema'
+          application/transit+json:
+            schema:
+              $ref: '#/components/schemas/CreateActionSchema'
+          application/edn:
+            schema:
+              $ref: '#/components/schemas/CreateActionSchema'
+        required: true
+      responses:
+        default:
+          description: ""
+          content: {}
+      x-codegen-request-body-name: CreateActionSchema
+  /logout:
+    get:
+      responses:
+        default:
+          description: ""
+          content: {}
+  /ping:
+    get:
+      summary: Ping-pong end point
+      responses:
+        default:
+          description: ""
+          content: {}
+  /metrics:
+    get:
+      responses:
+        default:
+          description: ""
+          content: {}
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      name: x-bytebeam-api-key
+      in: header
+      description: API key required to authenticate requests.
+    tenantAuth:
+      type: apiKey
+      name: x-bytebeam-tenant
+      in: header
+      description: Tenant(Project) name required to identify the project.
+  schemas:
+    ActionProgressStats:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: integer
+          format: int64
+    ActionResponse:
+      required:
+        - action_id
+        - created_at
+        - payload_type
+        - statuses
+        - statuses_phased
+        - type
+        - user_email
+        - user_name
+      type: object
+      properties:
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        payload_type:
+          type: string
+          enum:
+            - json
+            - none
+            - text
+            - file
+        type:
+          type: string
+        user_email:
+          type: string
+        action_id:
+          type: integer
+          format: int64
+        user_name:
+          type: string
+        created_at:
+          type: object
+        statuses:
+          $ref: '#/components/schemas/ActionsResponseActionsStatuses'
+        statuses_phased:
+          $ref: '#/components/schemas/ActionsResponseActionsStatusesPhased'
+      additionalProperties: false
+    ActionResponseSchedulePhasesInfo:
+      required:
+        - device_ids
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        device_ids:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    ActionResponseSchedulePhasesTriggerOn:
+      required:
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+      additionalProperties: false
+    ActionResponseStatuses:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+    ActionResponseStatusesPhased:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/ActionResponseStatusesPhasedInt684'
+    ActionResponseStatusesPhasedInt684:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+    ActionTypeSchema:
+      required:
+        - icon
+        - type
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum:
+            - json
+            - none
+            - text
+            - file
+        json_schema:
+          type: object
+        json_ui_schema:
+          type: object
+        timeout:
+          type: integer
+          format: int64
+          nullable: true
+        icon:
+          type: string
+          enum:
+            - pencil
+            - move
+            - money
+            - protect
+        type:
+          type: string
+          description: Enter action type name
+      additionalProperties: false
+    ActionsRequest:
+      required:
+        - action
+        - params
+        - search_type
+      type: object
+      properties:
+        schedule:
+          $ref: '#/components/schemas/ActionsRequestSchedule'
+        search_query:
+          type: string
+        params:
+          type: object
+        device_ids:
+          type: array
+          items:
+            type: string
+        search_type:
+          type: string
+        action:
+          type: string
+        timeout:
+          type: integer
+          format: int64
+        metadata:
+          type: object
+        search_key:
+          type: string
+      additionalProperties: false
+    ActionsRequestSchedule:
+      required:
+        - end_timestamp
+        - phases
+        - release_notes
+        - retry_on_failure_until
+      type: object
+      properties:
+        retry_on_failure_until:
+          type: integer
+          format: int64
+        end_timestamp:
+          type: integer
+          format: int64
+        phases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phase'
+        release_notes:
+          type: string
+      additionalProperties: false
+    ActionsRequestSchedulePhasesInfo:
+      required:
+        - device_ids
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        device_ids:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    ActionsRequestSchedulePhasesTriggerOn:
+      required:
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+      additionalProperties: false
+    ActionsResponse:
+      required:
+        - actions
+        - count
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionResponse'
+        count:
+          type: integer
+          format: int64
+      additionalProperties: false
+    ActionsResponseActionsSchedulePhasesInfo:
+      required:
+        - device_ids
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        device_ids:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    ActionsResponseActionsSchedulePhasesTriggerOn:
+      required:
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+      additionalProperties: false
+    ActionsResponseActionsStatuses:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+    ActionsResponseActionsStatusesPhased:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/ActionsResponseActionsStatusesPhasedInt680'
+    ActionsResponseActionsStatusesPhasedInt680:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+    AlertNotificationRuleSchema:
+      required:
+        - channel_parameters
+        - channel_type
+        - interval_seconds
+        - notification_template
+      type: object
+      properties:
+        channel_type:
+          type: string
+          enum:
+            - slack
+            - email
+            - sms
+            - webhook
+        channel_parameters:
+          type: object
+        timezone:
+          type: string
+        interval_seconds:
+          type: integer
+          format: int64
+        notification_template:
+          type: object
+      additionalProperties: false
+    AlertRulesSchema:
+      required:
+        - activation_threshold_seconds
+        - condition
+        - criticality
+        - deactivation_threshold_seconds
+        - group
+        - metadata_filters
+        - name
+        - stream
+      type: object
+      properties:
+        criticality:
+          type: string
+          enum:
+            - warning
+            - info
+            - critical
+        activation_threshold_seconds:
+          type: integer
+          format: int64
+        metadata_filters:
+          type: object
+        name:
+          type: string
+        stream:
+          type: string
+        deactivation_threshold_seconds:
+          type: integer
+          format: int64
+        group:
+          type: string
+        condition:
+          type: object
+      additionalProperties: false
+    ApikeySchema:
+      required:
+        - name
+        - role
+      type: object
+      properties:
+        role:
+          type: string
+        name:
+          type: string
+      additionalProperties: false
+    ApikeySingle:
+      required:
+        - created-by
+        - name
+        - role
+      type: object
+      properties:
+        role:
+          type: string
+        name:
+          type: string
+        created-by:
+          type: string
+      additionalProperties: false
+    ApikeysResponse:
+      required:
+        - created-by
+        - key
+        - name
+        - role
+      type: object
+      properties:
+        role:
+          type: string
+        name:
+          type: string
+        key:
+          type: string
+          format: uuid
+        created-by:
+          type: string
+      additionalProperties: false
+    AuthSchema:
+      required:
+        - headers
+      type: object
+      properties:
+        headers:
+          $ref: '#/components/schemas/AuthSchemaHeaders'
+      additionalProperties: false
+    AuthSchemaHeaders:
+      required:
+        - authorization
+      type: object
+      properties:
+        authorization:
+          type: string
+      additionalProperties: false
+    BaseSchema:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum:
+            - json
+            - none
+            - text
+            - file
+        json_schema:
+          type: object
+        json_ui_schema:
+          type: object
+        timeout:
+          type: integer
+          format: int64
+          nullable: true
+        icon:
+          type: string
+      additionalProperties: false
+    Body647:
+      required:
+        - metadata
+      type: object
+      properties:
+        metadata:
+          type: object
+      additionalProperties: false
+    Body648:
+      required:
+        - buckets_count
+        - state
+      type: object
+      properties:
+        state:
+          type: string
+        buckets_count:
+          type: integer
+          format: int64
+      additionalProperties: false
+    Body649:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    Body652:
+      required:
+        - action_type
+        - config_json
+        - version_name
+      type: object
+      properties:
+        version_name:
+          type: string
+        config_json:
+          type: object
+        action_type:
+          type: string
+      additionalProperties: false
+    Body653:
+      required:
+        - config_json
+      type: object
+      properties:
+        config_json:
+          type: object
+      additionalProperties: false
+    Body654:
+      required:
+        - settings
+      type: object
+      properties:
+        settings:
+          type: object
+      additionalProperties: false
+    Body655:
+      required:
+        - settings
+      type: object
+      properties:
+        settings:
+          type: object
+      additionalProperties: false
+    Body661:
+      required:
+        - new_name
+      type: object
+      properties:
+        new_name:
+          type: string
+      additionalProperties: false
+    Body664:
+      required:
+        - config
+      type: object
+      properties:
+        config:
+          type: object
+      additionalProperties: false
+    CancelActionSchema:
+      required:
+        - device_ids
+      type: object
+      properties:
+        device_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+      additionalProperties: false
+    ComputedStreamSchema:
+      required:
+        - computation
+        - stream
+      type: object
+      properties:
+        stream:
+          $ref: '#/components/schemas/StreamSchema'
+        computation:
+          $ref: '#/components/schemas/ComputedStreamSchemaComputation'
+      additionalProperties: false
+    ComputedStreamSchemaComputation:
+      required:
+        - code
+        - lang
+        - src_stream_name
+      type: object
+      properties:
+        src_stream_name:
+          type: string
+        code:
+          type: string
+        lang:
+          type: string
+      additionalProperties: false
+    ComputedStreamSchemaStreamFields:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/ComputedStreamSchemaStreamFieldsKeyword662'
+    ComputedStreamSchemaStreamFieldsKeyword662:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - UInt8
+            - DateTime64(3)
+            - Nullable(String)
+            - Float64
+            - Nullable(Int8)
+            - Nullable(Bool)
+            - Nullable(Int64)
+            - Int8
+            - UInt16
+            - Int16
+            - Nullable(UInt64)
+            - DateTime64(6)
+            - Date
+            - Nullable(Date)
+            - Nullable(DateTime64(3))
+            - Nullable(Float64)
+            - Nullable(Array(String))
+            - Nullable(UInt32)
+            - Array(String)
+            - Bool
+            - Int64
+            - UInt32
+            - String
+            - Nullable(DateTime64(6))
+            - Nullable(Float32)
+            - Nullable(Int32)
+            - Nullable(UInt8)
+            - Int32
+            - Nullable(Int16)
+            - Nullable(UInt16)
+            - Nullable(DateTime)
+            - Float32
+            - DateTime
+            - UInt64
+        index:
+          type: integer
+          format: int64
+        unit:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateActionSchema:
+      required:
+        - action
+        - params
+        - phases
+        - release_notes
+        - retry_count
+      type: object
+      properties:
+        action:
+          type: string
+        timeout:
+          type: integer
+          format: int64
+        params:
+          type: object
+        release_notes:
+          type: string
+        retry_count:
+          type: integer
+          format: int64
+        phases:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateActionSchemaPhases'
+      additionalProperties: false
+    CreateActionSchemaPhases:
+      required:
+        - filter
+        - fraction
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        success_percentage:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+        filter:
+          type: object
+        fraction:
+          type: integer
+          format: int64
+      additionalProperties: false
+    CreateLegacyActionSchema:
+      required:
+        - action
+        - params
+        - search_type
+      type: object
+      properties:
+        device_ids:
+          type: array
+          items:
+            type: string
+        search_type:
+          type: string
+        metadata:
+          type: object
+        search_key:
+          type: string
+        search_query:
+          type: string
+        timeout:
+          type: integer
+          format: int64
+        action:
+          type: string
+        params:
+          type: object
+      additionalProperties: false
+    CreateTenantSchema:
+      required:
+        - device-type
+        - tenant-id
+      type: object
+      properties:
+        tenant-id:
+          type: string
+        device-type:
+          type: string
+          enum:
+            - linux
+            - esp32
+            - beaglebone black
+            - bytebeam
+            - other
+            - raspberry pi
+            - android
+            - arduino
+      additionalProperties: false
+    DetailedStreamSchema:
+      required:
+        - streams
+      type: object
+      properties:
+        streams:
+          $ref: '#/components/schemas/DetailedStreamSchemaStreams'
+      additionalProperties: false
+    DetailedStreamSchemaStreams:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/DetailedStreamSchemaStreamsJava.lang.string702'
+    DetailedStreamSchemaStreamsJava.lang.string702:
+      required:
+        - fields
+      type: object
+      properties:
+        fields:
+          $ref: '#/components/schemas/DetailedStreamSchemaStreamsJava.lang.string702Fields'
+        computedFrom:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedStreamSchemaStreamsJava.lang.string702ComputedFrom'
+      additionalProperties: false
+    DetailedStreamSchemaStreamsJava.lang.string702ComputedFrom:
+      required:
+        - code
+        - lang
+        - source
+      type: object
+      properties:
+        lang:
+          type: string
+        code:
+          type: string
+        source:
+          type: string
+      additionalProperties: false
+    DetailedStreamSchemaStreamsJava.lang.string702Fields:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/DetailedStreamSchemaStreamsJava.lang.string702FieldsJava.lang.string703'
+    DetailedStreamSchemaStreamsJava.lang.string702FieldsJava.lang.string703:
+      required:
+        - required
+        - seq_id
+        - type
+        - unit
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - UInt8
+            - DateTime64(3)
+            - Nullable(String)
+            - Float64
+            - Nullable(Int8)
+            - Nullable(Bool)
+            - Nullable(Int64)
+            - Int8
+            - UInt16
+            - Int16
+            - Nullable(UInt64)
+            - DateTime64(6)
+            - Date
+            - Nullable(Date)
+            - Nullable(DateTime64(3))
+            - Nullable(Float64)
+            - Nullable(Array(String))
+            - Nullable(UInt32)
+            - Array(String)
+            - Bool
+            - Int64
+            - UInt32
+            - String
+            - Nullable(DateTime64(6))
+            - Nullable(Float32)
+            - Nullable(Int32)
+            - Nullable(UInt8)
+            - Int32
+            - Nullable(Int16)
+            - Nullable(UInt16)
+            - Nullable(DateTime)
+            - Float32
+            - DateTime
+            - UInt64
+        seq_id:
+          type: integer
+          format: int64
+        required:
+          type: boolean
+        unit:
+          type: string
+          nullable: true
+      additionalProperties: false
+    DeviceAction:
+      required:
+        - action_id
+        - action_status
+        - device_id
+        - errors
+        - phase
+        - progress
+        - status
+        - updated_at
+      type: object
+      properties:
+        action_status:
+          type: string
+        errors:
+          type: object
+        params:
+          type: string
+        phase:
+          type: integer
+          format: int64
+        type:
+          type: string
+        user_email:
+          type: string
+        action_id:
+          type: integer
+          format: int64
+        updated_at:
+          type: string
+          format: date-time
+        "-serial_metadata":
+          $ref: '#/components/schemas/SerialKeySchema'
+        status:
+          type: string
+        user_name:
+          type: string
+        device_id:
+          type: object
+        progress:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+    DeviceActionsResponse:
+      required:
+        - count
+        - device_actions
+      type: object
+      properties:
+        device_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceAction'
+        count:
+          type: integer
+          format: int64
+      additionalProperties: false
+    DeviceComponentRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+    DeviceComponentResponse:
+      required:
+        - id
+        - is_deleted
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        is_deleted:
+          type: boolean
+      additionalProperties: false
+    DeviceFilters:
+      required:
+        - limit
+        - page
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+        limit:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - all
+            - inactive
+            - active
+        metadata:
+          $ref: '#/components/schemas/DeviceFiltersMetadata'
+        state:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+                enum:
+                  - <=
+                  - not=
+                  - '>'
+                  - '>='
+                  - =
+                  - <
+            - type: array
+              items:
+                type: string
+                enum:
+                  - between
+            - type: array
+              items:
+                type: string
+                enum:
+                  - in
+            - type: array
+              items:
+                type: string
+                enum:
+                  - or
+                  - and
+        action-id:
+          type: integer
+          format: int64
+      additionalProperties: false
+    DeviceFiltersMetadata:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    DeviceFiltersState:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    DeviceFiltersStateSchema:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    DeviceLastActionType:
+      required:
+        - action_id
+        - created_at
+        - errors
+        - icon
+        - progress
+        - status
+        - type
+        - updated_at
+        - user_email
+        - user_name
+      type: object
+      properties:
+        errors:
+          type: string
+          nullable: true
+        type:
+          type: string
+        user_email:
+          type: string
+        action_id:
+          type: integer
+          format: int64
+        icon:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+        user_name:
+          type: string
+        progress:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+    DeviceMetadata:
+      type: object
+      additionalProperties:
+        type: string
+        nullable: true
+    DeviceSearchItem:
+      required:
+        - action
+        - id
+        - metadata
+        - state
+        - status
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        metadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+        state:
+          $ref: '#/components/schemas/DeviceState'
+        status:
+          type: string
+          enum:
+            - inactive
+            - active
+        action:
+          type: object
+          x-oneOf:
+            - $ref: '#/components/schemas/DeviceSearchResultsAction'
+            - $ref: '#/components/schemas/DeviceLastActionType'
+        "-serial_metadata":
+          $ref: '#/components/schemas/SerialKeySchema'
+      additionalProperties: false
+    DeviceSearchResultsAction:
+      type: object
+      additionalProperties: false
+    DeviceState:
+      type: object
+      additionalProperties:
+        type: object
+    DeviceUpdate:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - inactive
+            - active
+      additionalProperties: false
+    EndUserAuthSchema:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - jwks
+            - webhook
+      additionalProperties: false
+    FieldSchema:
+      required:
+        - fieldName
+        - fieldType
+        - streamName
+      type: object
+      properties:
+        fieldName:
+          type: string
+        fieldType:
+          type: string
+          enum:
+            - UInt8
+            - DateTime64(3)
+            - Nullable(String)
+            - Float64
+            - Nullable(Int8)
+            - Nullable(Bool)
+            - Nullable(Int64)
+            - Int8
+            - UInt16
+            - Int16
+            - Nullable(UInt64)
+            - DateTime64(6)
+            - Date
+            - Nullable(Date)
+            - Nullable(DateTime64(3))
+            - Nullable(Float64)
+            - Nullable(Array(String))
+            - Nullable(UInt32)
+            - Array(String)
+            - Bool
+            - Int64
+            - UInt32
+            - String
+            - Nullable(DateTime64(6))
+            - Nullable(Float32)
+            - Nullable(Int32)
+            - Nullable(UInt8)
+            - Int32
+            - Nullable(Int16)
+            - Nullable(UInt16)
+            - Nullable(DateTime)
+            - Float32
+            - DateTime
+            - UInt64
+        streamName:
+          type: string
+        fieldUnit:
+          type: string
+          nullable: true
+      additionalProperties: false
+    FilterBys:
+      type: object
+      additionalProperties:
+        type: object
+        x-oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+            enum:
+              - all
+    FirmwareBundle:
+      required:
+        - checksum
+        - content_length
+        - created_at
+        - created_by
+        - file_name
+        - firmwares
+        - id
+        - uncompressed_size
+        - upload_status
+        - version
+      type: object
+      properties:
+        file_name:
+          type: string
+        uncompressed_size:
+          type: integer
+          format: int64
+        content_length:
+          type: integer
+          format: int64
+        upload_status:
+          type: string
+          enum:
+            - failed
+            - completed
+            - pending
+        checksum:
+          type: string
+        id:
+          type: string
+          format: uuid
+        version:
+          type: string
+        created_by:
+          type: string
+          nullable: true
+        firmwares:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirmwareBundleDetail'
+        created_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+    FirmwareBundleCreate:
+      required:
+        - file_name
+        - firmwares
+        - version
+      type: object
+      properties:
+        file_name:
+          type: string
+        firmwares:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirmwareBundleCreateFirmwares'
+        version:
+          type: string
+      additionalProperties: false
+    FirmwareBundleCreateFirmwares:
+      required:
+        - component_name
+        - version_number
+      type: object
+      properties:
+        component_name:
+          type: string
+        version_number:
+          type: string
+      additionalProperties: false
+    FirmwareBundleCreated:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+    FirmwareBundleDeps:
+      required:
+        - component_name
+        - min_version
+      type: object
+      properties:
+        component_name:
+          type: string
+        min_version:
+          type: string
+      additionalProperties: false
+    FirmwareBundleDetail:
+      required:
+        - checksum
+        - component_name
+        - content_length
+        - dependencies
+        - file_name
+        - firmware_id
+        - is_deactivated
+        - uncompressed_size
+        - version_number
+      type: object
+      properties:
+        file_name:
+          type: string
+        uncompressed_size:
+          type: integer
+          format: int64
+          nullable: true
+        content_length:
+          type: integer
+          format: int64
+          nullable: true
+        firmware_id:
+          type: string
+          format: uuid
+        is_deactivated:
+          type: boolean
+          nullable: true
+        checksum:
+          type: string
+          nullable: true
+        version_number:
+          type: string
+        component_name:
+          type: string
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirmwareBundleDeps'
+      additionalProperties: false
+    FirmwareBundleUpdate:
+      type: object
+      properties:
+        uncompressed_size:
+          type: integer
+          format: int64
+        checksum:
+          type: string
+        upload_status:
+          type: string
+          enum:
+            - failed
+            - completed
+            - pending
+        content_length:
+          type: integer
+          format: int64
+      additionalProperties: false
+    FirmwareDependenciesSchema:
+      required:
+        - component_name
+        - min_version
+      type: object
+      properties:
+        component_name:
+          type: string
+        min_version:
+          type: string
+      additionalProperties: false
+    FirmwareSchema:
+      type: object
+      properties:
+        is_deactivated:
+          type: boolean
+        uncompressed_size:
+          type: integer
+          format: int64
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirmwareDependenciesSchema'
+      additionalProperties: false
+    MarkActionAsCompletedSchema:
+      required:
+        - phase_idx
+      type: object
+      properties:
+        phase_idx:
+          type: integer
+          format: int64
+      additionalProperties: false
+    MetadataKeysSchema:
+      required:
+        - key
+      type: object
+      properties:
+        key:
+          type: string
+      additionalProperties: false
+    PanelDataRequest:
+      required:
+        - endTime
+        - filterBys
+        - panels
+        - startTime
+      type: object
+      properties:
+        startTime:
+          type: integer
+          format: int64
+        endTime:
+          type: integer
+          format: int64
+        aggregationInterval:
+          type: integer
+          format: int64
+        groupBys:
+          type: array
+          items:
+            type: string
+        fetchAll:
+          type: boolean
+        filterBys:
+          $ref: '#/components/schemas/FilterBys'
+        panels:
+          type: array
+          items:
+            $ref: '#/components/schemas/PanelSchema'
+      additionalProperties: false
+    PanelDataRequestPanelsQuery:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    PanelDataRequestPanelsQuerySchema:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    PanelDataRequestPanelsTimeseriesQuery:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    PanelDataRequestPanelsTimeseriesQuerySchema:
+      type: object
+      properties:
+        column:
+          type: string
+        value:
+          type: object
+          nullable: true
+          x-oneOf:
+            - type: integer
+              format: int64
+            - type: boolean
+            - type: string
+            - type: number
+              format: double
+      additionalProperties: false
+    PanelSchema:
+      type: object
+      properties:
+        timeseries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeries'
+        sortOrder:
+          type: string
+          enum:
+            - desc
+            - asc
+        groupBys:
+          type: array
+          items:
+            type: string
+        query:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+                enum:
+                  - <=
+                  - not=
+                  - '>'
+                  - '>='
+                  - =
+                  - <
+            - type: array
+              items:
+                type: string
+                enum:
+                  - between
+            - type: array
+              items:
+                type: string
+                enum:
+                  - in
+            - type: array
+              items:
+                type: string
+                enum:
+                  - or
+                  - and
+      additionalProperties:
+        type: object
+    PermissionSchema:
+      required:
+        - allowCreatingDevices
+        - allowMarkActionAsCompleted
+        - allowedActions
+        - createDashboards
+        - dashboardPermittedShareRoles
+        - devices
+        - editActionTypes
+        - editDeviceConfigs
+        - editFiles
+        - editFirmwares
+        - editMetadata
+        - editMetadataKeys
+        - editRoles
+        - editStreams
+        - editTenantSettings
+        - editUsers
+        - homepage
+        - showActionsTab
+        - showDashboardsTab
+        - showDeviceManagementTab
+        - tables
+        - viewActionTypes
+        - viewDeviceConfigs
+        - viewFiles
+        - viewFirmwares
+        - viewMetadata
+        - viewMetadataKeys
+        - viewRoles
+        - viewStreams
+        - viewUsers
+      type: object
+      properties:
+        editFirmwares:
+          type: boolean
+        viewFiles:
+          type: boolean
+        editTenantSettings:
+          type: boolean
+        homepage:
+          type: string
+        dashboardPermittedShareRoles:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: integer
+                format: int64
+            - type: string
+              enum:
+                - all
+        viewMetadataKeys:
+          type: boolean
+        editMetadataKeys:
+          type: boolean
+        editDeviceConfigs:
+          type: boolean
+        editRoles:
+          type: boolean
+        createDashboards:
+          type: boolean
+        viewRoles:
+          type: boolean
+        tables:
+          type: object
+          x-oneOf:
+            - $ref: '#/components/schemas/RoleSchemaPermissionsTables'
+            - type: string
+              enum:
+                - all
+        allowCreatingDevices:
+          type: boolean
+        allowedActions:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
+              enum:
+                - all
+        editFiles:
+          type: boolean
+        editUsers:
+          type: boolean
+        showDeviceManagementTab:
+          type: boolean
+        viewActionTypes:
+          type: boolean
+        viewDeviceConfigs:
+          type: boolean
+        editStreams:
+          type: boolean
+        viewStreams:
+          type: boolean
+        editActionTypes:
+          type: boolean
+        allowMarkActionAsCompleted:
+          type: boolean
+        showActionsTab:
+          type: boolean
+        viewUsers:
+          type: boolean
+        showDashboardsTab:
+          type: boolean
+        viewMetadata:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
+              enum:
+                - all
+        editMetadata:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+            - type: string
+              enum:
+                - all
+        devices:
+          $ref: '#/components/schemas/RoleSchemaPermissionsDevices'
+        viewFirmwares:
+          type: boolean
+      additionalProperties: false
+    Phase:
+      required:
+        - info
+        - name
+        - trigger_on
+      type: object
+      properties:
+        name:
+          type: string
+        trigger_on:
+          type: object
+          x-oneOf:
+            - $ref: '#/components/schemas/ActionsRequestSchedulePhasesTriggerOn'
+            - $ref: '#/components/schemas/ActionsRequestSchedulePhasesTriggerOn'
+        info:
+          type: object
+          x-oneOf:
+            - $ref: '#/components/schemas/ActionsRequestSchedulePhasesInfo'
+            - $ref: '#/components/schemas/ActionsRequestSchedulePhasesInfo'
+      additionalProperties: false
+    PhaseInfo:
+      required:
+        - device_ids
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        device_ids:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    PhaseTriggerOn:
+      required:
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+      additionalProperties: false
+    ProvisionSchema:
+      required:
+        - metadata
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ProvisionSchemaMetadata'
+      additionalProperties: false
+    ProvisionSchemaMetadata:
+      type: object
+      additionalProperties:
+        type: string
+    Response677:
+      required:
+        - updated_rows
+      type: object
+      properties:
+        updated_rows:
+          type: integer
+          format: int64
+      additionalProperties: false
+    Response678:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceComponentResponse'
+      additionalProperties: false
+    Response682:
+      required:
+        - created_at
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+        phases:
+          $ref: '#/components/schemas/Response682Phases'
+      additionalProperties: false
+    Response682Phases:
+      required:
+        - name
+        - trigger_on
+      type: object
+      properties:
+        name:
+          type: string
+        trigger_on:
+          type: object
+      additionalProperties: false
+    Response686:
+      required:
+        - params
+      type: object
+      properties:
+        params:
+          type: string
+      additionalProperties: false
+    Response689:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+      additionalProperties: false
+    Response690:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+    Response692:
+      required:
+        - height
+        - range_end
+        - range_start
+      type: object
+      properties:
+        range_start:
+          type: number
+          format: double
+        range_end:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
+      additionalProperties: false
+    Response694:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/Response694Int695'
+    Response694Int695:
+      required:
+        - action_id
+        - status
+        - type
+      type: object
+      properties:
+        action_id:
+          type: integer
+          format: int64
+        status:
+          type: string
+        type:
+          type: string
+      additionalProperties: false
+    Response697:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirmwareBundle'
+      additionalProperties: false
+    Response698:
+      required:
+        - result
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Response698Result'
+      additionalProperties: false
+    Response698Result:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/UserSchema'
+    Response700:
+      required:
+        - tenant
+      type: object
+      properties:
+        tenant:
+          type: string
+      additionalProperties: false
+    Response701Auth:
+      required:
+        - type
+        - url
+      type: object
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          nullable: true
+          enum:
+            - jwks
+            - webhook
+      additionalProperties: false
+    Response701Settings:
+      type: object
+      additionalProperties: false
+    Response704:
+      required:
+        - timezones
+      type: object
+      properties:
+        timezones:
+          type: array
+          items:
+            type: string
+            enum:
+              - Asia/Rangoon
+              - Mexico/BajaNorte
+              - Europe/Amsterdam
+              - America/Montevideo
+              - Africa/Kinshasa
+              - Asia/Sakhalin
+              - America/Santarem
+              - Europe/Tiraspol
+              - Africa/Ouagadougou
+              - Asia/Amman
+              - Europe/Tallinn
+              - Africa/Blantyre
+              - America/Nipigon
+              - America/Jamaica
+              - Africa/El_Aaiun
+              - Australia/LHI
+              - America/Costa_Rica
+              - Canada/Eastern
+              - Asia/Kuala_Lumpur
+              - America/Cordoba
+              - Asia/Kuwait
+              - SystemV/YST9YDT
+              - Asia/Tokyo
+              - America/Maceio
+              - Europe/Brussels
+              - America/Nome
+              - Australia/Broken_Hill
+              - Asia/Chita
+              - Universal
+              - Africa/Timbuktu
+              - Africa/Casablanca
+              - Europe/Isle_of_Man
+              - America/Ensenada
+              - America/Argentina/San_Luis
+              - America/St_Johns
+              - Europe/Berlin
+              - Africa/Lome
+              - America/North_Dakota/Center
+              - Asia/Aqtobe
+              - Antarctica/Macquarie
+              - Asia/Seoul
+              - Chile/EasterIsland
+              - US/Hawaii
+              - America/Punta_Arenas
+              - Indian/Christmas
+              - Atlantic/Madeira
+              - Asia/Barnaul
+              - SystemV/PST8PDT
+              - Asia/Colombo
+              - America/Argentina/Mendoza
+              - Asia/Novokuznetsk
+              - America/Indiana/Vevay
+              - America/Argentina/Rio_Gallegos
+              - Etc/GMT
+              - US/Aleutian
+              - America/Fortaleza
+              - Australia/South
+              - Europe/Uzhgorod
+              - Asia/Beirut
+              - Australia/Yancowinna
+              - Africa/Sao_Tome
+              - GMT
+              - Cuba
+              - Asia/Dubai
+              - Europe/Stockholm
+              - Portugal
+              - America/Boise
+              - America/Scoresbysund
+              - Antarctica/Syowa
+              - Indian/Maldives
+              - Europe/Simferopol
+              - Pacific/Efate
+              - Asia/Qatar
+              - GMT0
+              - Europe/Jersey
+              - Pacific/Honolulu
+              - America/Tegucigalpa
+              - Atlantic/South_Georgia
+              - Asia/Hong_Kong
+              - Pacific/Pohnpei
+              - Pacific/Norfolk
+              - America/Santiago
+              - America/Indiana/Knox
+              - Etc/GMT0
+              - Australia/Brisbane
+              - America/Anguilla
+              - Asia/Hovd
+              - Asia/Jakarta
+              - Atlantic/Stanley
+              - America/Jujuy
+              - Indian/Comoro
+              - America/Sao_Paulo
+              - Asia/Macao
+              - Etc/GMT+12
+              - Asia/Macau
+              - America/Menominee
+              - Asia/Bahrain
+              - SystemV/EST5
+              - Asia/Katmandu
+              - America/Montreal
+              - Atlantic/St_Helena
+              - MET
+              - Africa/Tunis
+              - Africa/Lusaka
+              - Etc/GMT+2
+              - CST6CDT
+              - Pacific/Easter
+              - Asia/Ashkhabad
+              - Africa/Cairo
+              - Etc/GMT-10
+              - Pacific/Chuuk
+              - US/Eastern
+              - America/Montserrat
+              - Pacific/Tarawa
+              - Antarctica/Troll
+              - America/Resolute
+              - Pacific/Saipan
+              - Asia/Thimbu
+              - Asia/Muscat
+              - Asia/Saigon
+              - Hongkong
+              - Europe/Zaporozhye
+              - Asia/Aqtau
+              - Antarctica/Davis
+              - Asia/Hebron
+              - Asia/Kuching
+              - Pacific/Tahiti
+              - America/Argentina/Jujuy
+              - Etc/GMT+1
+              - Atlantic/Faroe
+              - Asia/Vladivostok
+              - Europe/Oslo
+              - Australia/Tasmania
+              - Asia/Oral
+              - Arctic/Longyearbyen
+              - America/Indiana/Marengo
+              - America/Rainy_River
+              - America/Barbados
+              - Indian/Chagos
+              - Indian/Cocos
+              - Australia/Victoria
+              - Africa/Harare
+              - America/Aruba
+              - America/El_Salvador
+              - America/Porto_Velho
+              - Etc/GMT-4
+              - Navajo
+              - Australia/Hobart
+              - America/Ojinaga
+              - Asia/Jayapura
+              - Etc/Universal
+              - America/Goose_Bay
+              - America/Panama
+              - Africa/Dar_es_Salaam
+              - America/Mendoza
+              - Asia/Tehran
+              - America/Blanc-Sablon
+              - PST8PDT
+              - Pacific/Johnston
+              - Etc/GMT-12
+              - America/Noronha
+              - America/St_Kitts
+              - America/Ciudad_Juarez
+              - Etc/GMT+10
+              - Pacific/Enderbury
+              - Australia/Queensland
+              - Etc/GMT+5
+              - Pacific/Ponape
+              - Antarctica/McMurdo
+              - Africa/Ceuta
+              - Asia/Baku
+              - Europe/Sofia
+              - CET
+              - America/Pangnirtung
+              - America/Monterrey
+              - Asia/Pontianak
+              - America/Moncton
+              - Europe/Belfast
+              - America/Dominica
+              - America/Swift_Current
+              - Eire
+              - America/Argentina/Salta
+              - America/Sitka
+              - America/Creston
+              - America/St_Vincent
+              - Europe/Andorra
+              - Pacific/Wallis
+              - Asia/Ujung_Pandang
+              - Africa/Niamey
+              - MST7MDT
+              - Asia/Manila
+              - Asia/Shanghai
+              - Etc/GMT+4
+              - Europe/London
+              - Europe/Vienna
+              - Jamaica
+              - Africa/Kigali
+              - Etc/GMT-0
+              - Libya
+              - Pacific/Auckland
+              - EET
+              - Europe/Luxembourg
+              - Europe/Bucharest
+              - Asia/Khandyga
+              - Asia/Kolkata
+              - America/Louisville
+              - America/Atka
+              - Etc/UTC
+              - Pacific/Gambier
+              - Asia/Dushanbe
+              - Asia/Choibalsan
+              - Asia/Phnom_Penh
+              - Pacific/Guadalcanal
+              - US/Arizona
+              - Pacific/Yap
+              - Europe/Tirane
+              - Africa/Maseru
+              - America/Cambridge_Bay
+              - America/Denver
+              - America/Thule
+              - America/St_Barthelemy
+              - Etc/GMT+3
+              - Asia/Srednekolymsk
+              - America/Recife
+              - Europe/Belgrade
+              - Europe/Kiev
+              - Europe/Zagreb
+              - Asia/Chungking
+              - Canada/Mountain
+              - Pacific/Samoa
+              - Africa/Douala
+              - America/Argentina/La_Rioja
+              - Europe/Kaliningrad
+              - Asia/Gaza
+              - US/Alaska
+              - SystemV/MST7MDT
+              - Asia/Yerevan
+              - Europe/Warsaw
+              - Australia/Currie
+              - Africa/Nouakchott
+              - Egypt
+              - Africa/Brazzaville
+              - Asia/Yekaterinburg
+              - America/Belize
+              - Atlantic/Azores
+              - Etc/GMT-9
+              - America/Argentina/San_Juan
+              - US/Michigan
+              - Asia/Kamchatka
+              - Asia/Qostanay
+              - America/Knox_IN
+              - Australia/Adelaide
+              - ROK
+              - America/Rankin_Inlet
+              - Etc/UCT
+              - Pacific/Kwajalein
+              - Asia/Yangon
+              - Mexico/BajaSur
+              - Canada/Pacific
+              - SystemV/YST9
+              - America/Tortola
+              - Japan
+              - Europe/Volgograd
+              - America/Inuvik
+              - UCT
+              - Asia/Pyongyang
+              - Canada/Central
+              - Asia/Vientiane
+              - Africa/Lubumbashi
+              - W-SU
+              - America/Dawson
+              - Asia/Ulan_Bator
+              - Asia/Yakutsk
+              - Europe/San_Marino
+              - America/Porto_Acre
+              - Pacific/Rarotonga
+              - GB
+              - America/Curacao
+              - America/La_Paz
+              - Europe/Astrakhan
+              - Europe/Prague
+              - America/Chihuahua
+              - Antarctica/Rothera
+              - America/Los_Angeles
+              - America/Lima
+              - America/Caracas
+              - Africa/Dakar
+              - Kwajalein
+              - Etc/GMT-14
+              - America/Buenos_Aires
+              - America/Virgin
+              - Asia/Nicosia
+              - America/Indiana/Petersburg
+              - Etc/GMT-2
+              - America/Tijuana
+              - Pacific/Kanton
+              - Europe/Guernsey
+              - Africa/Conakry
+              - Europe/Dublin
+              - Europe/Helsinki
+              - Africa/Abidjan
+              - America/Campo_Grande
+              - America/Guatemala
+              - Pacific/Tongatapu
+              - Africa/Monrovia
+              - Atlantic/Bermuda
+              - Asia/Almaty
+              - Asia/Bishkek
+              - SystemV/AST4
+              - Indian/Mayotte
+              - America/Martinique
+              - America/Shiprock
+              - Antarctica/DumontDUrville
+              - SystemV/AST4ADT
+              - America/Danmarkshavn
+              - Asia/Tel_Aviv
+              - Europe/Athens
+              - Brazil/Acre
+              - Europe/Sarajevo
+              - NZ
+              - America/Yellowknife
+              - Africa/Freetown
+              - Asia/Tbilisi
+              - Canada/Yukon
+              - Pacific/Pago_Pago
+              - America/Argentina/Ushuaia
+              - America/Metlakatla
+              - America/Boa_Vista
+              - Pacific/Nauru
+              - Asia/Brunei
+              - Pacific/Palau
+              - Asia/Dili
+              - Etc/GMT+8
+              - Etc/Zulu
+              - America/Port-au-Prince
+              - Pacific/Chatham
+              - America/Indiana/Indianapolis
+              - Atlantic/Reykjavik
+              - Iran
+              - America/Kentucky/Louisville
+              - Africa/Asmera
+              - Australia/Sydney
+              - America/Indiana/Vincennes
+              - America/Bogota
+              - US/Indiana-Starke
+              - America/Phoenix
+              - Africa/Djibouti
+              - Etc/GMT-3
+              - Africa/Banjul
+              - SystemV/PST8
+              - Brazil/East
+              - Asia/Atyrau
+              - America/Cayenne
+              - America/Santa_Isabel
+              - America/Grand_Turk
+              - Europe/Vilnius
+              - Europe/Kyiv
+              - America/Hermosillo
+              - America/Yakutat
+              - Africa/Kampala
+              - Europe/Copenhagen
+              - Asia/Novosibirsk
+              - Europe/Monaco
+              - Brazil/West
+              - America/Nuuk
+              - EST5EDT
+              - America/Chicago
+              - Etc/GMT-1
+              - America/Godthab
+              - Canada/Atlantic
+              - Asia/Singapore
+              - Etc/GMT-8
+              - America/Lower_Princes
+              - Africa/Accra
+              - America/Asuncion
+              - America/Thunder_Bay
+              - America/Bahia
+              - Pacific/Majuro
+              - Etc/GMT+9
+              - Asia/Tomsk
+              - Africa/Mbabane
+              - Antarctica/Casey
+              - Pacific/Fakaofo
+              - Africa/Addis_Ababa
+              - America/Nassau
+              - Asia/Makassar
+              - Europe/Nicosia
+              - Australia/West
+              - America/Whitehorse
+              - Asia/Urumqi
+              - Asia/Famagusta
+              - US/Samoa
+              - Asia/Samarkand
+              - Asia/Calcutta
+              - Antarctica/Vostok
+              - Pacific/Niue
+              - Australia/Perth
+              - Africa/Bissau
+              - Asia/Thimphu
+              - America/Antigua
+              - Africa/Khartoum
+              - America/Guyana
+              - America/Puerto_Rico
+              - Indian/Kerguelen
+              - Pacific/Apia
+              - America/Indiana/Winamac
+              - US/East-Indiana
+              - Pacific/Galapagos
+              - Europe/Skopje
+              - GB-Eire
+              - Europe/Istanbul
+              - Chile/Continental
+              - Asia/Jerusalem
+              - Asia/Magadan
+              - UTC
+              - America/North_Dakota/Beulah
+              - America/Guadeloupe
+              - America/St_Lucia
+              - America/Mexico_City
+              - Africa/Johannesburg
+              - Africa/Bamako
+              - Etc/GMT+0
+              - America/Toronto
+              - Etc/GMT-7
+              - America/Managua
+              - America/Belem
+              - Europe/Lisbon
+              - Asia/Kashgar
+              - America/Juneau
+              - America/Fort_Wayne
+              - US/Mountain
+              - Etc/GMT+6
+              - Europe/Minsk
+              - America/Indiana/Tell_City
+              - Australia/North
+              - Europe/Moscow
+              - Pacific/Kosrae
+              - Europe/Ulyanovsk
+              - Africa/Lagos
+              - Asia/Harbin
+              - Iceland
+              - Mexico/General
+              - America/Guayaquil
+              - America/Argentina/Cordoba
+              - Africa/Windhoek
+              - Europe/Rome
+              - Asia/Krasnoyarsk
+              - America/Glace_Bay
+              - Asia/Karachi
+              - SystemV/HST10
+              - Europe/Busingen
+              - Asia/Aden
+              - America/Mazatlan
+              - America/Winnipeg
+              - Europe/Chisinau
+              - America/Argentina/Buenos_Aires
+              - Europe/Riga
+              - Pacific/Pitcairn
+              - Turkey
+              - Pacific/Guam
+              - Indian/Reunion
+              - Pacific/Bougainville
+              - Africa/Malabo
+              - America/New_York
+              - SystemV/EST5EDT
+              - America/Coral_Harbour
+              - Africa/Tripoli
+              - Asia/Bangkok
+              - America/Atikokan
+              - America/Detroit
+              - Poland
+              - Etc/GMT+11
+              - Asia/Ashgabat
+              - America/Edmonton
+              - Europe/Podgorica
+              - Europe/Saratov
+              - Greenwich
+              - Australia/ACT
+              - Asia/Damascus
+              - Africa/Bujumbura
+              - Australia/Lord_Howe
+              - Singapore
+              - Africa/Bangui
+              - America/Kentucky/Monticello
+              - Europe/Mariehamn
+              - SystemV/MST7
+              - Australia/Eucla
+              - Canada/Newfoundland
+              - America/North_Dakota/New_Salem
+              - Africa/Juba
+              - Africa/Gaborone
+              - Etc/GMT-5
+              - Canada/Saskatchewan
+              - Europe/Ljubljana
+              - Australia/Lindeman
+              - Africa/Mogadishu
+              - America/St_Thomas
+              - America/Havana
+              - Asia/Ulaanbaatar
+              - Europe/Vaduz
+              - America/Anchorage
+              - America/Iqaluit
+              - Asia/Riyadh
+              - America/Vancouver
+              - US/Pacific
+              - America/Grenada
+              - America/Rio_Branco
+              - Europe/Bratislava
+              - Pacific/Fiji
+              - Asia/Omsk
+              - America/Catamarca
+              - Pacific/Funafuti
+              - SystemV/CST6
+              - America/Merida
+              - Asia/Istanbul
+              - America/Cayman
+              - Etc/GMT+7
+              - Etc/GMT-6
+              - Zulu
+              - Pacific/Noumea
+              - Indian/Mahe
+              - Asia/Irkutsk
+              - Antarctica/Palmer
+              - America/Bahia_Banderas
+              - Europe/Budapest
+              - America/Regina
+              - America/Halifax
+              - Asia/Anadyr
+              - America/Cuiaba
+              - Australia/NSW
+              - Africa/Porto-Novo
+              - America/Argentina/Catamarca
+              - Indian/Mauritius
+              - Europe/Samara
+              - America/Eirunepe
+              - America/Fort_Nelson
+              - Atlantic/Faeroe
+              - Africa/Asmara
+              - Antarctica/Mawson
+              - Asia/Tashkent
+              - Etc/GMT-11
+              - Africa/Maputo
+              - Pacific/Kiritimati
+              - PRC
+              - America/Argentina/ComodRivadavia
+              - Asia/Qyzylorda
+              - Pacific/Midway
+              - America/Kralendijk
+              - Asia/Kabul
+              - America/Port_of_Spain
+              - Europe/Zurich
+              - America/Indianapolis
+              - NZ-CHAT
+              - Atlantic/Jan_Mayen
+              - Asia/Kathmandu
+              - Africa/Algiers
+              - America/Matamoros
+              - America/Araguaina
+              - America/Rosario
+              - Etc/Greenwich
+              - America/Argentina/Tucuman
+              - Antarctica/South_Pole
+              - America/Marigot
+              - Pacific/Marquesas
+              - Pacific/Truk
+              - Asia/Baghdad
+              - America/Dawson_Creek
+              - Europe/Kirov
+              - America/Santo_Domingo
+              - US/Central
+              - America/Miquelon
+              - Pacific/Wake
+              - Asia/Ust-Nera
+              - Australia/Canberra
+              - Indian/Antananarivo
+              - Brazil/DeNoronha
+              - Europe/Malta
+              - Europe/Paris
+              - Africa/Luanda
+              - Europe/Madrid
+              - Asia/Chongqing
+              - Europe/Gibraltar
+              - America/Cancun
+              - Asia/Dacca
+              - Israel
+              - Pacific/Port_Moresby
+              - Atlantic/Cape_Verde
+              - Australia/Darwin
+              - Africa/Nairobi
+              - WET
+              - Atlantic/Canary
+              - Africa/Libreville
+              - America/Paramaribo
+              - Asia/Ho_Chi_Minh
+              - Europe/Vatican
+              - Africa/Ndjamena
+              - SystemV/CST6CDT
+              - Australia/Melbourne
+              - America/Manaus
+              - Etc/GMT-13
+              - America/Adak
+              - Asia/Taipei
+              - Asia/Dhaka
+      additionalProperties: false
+    RetryActionSchema:
+      required:
+        - device_ids
+      type: object
+      properties:
+        device_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+      additionalProperties: false
+    RoleSchema:
+      required:
+        - name
+        - permissions
+      type: object
+      properties:
+        name:
+          type: string
+        permissions:
+          $ref: '#/components/schemas/PermissionSchema'
+      additionalProperties: false
+    RoleSchemaPermissionsDevices:
+      type: object
+      additionalProperties:
+        type: object
+        x-oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+            enum:
+              - all
+    RoleSchemaPermissionsTables:
+      type: object
+      additionalProperties:
+        type: object
+        x-oneOf:
+          - type: array
+            items:
+              type: string
+          - type: string
+            enum:
+              - all
+    RumqttMessage:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    Schedule:
+      required:
+        - end_timestamp
+        - id
+        - next_phase_index
+        - phases
+        - phases_triggered
+        - retry_on_failure_until
+        - status
+        - tenant_id
+      type: object
+      properties:
+        phases_triggered:
+          type: array
+          items:
+            type: boolean
+        next_phase_index:
+          type: integer
+          format: int64
+        end_timestamp:
+          type: integer
+          format: int64
+        retry_on_failure_until:
+          type: integer
+          format: int64
+        phases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phase'
+        status:
+          type: string
+        id:
+          type: integer
+          format: int64
+        release_notes:
+          type: string
+        tenant_id:
+          type: string
+      additionalProperties: false
+    SchedulePhasesInfo:
+      required:
+        - device_ids
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        device_ids:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    SchedulePhasesTriggerOn:
+      required:
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        failure_percentage:
+          type: integer
+          format: int64
+      additionalProperties: false
+    SerialKeySchema:
+      type: object
+      additionalProperties:
+        type: string
+    StreamSchema:
+      required:
+        - fields
+        - streamName
+      type: object
+      properties:
+        streamName:
+          type: string
+        fields:
+          $ref: '#/components/schemas/StreamSchemaFields'
+      additionalProperties: false
+    StreamSchemaFields:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/StreamSchemaFieldsKeyword660'
+    StreamSchemaFieldsKeyword660:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - UInt8
+            - DateTime64(3)
+            - Nullable(String)
+            - Float64
+            - Nullable(Int8)
+            - Nullable(Bool)
+            - Nullable(Int64)
+            - Int8
+            - UInt16
+            - Int16
+            - Nullable(UInt64)
+            - DateTime64(6)
+            - Date
+            - Nullable(Date)
+            - Nullable(DateTime64(3))
+            - Nullable(Float64)
+            - Nullable(Array(String))
+            - Nullable(UInt32)
+            - Array(String)
+            - Bool
+            - Int64
+            - UInt32
+            - String
+            - Nullable(DateTime64(6))
+            - Nullable(Float32)
+            - Nullable(Int32)
+            - Nullable(UInt8)
+            - Int32
+            - Nullable(Int16)
+            - Nullable(UInt16)
+            - Nullable(DateTime)
+            - Float32
+            - DateTime
+            - UInt64
+        index:
+          type: integer
+          format: int64
+        unit:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TenantsSchema:
+      required:
+        - auth
+        - name
+        - settings
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+        settings:
+          $ref: '#/components/schemas/Response701Settings'
+        auth:
+          $ref: '#/components/schemas/Response701Auth'
+        name:
+          type: string
+      additionalProperties: false
+    TimeSeries:
+      required:
+        - aggregator
+        - column
+        - table
+      type: object
+      properties:
+        table:
+          type: string
+        column:
+          type: string
+        query:
+          type: object
+          x-oneOf:
+            - type: array
+              items:
+                type: string
+                enum:
+                  - <=
+                  - not=
+                  - '>'
+                  - '>='
+                  - =
+                  - <
+            - type: array
+              items:
+                type: string
+                enum:
+                  - between
+            - type: array
+              items:
+                type: string
+                enum:
+                  - in
+            - type: array
+              items:
+                type: string
+                enum:
+                  - or
+                  - and
+        groupBys:
+          type: array
+          items:
+            type: string
+        aggregator:
+          type: string
+      additionalProperties: false
+    UpdateApikey:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+    UpdateDeviceMetadata:
+      required:
+        - id
+        - key
+        - value
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        key:
+          type: string
+        value:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserSchema:
+      required:
+        - email
+        - name
+        - roles
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        roles:
+          type: array
+          items:
+            type: integer
+            format: int64
+      additionalProperties: false
+x-original-swagger-version: "2.0"

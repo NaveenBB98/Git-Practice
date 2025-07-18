@@ -1,0 +1,109 @@
+---
+title: Introduction to Inventory Management
+---
+
+Inventory is a place where you store all the firmware files, json configuration and geofence configuration versions.
+
+<Tabs>
+  <Tab title="💾 Firmware Files">
+  ## What Are Firmware Files?
+Firmware files are incremental updates to the software that runs on a device. 
+
+Each firmware file has an associated version number which is used to to track changes and improvements (e.g., v1.0.0, v1.1.0, v2.0.0). These numbers help to identify the version running on a device and determine if an upgrade is necessary.
+
+Keeping firmware up to date is essential for device security, functionality, and compatibility with other systems.
+## ○ Without Device Components
+    <CardGroup cols={2}>
+  <Card title="Upload New Firmware" icon="upload" href="/platform-guide/actions/inventory-management/firmware-files/without-device-components/creating-a-new-firmware-version">
+  You can upload a new firmware file and update any of the devices with it by triggering update_firmware action.
+  </Card>
+  <Card title="Edit Firmware Version" icon="pencil" href="/platform-guide/actions/inventory-management/firmware-files/without-device-components/editing-a-firmware-version">
+  You can edit the exisitng firmware versions to change the uncompressed file sizes.
+  </Card>
+  <Card title="Deactivate a Firmware Version" icon="toggle-off" href="/platform-guide/actions/inventory-management/firmware-files/without-device-components/deactivating-a-firmware-version">
+  You can deactivate the firmware versions that are not needed.
+  </Card>
+  <Card title="Activate a Deactivated Firmware Version" icon="toggle-on" href="/platform-guide/actions/inventory-management/firmware-files/without-device-components/activating-a-deactivated-firmware-version">
+  You can activate the deactivated firmware versions again.
+  </Card>
+</CardGroup>
+
+  ## ⚙ With Device Components
+    You can enable [Device Components](/platform-guide/device-components/device-components) section following the [instructions](/platform-guide/actions/inventory-management/firmware-files/with-device-components/enabling-device-components).
+    <CardGroup cols={2}>
+  <Card title="Upload New Firmware for a Component" icon="upload" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/creating-a-new-firmware-version-for-a-component">
+  You can upload a new firmware file and update any of the devices with it by triggering update_firmware action.
+  </Card>
+  <Card title="Update Dependency for a Component" icon="pencil" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/updating-a-dependency-for-a-component">
+  You can update the dependency of any firmware version for a component.
+  </Card>
+  <Card title="View Dependency for a Component" icon="eye" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/viewing-a-dependency-for-a-component">
+  You can view the existing dependencies of a firmware version for a component.
+  </Card>
+  <Card title="Create Firmware Bundle" icon="plus" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/creating-a-firmware-bundle-version">
+  You can create a new firmware bundle by choosing the components and their versions and update any of the devices with it by triggering update_firmware action.
+  </Card>
+  <Card title="Edit Firmware Bundle" icon="pencil" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/editing-a-firmware-bundle-version">
+  You can edit the firmware bundle to change the uncompressed size of it.
+  </Card>
+  <Card title="Deactivate a Firmware Version for a Component" icon="trash" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/deactivating-a-firmware-version-for-a-component">
+  You can deactivate the firmware versions of components that are not needed.
+  </Card>
+  <Card title="Activate a Deactivated Firmware Version for a Component" icon="check" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/activating-a-deactivated-firmware-version-for-a-component">
+  You can activate the deactivated firmware versions of components again.
+  </Card>
+  <Card title="Delete a Firmware Bundle" icon="trash" href="/platform-guide/actions/inventory-management/firmware-files/with-device-components/deleting-a-firmware-bundle-version">
+  You can delete the firmware bundles that are not needed.
+  </Card>
+</CardGroup>
+  </Tab>
+  <Tab title="📄 JSON Configurations" icon="file-code">
+    ## What are JSON Configurations?
+
+When configuring IoT devices, JSON is often used to define and send settings like operational parameters, thresholds, user preferences, or communication protocols, ensuring devices function as expected.
+
+## Uses of JSON Configurations
+
+JSON configurations make managing IoT devices highly efficient, letting users deploy updates, change settings, and keep devices in sync with minimal manual effort. 
+
+For instance, updating a configuration like `{"device_id": "1234", "firmware_version": "v2.1"}` across all devices ensures they operate on the latest version without manual intervention.
+
+<CardGroup cols={2}>
+  <Card title="Create a JSON Config" icon="plus" href="/platform-guide/actions/inventory-management/json-configurations/creating-a-new-json-configuration-version">
+  You can create a JSON Config and update any of the devices with it by triggering update_config action.
+  </Card>
+  <Card title="View a JSON Config" icon="eye" href="/platform-guide/actions/inventory-management/json-configurations/viewing-a-json-configuration">
+  You can view the existing JSON configs.
+  </Card>
+  <Card title="Edit a JSON Config" icon="pencil" href="/platform-guide/actions/inventory-management/json-configurations/editing-a-json-configuration">
+  You can edit the existing JSON configs.
+  </Card>
+  <Card title="Deactivate a JSON Config" icon="trash" href="/platform-guide/actions/inventory-management/json-configurations/deactivating-a-json-configuration">
+  You can deactivate the JSON configs that are not needed.
+  </Card>
+</CardGroup>
+  </Tab>
+  <Tab title="🌐 Geofence Configurations">
+    ## What are Geofence Configurations?
+    A geofence is a virtual boundary set around a specific geographic area, often defined by GPS coordinates and a geofence config contains the coordinate information like latitude, longitude etc.
+
+## Uses of Geofence Configurations
+
+In IoT, geofencing is used for location-based automation. For instance, an IoT device can send alerts or adjust its behavior based on its location relative to a geofence, which is commonly used in asset tracking, security, and fleet management applications.
+
+<CardGroup cols={2}>
+  <Card title="Create a Geofence Config" icon="plus" href="/platform-guide/actions/inventory-management/geofence-configurations/creating-a-new-geofence-configuration-version">
+  You can create a Geofence Config and update any of the devices with it by triggering update_geofence action.
+  </Card>
+  <Card title="View a Geofence Config" icon="eye" href="/platform-guide/actions/inventory-management/geofence-configurations/viewing-a-geofence-configuration">
+  You can view the existing geofence configs.
+  </Card>
+  <Card title="Edit a Geofence Config" icon="pencil" href="/platform-guide/actions/inventory-management/geofence-configurations/editing-a-geofence-configuration">
+  You can edit the existing geofence configs.
+  </Card>
+  <Card title="Deactivate a Geofence Config" icon="trash" href="/platform-guide/actions/inventory-management/geofence-configurations/deactivating-a-geofence-configuration">
+  You can deactivate the geofence configs that are not needed.
+  </Card>
+</CardGroup>
+  </Tab>
+</Tabs>

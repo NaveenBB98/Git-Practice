@@ -1,0 +1,81 @@
+---
+title: Push application logs
+slug: D1SYCIvSIw5HncH8g0ExO
+description: Learn how to effectively view journalctl logs on Bytebeam cloud with this comprehensive document. Discover the step-by-step instructions on setting up streams and dashboards, adding logging to devices, and configuring logging from the cloud. Detailed scre
+createdAt: Thu Apr 27 2023 10:01:44 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Nov 16 2023 10:50:30 GMT+0000 (Coordinated Universal Time)
+---
+
+Using Bytebeam cloud, it is possible to view the logs of the device. This guide assumes your device is running using **systemd** and logs are being pushed to **journald**. This guide will show you how to view **journald** logs on the cloud. Create a stream called "**logs**", with the following parameters.
+
+
+
+![](/assets/xbZiLBBLvlrpqzBfRPXfS_linuxdocslogs11.png)
+
+Now, we need to create a "**logs**" dashboard.
+
+# Create logs dashboard
+
+Go to the "**Dashboards**" section of Bytebeam Cloud and select  "**Create Dashboard**"
+
+![](/assets/HeMZUtDY4LNscO6g5x9GB_linuxdocslogswhite11.png)
+
+Give the title "**logs**" and select the Dashboard type as "**Device Dashboard**". Click on submit.
+
+![](/assets/niU7r9Asl61jM089Wk-lK_linuxdocslogswhite12.png)
+
+The created dashboard should be visible now.
+
+![](/assets/l92yeiGitD50gn4w61Mtt_linuxdocslogs12.png)
+
+Click on the "**logs**" dashboard and select the device for which you want to see the logs.
+
+![](/assets/SGFeCzRifwe9uJHmFu6-O_linuxdocslogs13.png)
+
+Create a New Panel. Select the "Logs" panel.
+
+![](/assets/0Q9raxRwkG5kL_hHpc5_a_linuxdocslogswhite14.png)
+
+Give the appropriate title and select the "**Logs**" option from the "**Table**" drop-down menu. Click on submit.
+
+![](/assets/4OCFJA7-Ny-Tf7R14jcFL_linuxdocslogswhite13.png)
+
+To enable the logging feature on the device, the following lines are to be added to the config.toml file.
+
+```none
+[logging]
+tags=["sshd", "systemd"]
+stream_size=1
+min_level=7
+```
+
+Restart uplink.
+
+The logs should be visible on the cloud now.
+
+![](/assets/IwmOFMKewtI09CiM6iEIr_onlysshlogs.png)
+
+# Update log config from the cloud
+
+With the help of **config.toml** file, we can filter the logs related to a particular process. In this example, we see logs related to ssh. It is possible to change the logging configuration, from the cloud as well. To do that, we need to create a new Action type called "**journalctl\_config**". Follow the guide on [Creating new Action Types](/platform-guide/actions/action-settings/creating-an-action-type).
+
+"**journalctl\_config**" is internally handled by uplink itself. It manages **log level** and **tags**  Click on Submit.
+
+![](/assets/HE66k7i0ZQWWjpPKvNWBC_linuxdocslogs2.png)
+
+On the Device Management section, the "**journalctl config**" action should be visible.
+
+![](/assets/zGCgdo0kvF3qhWI0jw2vZ_linuxdocslogs4.png)
+
+Select the device and click on "**Journalctl Config**". You will be prompted to create a JSON file. To see systemd logs also, use the following JSON. We can also choose the desired log level.
+
+![](/assets/EM5VZUHEVnLTiKtp1-4A2_linuxdocslogs6.png)
+
+Click on yes. This will trigger "**Journalctl Config**" action. To view the logs, select the device and click on "**Device Dashboards**"
+
+![](/assets/5LZ1lvtk-MXFGpv9teIH7_linuxdocslogs8.png)
+
+Select "logs" Dashboard. Now, you should be able to see the logs of **sshd** and **systemd** as well.
+
+![](/assets/Zbd99lLg4bMEi__Cewhoj_sshdandsystemdlogs.png)
+

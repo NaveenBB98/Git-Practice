@@ -1,0 +1,56 @@
+---
+title: R19 02-Apr-2024
+slug: 0paA-r1
+createdAt: Fri Mar 29 2024 03:26:33 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Apr 02 2024 03:17:38 GMT+0000 (Coordinated Universal Time)
+---
+
+### **DBC Parser Management**
+
+![](/assets/qR2AxLWjPB2v0ZJm1IOT5_dbc-w.png)
+
+Our platform now provides a robust DBC parser management for streamlining the integration and analysis of data from the CAN-based IoT devices.&#x20;
+
+![](/assets/rKsR-I13r5HI3h1jeANlo_createdbc-w.png)
+
+A DBC parser is a software tool that decodes the messages transmitted on your IoT device's Controller Area Network (CAN) bus.  DBC files (Diagnostic Bus Configuration) define the structure, signals (meaningful data units), and scaling factors within these messages. The DBC parser references this file to interpret raw CAN data into clear, actionable information.
+
+### **Adding Phases to Actions**
+
+![](/assets/BB49h42SYaTt4AutxnrHv_addphase-w.png)
+
+![](/assets/EI90tE61WxzoZ1bwomWBX_addphase2-w.png)
+
+Our platform now offers enhanced flexibility for the New Actions through the ability to add phases post-action creation. This feature allows users to dynamically adjust their deployment strategy by scheduling additional phases for selected devices or device filters. To utilize this, navigate to the existing action, and click on "Add Phase" on top. Here, you can specify the devices or filters and set the schedule.&#x20;
+
+### **Timeouts and Retry Mechanisms for Non-Phased Actions**
+
+![](/assets/sVRpQdm8dNlyB0UNrhgSQ_advanced-w.png)
+
+Our platform now enhances reliability and control for non-phased actions through the integration of timeouts and retry mechanisms. This feature is designed to mitigate the impact of transient network issues or device unavailability, ensuring that critical actions such as firmware updates or configuration changes are successfully executed. Users can configure action-specific timeout durations and set the number of retry attempts in Advanced options.
+
+### **Enhanced Filter Search in New Action**
+
+![](/assets/DYqmdvot8GJp7SXyRA3bD_searchfilter-w.png)
+
+The Create New Action feature now includes search capability within filters, significantly improving usability when dealing with extensive metadata lists or options. This enhancement allows users to swiftly navigate and select the desired criteria by simply typing in the search bar.
+
+### **Device List Filtering by Status in Action history**
+
+![](/assets/ow0qtr2T8HPeEk83F1CO2_action-device-filter-w.png)
+
+Our device list page for actions now features a status filter, allowing users to refine the displayed devices based on their action status. This addition makes it easier to manage and monitor devices by quickly narrowing down the list devices with errors or still in queued state.
+
+### Enabling List View for Alerts Panel
+
+![](/assets/sZxJWGqwxM2ICifYSLIV1_tabbedviewalerts-w.png)
+
+Elevate your alert management with our new list view option in the panel's settings. Activate it to efficiently display and navigate through alerts in a streamlined, tabbed format.
+
+### Bug fixes & Minor changes
+
+- 🐛 Rectified an issue where the device pulse panel failed to display metadata in the device list.
+- 🚀 Improved the Device Filter within the action summary, enhancing its performance and eliminating glitches.
+- 📋 Consolidated available operations for an Action into neatly organized three-dot menu.
+
+We've fine-tuned our platform, squashing various bugs and implementing subtle changes to enhance stability and performance. Enjoy a smoother user experience with these updates.

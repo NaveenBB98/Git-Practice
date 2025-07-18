@@ -1,0 +1,74 @@
+---
+title: R22 25-July-2024
+slug: zqQq-r
+createdAt: Tue Jul 23 2024 15:35:57 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Aug 02 2024 15:23:57 GMT+0000 (Coordinated Universal Time)
+---
+
+### **Enhanced device shadow filters in device management**
+
+![](/assets/8CCFE176nf5sw7aJSvu-u_screenshot-2024-07-25-at-75855-am.png)
+
+Now you can filter the devices in device shadow based on device shadow values. Multiple filters can also be applied together along with metadata values.You can now filter devices within the device shadow based on their specific shadow values, allowing for more precise and targeted device management. Additionally, you can apply multiple filters simultaneously, including those based on metadata values, to refine your search and better organize your devices. This enhancement makes it easier to manage and monitor large numbers of devices efficiently.
+
+### **Show Timestamp and Linked Coordinates on hovering on Track Devices Panel**
+
+![](/assets/uSuC5k4XQiI--6MJt-Lkk_screenshot-2024-07-25-at-80821-am.png)
+
+Track devices panel now display timestamps alongside correlated coordinates, when you hover on the device track. It also shows the start and end points if you click on the markers in map. This feature provides precise tracking information, enabling better visualization of device locations over time
+
+### **Initiate Action Phases Based on Previous Phase Success Rate**
+
+![](/assets/AO1l3jNcDz9zVMOhWigFN_screenshot-2024-07-25-at-81644-am.png)
+
+In phased actions, you can now trigger a phase not only based on a predefined time but also on the success rate of the previous phase. For example, you can configure the second and subsequent phases to activate only if the first phase on test/pilot devices achieves a success rate greater than 60%.
+
+### **Terminate Action Phase if Previous Phase Errors Exceed Defined Threshold**
+
+![](/assets/Trc72bVgemlifJgUcXO0d_screenshot-2024-07-25-at-82043-am.png)
+
+You can now terminate an action phase if the error rate of the previous phase exceeds a defined threshold percentage. This ensures that subsequent phases do not proceed if the earlier phase encounters significant issues, improving overall process reliability and error management.
+
+### **Filters in List of actions**
+
+![](/assets/hFmOuX4XKeZgdh3g2BYc1_screenshot-2024-07-25-at-83846-am.png)
+
+You can now filter the action list using various criteria, including action ID, action creator, and action type. These filters provide enhanced flexibility and ease in managing and organizing long lists of actions, allowing for quicker and more efficient navigation through the action list.
+
+### **Test Alert Notification**
+
+![](/assets/EqH379eiLze6TbFtKQgc3_screenshot-2024-07-25-at-104333-am.png)
+
+You can now test alert notifications before finalizing and submitting them. This feature allows you to verify that notifications are configured correctly, ensuring they function as intended and reducing the likelihood of errors or missed alerts.
+
+### **Enhanced Options when Triggering Actions from Device Management**
+
+![](/assets/Dcf_EH-7Jo7MGCrE2yQqA_screenshot-2024-07-25-at-104903-am.png)
+
+You can now include advanced options such as action timeouts, auto-retries, and release notes when initiating actions from device management.
+
+### **Optional Second Aggregate for Fleet Dashboard**
+
+![](/assets/3gTakCexxejHoxc1vV5cH_screenshot-2024-07-25-at-105547-am.png)
+
+In the aggregate panel, an optional second aggregate has been added for the fleet dashboard. This enhancement enables more complex calculations, such as determining the maximum speed within a duration by applying the maximum of the maximum speeds of individual cars, providing more accurate and insightful fleet performance metrics.
+
+### **Set action timeouts in minutes and hours**
+
+![](/assets/3_cd68lN3n4TrlBhFiO-k_screenshot-2024-07-25-at-82808-am.png)
+
+You can now set action timeouts in minutes and hours also, allowing for more precise control over the duration of each action. This feature enables better time management and ensures that actions are completed within the desired timeframe, enhancing overall efficiency and process optimization.
+
+### Bug fixes & Minor changes
+
+- 📍 **Track Panel:** Start and End points are now displayed in Blue and Red, respectively.
+- ⏰ **Fixed:** Custom time selection now persists when switching between action phases.
+- ⚠️ **Alerts Table:** Activation and deactivation thresholds added.
+- ⚙️ **DBC Parsers:** Ability to edit additional settings.
+- 🏷️ **Fixed:** Hover label overlapping in line charts.
+- 📊 **Panels:** First and Last value aggregators added.
+- 🗺️ **Map Panels:** Ability to change the default marker color
+- 🎯 Customizable Decimal Precision for Last Value, Aggregate, and Timeseries Panels
+
+We've refined our platform by resolving various bugs and implementing subtle changes to boost stability and performance. Enjoy a smoother and more reliable user experience with this update.
+

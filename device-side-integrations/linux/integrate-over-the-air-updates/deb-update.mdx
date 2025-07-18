@@ -1,0 +1,58 @@
+---
+title: Deb Update
+slug: 1Hkgwl8MczSxJ7e6W1bwQ
+description: Learn how to install deb packages using deb_update on your device with this comprehensive guide. Follow a step-by-step example on Github that includes all necessary files. Replace the apt-src deb package, generate the update tar file with make_firmware_up
+createdAt: Tue Apr 18 2023 14:13:25 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Nov 23 2023 13:35:28 GMT+0000 (Coordinated Universal Time)
+---
+
+If you have a deb package to be installed on the device, then deb\_update is the right way to do it.  The example on [Github](https://github.com/bytebeamio/uplink/tree/main/examples/rpi/updates/deb_update) page shows how to install a deb package on the device. There are four files mentioned in the example.
+
+- **deb\_update.sh** - It installs the specified deb package on the device.
+- **apt-src\_0.25.3\_all.deb** - In the example, we try to install this deb package.
+- **update.sh** - This is the wrapper script for deb\_update.sh
+- **make\_firmware\_update.sh** - This creates the update tar file, that needs to be uploaded on the Bytebeam cloud.
+
+## Step1: Prepare update tar
+
+Firstly on your Linux system, we need to create an update tar file for Raspberry Pi. For that, Download all the files mentioned above from GitHub. Next, we need to change the permissions for all these files using `chmod` command
+
+```shell
+chmod a+x apt-src_0.25.3_all.deb
+chmod a+x deb_update.sh
+chmod a+x update.sh
+chmod a+x make_firmware_update.sh 
+```
+
+Next, run **make\_firmware\_update.sh** to create a tar.gz file.
+
+```shell
+./make_firmware_update.sh
+```
+
+## Step 2: upload update Tar
+
+Next, we need to upload the tar to [bytebeam cloud.](https://cloud.bytebeam.io/) For that go to the device management panel and navigate to the **Firmware Versions** tab. Then click on **Upload New Firmware**
+
+![](/assets/umzb2gK2AoDe3mek5n9Nm_linuxdocsupdaterollback2.png)
+
+Under the Firmware version tab, you will find an option to create a firmware version number and upload your updated tar file.
+
+Enter the new **Firmware version number** and click on **choose file** to upload tar file. Then click on **Create.**&#x20;
+
+![](/assets/-qOTBnqns0cV7fu-U6Xk0_linuxdocsdebupdatewhite1.png)
+
+## Step 3: Trigger the "update firmware" action from bytebeam cloud&#x20;
+
+Now let's proceed with our OTA update. For that, Go to **the Device Management** panel and select the device
+
+Next, Click on the **update firmware**
+
+![](/assets/sYIB2c26EWzgHU--LZoyf_linuxdocsupdate12.png)
+
+In the next prompt choose the **firmware version** and click on **next**
+
+![](/assets/JZecBPwI4TD63RSPlDsy9_linuxdocsupdatewhite4.png)
+
+![](/assets/yvnrbLYiKMTYecMtL3dy6_linuxdocsupdatewhite5.png)
+

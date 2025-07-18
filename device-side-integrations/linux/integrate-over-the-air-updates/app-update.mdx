@@ -1,0 +1,124 @@
+---
+title: App Update
+slug: m7zlE1SelEa2da0zgqxLt
+description: Learn how to update an application binary on a remote device using Bytebeam cloud with this comprehensive guide. It covers essential steps such as setting the application path, incorporating the application into systemd, and creating an update tar file. I
+createdAt: Tue Apr 18 2023 14:12:33 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sat Nov 18 2023 15:17:31 GMT+0000 (Coordinated Universal Time)
+---
+
+This guide talks about how to update an application binary of the remote device from the Bytebeam cloud. App update replaces the existing binary on the system with the binary uploaded on the Bytebeam cloud. We have provided an example application on our [Github](https://github.com/bytebeamio/uplink/tree/main/examples/rpi/updates/app_update) page. There are four files in the example.
+
+- **hello\_app** - Prints "Hello from Bytebeam" every 3 seconds.
+- **app\_update.sh** - This script replaces the old application with new application.
+- **update.sh** - This is a wrapper script for app\_update.sh script.
+- **make\_firmware\_update.sh** - It creates the update tar file.
+
+## Step1: Prepare update tar
+
+Firstly on your Linux system, we need to create an update tar file for Raspberry Pi. For that, Download all the files mentioned above from GitHub. Next, we need to change the permissions for all these files using `chmod` command
+
+```shell
+chmod a+x hello_app
+chmod a+x app_update.sh
+chmod a+x update.sh
+chmod a+x make_firmware_update.sh 
+```
+
+Next run **make\_firmware\_update.sh** to create a tar.gz file.
+
+```shell
+./make_firmware_update.sh
+```
+
+## Step 2: upload update Tar
+
+Next, we need to upload the tar to [bytebeam cloud.](https://cloud.bytebeam.io/) For that go to device management panel and click on the **Firmware Versions** tab.&#x20;
+
+![](/assets/Sj5Ohn7jStYGBTur5AE4C_linuxdocsupdaterollback2.png)
+
+
+Under the Firmware version tab, you will find an option to create a firmware version number and upload your updated tar file.
+
+Enter the new **Firmware version number** and click on **choose file** to upload tar file. Then click on **Create.**&#x20;
+
+![](/assets/ErrnlVBZhXUFEt7LRoMpI_linuxdocsupdaterollback6.png)
+
+## Step 3: Set the application path
+
+In **step 1** we have already assumed that you want to update** **the** hello\_app** that exists on your remote device and we created an update tar accordingly. On the remote device, the app is expected to be in **/usr/local/bin** location. If it's not there then create a new **hello\_app** in **/usr/local/bin.**
+
+```shell
+#!/bin/bash
+
+while [ 1 ]
+        do
+                sleep 3
+                echo "Hi from Bytebeam"
+        done
+```
+
+If the application location and app name are different, set the path in app\_update.sh script in **Step 1**.&#x20;
+
+```shell
+APP_NAME=hello_app
+APP_BIN_PATH=/usr/local/bin
+```
+
+## Step 4: Create systemctl service to debug update changes
+
+To debug your changes after the app update, Let's create a service that runs hello\_app. So, create this service named **\<App Name>.service** and place it in **/etc/systemd/system**.
+
+```none
+[Unit]
+Description=Simple Application service
+After=network.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/bash /usr/local/bin/hello_app
+KillMode=process
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemctl daemon and start the service.
+
+```shell
+sudo systemctl daemon-reload 
+sudo systemctl enable hello_app.service
+sudo systemctl start hello_app  
+```
+
+## Step 5: Trigger "update firmware" action from bytebeam cloud&#x20;
+
+Now let's proceed with our OTA update. For that, Go to the **Device Management** panel and select the device
+
+Next, Click on the **update firmware**
+
+![](/assets/2tkbu4SMPqYerxEHmsKID_linuxdocsupdate12.png)
+
+In the next prompt choose the **firmware version** and click on **next**
+
+![](/assets/bpMRDzWv9gLhZ0UFeiiXx_linuxdocsupdate14.png)
+
+Monitor the progress of firmware updates in the action panel. and on your remote device, you can see  updated **hello\_app**
+
+![](/assets/8oTRDd3EnhmvIwOwD-HZG_linuxdocsupdate16.png)
+
+![](/assets/VvD4ILamsTOWJHwAnkZnv_linuxdocsupdate17.png)
+
+## Update uplink
+
+Using these steps we can update the uplink as well.&#x20;
+
+### Steps to follow
+
+**Step 1:** In the example, replace the hello\_app with the uplink binary.&#x20;
+
+**Step 2:** Change the uplink path and application name in app\_update.sh
+
+**Step 3:**  Run make\_firmware\_update.sh.&#x20;
+
+**Step 4:** Upload the generated update tar file to Bytebeam cloud.

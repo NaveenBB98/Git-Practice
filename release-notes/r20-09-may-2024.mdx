@@ -1,0 +1,55 @@
+---
+title: R20 09-May-2024
+slug: ZpDw-r
+createdAt: Thu May 09 2024 03:36:47 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu May 09 2024 09:52:45 GMT+0000 (Coordinated Universal Time)
+---
+
+### Serial Key Metadata
+
+![](/assets/KxV--yo3LAyHGcJyCEKXp_serial-key.png)
+
+![](/assets/PwPqzArre6dMM16j_pidc_chrome-capture-2.png)
+
+Our platform now features an innovative enhancement that allows you to designate a specific metadata field as a serial key, seamlessly replacing the device ID throughout the console. This new capability streamlines system management by providing a unified identifier that simplifies tracking and improves traceability. With this update, you can enjoy enhanced flexibility in metadata configuration, reduce administrative overhead, and ensure a consistent user experience across the platform.&#x20;
+
+### Additional settings in DBC Parsers
+
+![](/assets/1snIlMLHIwSgoGH3e9_TB_screenshot.png)
+
+In the last release, we introduced the DBC Parser, a tool that decodes messages from your IoT device's CAN bus using DBC files to translate raw data into clear, actionable information. This release enhances the parser with optional settings, such as:
+
+- **Appending CAN IDs** to column names for easier identification.
+- **Disabling Enum Parsing** for flexible data interpretation.
+- Configurable **Upper and Lower Thresholds for Flushing Clusters (ms)** to control data processing timing.
+- A **DBC Version Filter** to identify versions in the CAN table.
+
+These improvements provide enhanced flexibility and precision for seamless data analysis.
+
+### CSV/XLSX file upload for selecting devices in multiple phases
+
+![](/assets/sHS8V6hI3WhMTx4Hxub3V_chrome-capture-8.png)
+
+We've added a new feature that streamlines device selection when triggering a new action. Now, you can upload a CSV or XLSX file containing a list of devices, either by device ID or serial key metadata, for each phase. This enhancement simplifies the selection process, minimizes manual errors, and makes action initiation faster and more accurate, providing a more efficient workflow overall.
+
+### Customize Logo
+
+![](/assets/s2Inh5nGnxyXniC-gkuay_chrome-capture-3.png)
+
+You can now customize the console by adding your own logo, giving it a personalized feel that aligns with your brand. This feature allows you to make the interface uniquely yours, fostering a consistent visual identity that enhances the user experience.
+
+### Action Logs
+
+![](/assets/xcz79m0WYjOWSIi1dFiuz_chrome-capture-6.png)
+
+We've introduced action logs that provide detailed insights into each step of the action cycle. These comprehensive logs offer a transparent view of the entire process, making it easy to track progress, diagnose issues, and ensure accountability throughout the workflow.
+
+### Bug fixes & Minor changes
+
+- 🤝 The Compare dashboard view is now fully shareable, including timestamps. This improvement enables better collaboration and analysis among team members
+- **✅ **The Alerts panel and Phased Action in New Action, now feature scrollable tabs, making navigation more intuitive.&#x20;
+- 🔧 Panels now have the ability to auto-scale units, providing dynamic adjustments for clearer data visualization.
+- 🐛 Enhanced error handling in Dashboards and resolved known issues for a smoother user experience.
+- 🔒  If a user is logged out and then logs back in, they will be redirected to the page they initially attempted to access, ensuring a seamless continuation of their workflow.
+
+We've fine-tuned our platform, squashing various bugs and implementing subtle changes to enhance stability and performance. Enjoy a smoother user experience with these updates.

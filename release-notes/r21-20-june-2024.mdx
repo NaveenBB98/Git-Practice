@@ -1,0 +1,71 @@
+---
+title: R21 20-June-2024
+slug: bBrr-r21
+createdAt: Wed Jun 19 2024 18:50:28 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Jun 20 2024 05:32:18 GMT+0000 (Coordinated Universal Time)
+---
+
+### **Ability to cancel an action**
+
+![](/assets/pnSi40GtzUUse81bo4KyD_screenshot-2024-06-20-at-74351-am.png)
+
+Users now have the ability to cancel an ongoing action. When an action is canceled, it triggers a new **cancel\_action **on the device. If the action is still in a queued state and has not yet reached the device, the system will update the action status to "canceled" without initiating a new cancel action. This will also delete any downloaded firmware or other files on the device.
+**Note: **This requires Uplink version **v2.13.0**
+
+### **Ability to retry an Action**
+
+![](/assets/m9YlNitQsEtcX34Su0fQZ_screenshot-2024-06-20-at-75006-am.png)
+
+Users now have the option to retry an action if it is in a failed state. This feature allows the same action to be retriggered without creating a new entry in the user interface. The retry option ensures that users can quickly address and resolve issues without having to initiate a new action from scratch. Additionally, the system maintains the continuity of the action, providing a seamless experience by preserving the original context and parameters of the action, making it more efficient and user-friendly.
+
+### **Show devices with Pending Actions (blockers) when Triggering a New Action**
+
+![](/assets/2d5Qj04SB2cKLI1fjxiA__screenshot-2024-06-20-at-73441-am.png)
+
+When a new action is triggered, it may be blocked by any pending actions on the device. Now, when initiating a new action, a warning icon will be displayed for devices with pending actions that have the potential to block the current action. Additionally, if you attempt to trigger an action on a device with pending actions, a warning modal will appear. This modal will list the devices with pending actions and provide an option to mark all actions on those devices as complete, thereby unblocking the current action.
+
+### **Action Progress Histogram and Error Distribution Graphs**
+
+![](/assets/qCm4qfm7B_zXTGgF1DqtH_screenshot-2024-06-20-at-75420-am.png)
+
+![](/assets/WW_pc_lEftLhTXbvVTcpX_screenshot-2024-06-20-at-75617-am.png)
+
+The summary in the Action Details section now includes an error distribution graph and a progress histogram for the selected action. The error distribution graph visualizes the errors that occurred for an action, showing the count of affected devices, helping to identify common issues. The progress histogram displays the number of devices and their progress in percentage, providing a clear overview of the action's overall progress.
+
+### **Stream Status Panel**
+
+![](/assets/R4cfJZHk9D_j0IP1RyPS5_screenshot-2024-06-20-at-80712-am.png)
+
+A new panel called the Stream Status Panel has been added. This panel visualizes whether devices have received any data in the selected streams within the chosen time range. Additionally, it displays the timestamp of the last received data when hovered over, allowing for easy tracking. This feature is especially useful for diagnosing issues where a device may be unable to send certain data points, helping to identify and troubleshoot data transmission problems more effectively.
+
+### **iFrame Panel**
+
+![](/assets/IsNNCEzwk2e-_tLCCY1xE_screenshot-2024-06-20-at-82230-am.png)
+
+A new Iframe Panel has been added to the dashboard. This panel allows users to embed external web pages directly into the dashboard by providing a URL in the edit settings. Once the URL is entered, the specified webpage will be displayed within an iframe in the panel. This feature enhances the dashboard's versatility by enabling the integration of various web-based tools and resources, such as live data feeds, analytics tools, or custom web applications, providing a more comprehensive and unified view of the operations.
+
+### **Ability to add name to an API key **
+
+![](/assets/eU9Tu8j7EMY-zDWy9yjNU_screenshot-2024-06-20-at-75848-am.png)
+
+Users can now add names when creating an API key. This enhancement aids in tracking which API key is responsible for specific actions. The assigned names will appear in the Action List UI and logs, providing clear identification and better traceability of API key activities. This feature simplifies monitoring and management, ensuring users can easily identify and manage their API keys and the actions they perform.
+
+### **Last action on a device can be retried, cancelled or marked as complete from Device management itself**
+
+![](/assets/kPXVz714gF2PurDzuftlz_screenshot-2024-06-20-at-75936-am.png)
+
+The last action displayed in the device management section within device details now features a three-dot menu, providing a variety of options for managing that action on the device. The available operations include: marking all actions on the device as complete, completing the last action, canceling the action, retrying the action, viewing logs, and accessing the action detail page. This enhancement offers users greater control and flexibility in managing device actions and improving overall device management efficiency.
+
+### Bug fixes & Minor changes
+
+- Show device ID on hover over Serial key field in device management
+- Ability to update Favicon in General Settings
+- Uncompressed size of the firmware can now be edited
+- Remote shell action will be marked as completed on closing the modal
+- Pending actions on devices can be marked as complete while triggering new action
+- Default device filter in Device Dashboard
+
+We've refined our platform by resolving various bugs and implementing subtle changes to boost stability and performance. Enjoy a smoother and more reliable user experience with this update.
+
+
+

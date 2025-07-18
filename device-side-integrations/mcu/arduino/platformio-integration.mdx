@@ -1,0 +1,40 @@
+---
+title: PlatformIO Integration
+slug: _aVV5FzBj1Nz_O70pWArK
+description: Learn how to easily install the bytebeam-esp-idf-sdk using PlatformIO with this comprehensive document. Follow step-by-step instructions using either the intuitive PlatformIO GUI or the convenient PlatformIO Core CLI. Ensure a smooth installation by choos
+createdAt: Fri Mar 17 2023 14:30:27 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+**bytebeam-esp-idf-sdk** is available in Platform IO registry. See [PlatformIO Registery](https://registry.platformio.org/libraries/bytebeamio/bytebeam-esp-idf-sdk) for details.
+
+## Getting the SDK Via PlatformlO Home
+
+You can install the SDK with PlatformIO GUI. We recommend installing the latest version of the SDK for this integration. Follow the below steps to install the SDK :)
+
+Open the PlatformIO project. Go to PIO~~ ~~Home Libraries section and search for the `bytebeam` keyword. The **bytebeam-esp-idf-sdk** will pop up.&#x20;
+
+![](/assets/Ejhn3Yei8B6xZ0LmcdlQv_four-c.png)
+
+Go ahead select the latest version (say `1.0.1`) and hit the `Add to Project` button.
+
+![](/assets/Rt7e2Z396GchBhAtykPt8_five-c.png)
+
+## Getting the SDK Via PlatformlO Core CLI
+
+You can install the SDK with`pio pkg install`command. We recommend installing the latest version of the SDK for this integration. Follow the below steps to install the SDK :)
+
+- Open PlatformIO Core CLI.
+- Change directory (cd) to the PlatformIO project where platformio.ini is located.
+- Copy the following [pio pkg install](https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_install.html) command and paste into the CLI shell, press **Enter.**
+
+**Note:** You can mention the latest version (say `1.0.1`) in the below command if applicable.
+
+```shell
+pio pkg install --library "bytebeamio/bytebeam-esp-idf-sdk@^1.0.1"
+```
+
+If installation is successfully done, output should be as follows.
+
+![](/assets/9iUEDo2sWBP0j7Rq-9RNR_image.png)
+

@@ -1,0 +1,101 @@
+---
+title: Cloud Logging
+slug: s3p--cloud-logging
+description: Learn how to use cloud logging to remote debugging with bytebeam-esp-idf-sdk
+createdAt: Sat Mar 18 2023 07:15:29 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+Cloud Logging is one of the most underrated features when it comes to remote debugging. With **bytebeam-esp-idf-sdk** it is as simple as Serial logging. Let me show you how,
+
+### Configure the Log Stream
+
+To push the log to Bytebeam Cloud you need to first create a stream. You can do this by following the [Creating a Stream](https://bytebeamio.mintlify.app/platform-guide/streams-tables/creating-a-stream) guide. Log stream is configured to `logs` by default inside the SDK and you have the option to tune it as per your choice using `bytebeam_log_stream_set` function. Once you have created a stream you can use the logging macros to publish the log to the stream.
+
+**Note:** Make sure to add the tag, level and message fields i.e. (data type is String) while creating the stream.
+
+```cpp
+
+// get the log stream name
+char* log_stream_name = bytebeam_log_stream_get();
+
+// configure the log stream if needed, defaults to "logs"
+bytebeam_log_stream_set("device_logs");
+
+```
+
+### Let's send the log to Bytebeam Cloud
+
+We have implemented the cloud logging in ESP-IDF Style so if you're familiar with the ESP-IDF logging library, you can easily relate to it.
+
+```cpp
+
+// setting logging tag
+const char* TAG = "EXAMPLE_TAG";
+
+//
+// Error Log
+//
+BYTEBEAM_LOGE(TAG, "I am %s Log", "Error");
+
+//
+// Warn Log
+//
+BYTEBEAM_LOGW(TAG, "I am %s Log", "Warn");
+
+//
+// Info Log
+//
+BYTEBEAM_LOGI(TAG, "I am %s Log", "Info");
+
+//
+// Debug Log
+//
+BYTEBEAM_LOGD(TAG, "I am %s Log", "Debug");
+
+//
+// Verbose Log
+//
+BYTEBEAM_LOGV(TAG, "I am %s Log", "Verbose");
+
+```
+
+### Logging Level
+
+We support multiple logging level ranging from `BYTEBEAM_LOG_LEVEL_NONE` to `BYTEBEAM_LOG_LEVEL_VERBOSE` and the level of logging you want to achieve in your code can be set by using `bytebeam_log_level_set` function anywhere in your code. When you call any logging macro the SDK will check the configured log level internally and will only log it if the log level is equal or less than the configured log level.
+
+```cpp
+
+// get the bytebeam log level
+int current_log_level = bytebeam_log_level_get();
+
+// set the bytebeam log level
+bytebeam_log_level_set(log_level_to_set);
+
+```
+
+### Enable/Disable Cloud Logging
+
+Few cases exists where you don't want to pump up the logs to cloud, In those scenarios you can disable the cloud logging using `bytebeam_disable_cloud_logging` function anywhere in the code. By default, cloud logging is enabled inside the SDK.
+
+```cpp
+
+// check if cloud logging is enabled or disabled for your device
+bool cloud_logging_status = bytebeam_is_cloud_logging_enabled();
+
+if(!cloud_logging_status) {
+    Serial.println("Cloud Logging is Disabled.");
+} else {
+    Serial.println("Cloud Logging is Enabled.");
+}
+
+// enable cloud logging for your device (default)
+bytebeam_enable_cloud_logging();
+
+// disable cloud logging for your device
+bytebeam_disable_cloud_logging();
+
+```
+
+
+﻿Have a look at [cloud\_logging](https://github.com/bytebeamio/esp-bytebeam-sdk/tree/main/examples/cloud_logging) example app for a full fledged example showing how you can use cloud logging feature to send some crucial information to bytebeam cloud.

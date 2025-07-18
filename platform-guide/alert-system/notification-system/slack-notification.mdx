@@ -1,0 +1,59 @@
+---
+title: Slack Notification Rules
+slug: Z72K-notification
+createdAt: Tue Mar 12 2024 14:22:39 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Mar 13 2024 09:51:35 GMT+0000 (Coordinated Universal Time)
+---
+
+## Overview
+Slack notification rules allow you to send alerts to a specific Slack channel when conditions or thresholds in your data streams are met.
+
+These real-time updates help your team stay informed about critical changes or events that require immediate attention, enabling quick responses and coordination. For example, a Slack notification can be triggered when a machine's temperature exceeds a critical threshold, allowing the team to act swiftly to prevent failure.
+
+## Creating Slack Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/adc41db5-e98a-4685-b3ff-f5fc77d502e9.gif)
+
+To create a Slack Notification Rule in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Creation"> Click on the **+ Notification Rule** button and select the **Slack** option. </Step> 
+<Step title="Fill Details"> 
+<p>
+Enter the notification rule name and the **Slack Channel ID** and **Bot Token** for the channel where you want to send the notifications. Then, select the created alert rules, enable the **Notify on Deactivation toggle** and notification interval (which defines how frequently the notification is sent) and specify the alert template along with Timezone. Finally, click **Submit**.
+</p> 
+<Warning>
+    Enabling the **Notify on Deactivation** toggle allows you to receive notifications when an alert is deactivated, in addition to the existing activation emails.
+  </Warning>
+</Step> 
+</Steps> 
+Your new **Slack Notification Rule** will appear in the Notification Rules table.
+<Note>You can test the notification by clicking on Test Notification to verify that the alert is being sent to the correct Slack channel.</Note>
+<Note>You can customize the activation and deactivation templates to suit your needs by following [this guide](/platform-guide/alert-system/notification-system/alert-templates). </Note>
+<Info>Hover over the notification rule name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</Info>
+
+## Editing Slack Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/6068a3b5-745f-4720-b9bb-f80e35d76e8d.gif)
+
+To edit an existing Slack Notification Rule in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Edit"> Find the Slack notification in the **Notification Rules** and click the **Edit** icon next to it. </Step> 
+<Step title="Modify Details"> You can change the Slack Channel ID, Bot Token, modify the template, timezone, notification interval and enable or disable toggle for notifying on deactivation. After making the changes, click **Submit** to save your modifications. </Step> 
+</Steps>
+<Warning>You can not change the alert rule for the same notification rule once the notification rule is created with it.</Warning>
+
+## Deleting Slack Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/3d1ce68f-f78a-496f-87f0-38214a3be952.gif)
+
+To delete an existing Slack Notification Rule in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Deletion"> Find the Slack notification in the **Notification Rules** and click the **Delete** icon next to it. </Step> 
+<Step title="Confirm Deletion"> Enter the exact text that is shown on the modal and click **Submit** to delete the notification. </Step> 
+</Steps> 

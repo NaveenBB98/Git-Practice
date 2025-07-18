@@ -1,0 +1,44 @@
+---
+title: Last Value
+slug: kd24-last-value
+createdAt: Wed Sep 21 2022 16:25:28 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 29 2023 18:15:24 GMT+0000 (Coordinated Universal Time)
+---
+
+The Last Value Panel is designed to display the most recent data point from your selected stream. It is ideal for monitoring live metrics such as the current temperature, usage statistics, or any data point representing the latest state of a system.
+
+With its simple yet customizable features, the Last Value Panel provides quick insights at a glance.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/82e0f96e-b5b9-4539-a75f-2850d6826d6c/11c16c61-c4b0-470d-b4f6-e00725ce5d83/images/3f52642d-3980-4ff8-9f4f-06406f02d470.gif)
+
+## Add Last Value Panel
+
+<Steps> 
+<Step title="Navigate to Dashboards"> Go to the **Dashboards** tab, select the desired dashboard, and click on the **+ Panel** button to create a new panel. </Step> 
+<Step title="Select Last Value Panel"> Choose **Last Value Panel** from the list of available panels. ![](/assets/14L3IuaWydWzzgkFzXa0l_screenshot-from-2023-10-29-18-25-35.png) </Step> 
+<Step title="Customize General Settings">
+  Configure the following under the **General Settings** tab:  
+  - **Add a Title**: Provide a name for the panel to represent its purpose.  
+  - **Description**: Optionally, add a short description for context.  
+  - **Select Stream**: Choose the data stream from which the most recent value will be displayed.  
+  - **Select Field**: Pick the column (field) from which the latest value will be extracted. Choose individual columns to display or click **Add 40 More Columns** to include all available columns upto 40. 
+  <Warning>You can add atmost 40 columns for a Stream in the Last Value panel.</Warning>
+</Step>
+<Step title="Apply Filters">
+  Refine the data to be displayed using the **Filters** section:
+  - **Select Field**: Choose the column to apply the filter.
+  - **Select Operator**: Set the filter condition (e.g., equals, not equals, greater than).
+  - **Enter Value**: Provide the value for the selected filter.
+  - Click **+** to apply more filters as needed.
+</Step>
+
+<Step title="Customize View Options">
+  Switch to the **View Options** tab to personalize the panel's appearance:
+  - **Enable Units**: Display the appropriate unit for the value (e.g., °C, %, MB).
+  - **Round Off Values**: Set the number of decimal places for the displayed value.
+  - **Auto Resize**: Adjust the font size for better readability.
+</Step>
+
+<Step title="Submit the Panel"> Once all customizations are complete, click **Submit** to add the Last Value Panel to the dashboard. </Step> 
+</Steps>
+
