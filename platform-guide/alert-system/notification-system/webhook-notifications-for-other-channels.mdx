@@ -1,0 +1,60 @@
+---
+title: Webhook Notification Rules
+slug: lcBf-webhooks
+createdAt: Tue Mar 12 2024 14:19:56 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Mar 13 2024 12:32:28 GMT+0000 (Coordinated Universal Time)
+---
+
+## Overview
+Webhook notification rules allow you to send real-time alerts to a specified URL when conditions or thresholds in your data streams are met.
+
+Used to integrate Bytebeam with external services, webhook notifications automate workflows by allowing you to customize the request body and headers with key-value pairs. For example, a webhook notification can send data to a monitoring service when a device goes offline, triggering automated recovery actions.
+
+## Creating Webhook Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/09e9e321-979b-4bfc-8b1a-99ec644f1d6f.gif)
+
+To create a Webhook Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Creation"> Click on the **+ Notification Rule** button and select the **Webhook** option. </Step> 
+<Step title="Fill Details"> 
+<p>
+Enter the notification rule name and the **Webhook URL** where the notification should be sent. Optionally, you can add **Header Keys** such as Content-Type and **Header Values** such as application/json. You can also select the created alert rules, enable Notify on Deactivation toggle and enter notification interval, define how frequently the webhook should be sent, and specify the alert template along with timezone. Finally, click **Submit**. 
+</p> 
+<Warning>
+    Enabling the **Notify on Deactivation** toggle allows you to receive notifications when an alert is deactivated, in addition to the existing activation emails.
+  </Warning> 
+</Step> 
+</Steps> 
+
+Your new **Webhook Notification Rule** will appear in the Notification Rules table.
+<Note>You can test the notification by clicking on Test Notification to ensure the webhook is being triggered correctly and received at the specified URL.</Note>
+<Note>You can customize the activation and deactivation templates to suit your needs by following [this guide](/platform-guide/alert-system/notification-system/alert-templates). </Note>
+<Info>Hover over the notification rule name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</Info>
+
+## Editing Webhook Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/e79ffd1d-1cec-4158-9d11-853442abeec1.gif)
+
+To edit an existing Webhook Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Edit"> Find the Webhook notification in the **Notification Rules** and click the **Edit** icon next to it. </Step> 
+<Step title="Modify Details"> You can change the Webhook URL, update or add new Header Keys and Header Values, modify the template, timezone, notification interval and enable or disable toggle for notifying on deactivation. After making the changes, click **Submit** to save your updates. </Step> 
+</Steps>
+<Warning>You can not change the alert rule for the same notification rule once the notification rule is created with it.</Warning>
+
+## Deleting Webhook Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/58cafff5-0261-4d50-a305-40e1e6afb1d1.gif)
+
+To delete an existing Webhook Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Deletion"> Find the Webhook notification in the **Notification Rules** and click the **Delete** icon next to it. </Step> 
+<Step title="Confirm Deletion"> Enter the exact text that is shown on the modal and click **Submit** to delete the notification. </Step> 
+</Steps> 

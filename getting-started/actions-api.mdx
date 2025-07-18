@@ -1,0 +1,163 @@
+---
+title: Introduction to Bytbeam Actions APIs
+description: Learn how to trigger actions from Bytebeam using APIs, including constructing URLs, creating API keys, and triggering actions.
+---
+
+## Overview
+Bytebeam provides APIs to trigger various actions on devices. This guide explains how to construct API requests, authenticate, and trigger actions with different payloads.
+
+## Constructing URLs and Finding Project ID
+
+- **Base URL:** `https://{cluster_name}.bytebeam.io/api/v1/actions` 
+
+  Example for {cluster_name}: cloud or any enterprise name
+- **Project ID:** Locate your project/tenant ID in the platform’s URL or locate it by clicking on your user profile in the platform.
+
+## Creating an API Key
+
+To generate an API key, [follow the steps](/platform-guide/api-keys/create-an-api-key)
+
+## Triggering Actions via API
+
+To create a new action type, [follow the steps](/platform-guide/actions/action-settings/creating-an-action-type) or use the curl example provided below.
+<AccordionGroup>
+  <Accordion title="Curl example to create new action type" icon="circle">
+In the following curl example, replace these details to create the action type:
+- `{cluster_name}`
+- `{api-key}`
+- `{tenant}`
+- `{action_type_name}`
+- `{payload_type}`
+
+```bash
+curl 'https://{cluster_name}.bytebeam.io/api/v2/actions' \
+  -H 'x-bytebeam-api-key: {api-key}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-bytebeam-tenant: {tenant}' \
+   --data-raw '{"type":"{action_type_name}","icon":"pencil","payload_type":"{payload_type}","timeout":null}'
+```
+</Accordion>
+</AccordionGroup>
+
+#### Request Structure
+
+**Headers:**
+```yaml
+Content-Type: application/json
+x-bytebeam-tenant: <tenant>
+x-bytebeam-api-key: <api-key>
+```
+
+## <a id="payload-in-action-types"></a>Payload Options
+There are 3 payload options available.
+<AccordionGroup>
+  <Accordion title="None" icon="circle">
+    For action types like Reboot, Factory Reset etc, no need to send any request payload.
+    Example Actions:
+    - `set_ignition_on`
+    - `set_ignition_off`
+    - `set_digital_output1_on`
+    - `set_digital_output1_off`
+    - `reboot_device`
+    - `factory_reset`
+
+    <Note>Follow the exact naming convention (e.g., reboot_device, factory_reset) when creating these action types on Bytebeam..</Note>
+
+
+#### Curl Example
+
+In the following curl example, replace these details to trigger the action:
+- `{cluster_name}`
+- `{api-key}`
+- `{tenant}`
+- `{action_type_name}`
+
+<Note>"filter" option can be used with other metadata options as well like "vin":["KA01B1620","AP39B1620"]. The `schedule_timestamp` should be a Unix timestamp in **milliseconds** representing the scheduled start time of the action.</Note>
+
+
+```bash
+curl 'https://{cluster_name}.bytebeam.io/api/v2/actions' \
+  -H 'x-bytebeam-api-key: {api-key}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-bytebeam-tenant: {tenant}' \
+  --data-raw '{"action_type":"{action_type_name}","params":{},
+  "retry_count":0,"release_notes":"","phases":[{"name":"Phase I","filter":{"id":["1","2"]},
+  "fraction":100,"schedule_timestamp":1750928227490}]}'
+```
+  </Accordion>
+
+  <Accordion title="JSON" icon="file-code">
+    For action types like Update Config, Update Firmware, Update Geofence send the required json payload.
+
+    Example Actions:
+    - `update_firmware`
+    - `update_config`
+    - `update_geofence`
+
+#### Example Request for Update Firmware, Update Config, Update Geofence:
+
+Replace the version_name with actual firmware version and use this in the params section of the request.
+```json
+{
+  "version": "{version_name}"
+}
+```
+
+#### Curl Example
+
+In the following curl example, replace these details to trigger the action:
+- `{cluster_name}`
+- `{api-key}`
+- `{tenant}`
+- `{action_type_name}`
+<Note>"filter" option can be used with other metadata options as well like "vin":["KA01B1620","AP39B1620"]. The `schedule_timestamp` should be a Unix timestamp in **milliseconds** representing the scheduled start time of the action.</Note>
+
+
+```bash
+curl 'https://{cluster_name}.bytebeam.io/api/v2/actions' \
+  -H 'x-bytebeam-api-key: {api-key}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-bytebeam-tenant: {tenant}' \
+  --data-raw '{"action_type":"{action_type_name}","params":{"VehicleRegNumber": "MH12AB1234",
+  "HeartbeatInterval": 60,
+  "DigitalOutputsStatus": 5,
+  "TripOdometer": 12345,
+  "TotalOdometerWheel": 987654,
+  "APN": "internet.airtel.in",
+  "ServerIPDomain": "telematics.example.com",
+  "ServerPort": 8080,
+  "APNUsername": "user123",
+  "APNPassword": "pass123",
+  "ActiveReportingInterval": 30,
+  "StationaryReportingInterval": 300},
+  "retry_count":0,"release_notes":"","phases":[{"name":"Phase I","filter":{"id":["1","2"]},
+  "fraction":100,"schedule_timestamp":1750928227490}]}'
+```
+</Accordion>
+
+  <Accordion title="Text" icon="pencil">
+    For action types that require textual payload, this is required.
+    #### Curl Example
+
+
+In the following curl example, replace these details to trigger the action:
+- `{cluster_name}`
+- `{api-key}`
+- `{tenant}`
+- `{actual_text}`
+- `{action_type_name}`
+<Note>"filter" option can be used with other metadata options as well like "vin":["KA01B1620","AP39B1620"]. The `schedule_timestamp` should be a Unix timestamp in **milliseconds** representing the scheduled start time of the action.</Note>
+
+
+```bash
+curl 'https://{cluster_name}.bytebeam.io/api/v2/actions' \
+  -H 'x-bytebeam-api-key: {api-key}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-bytebeam-tenant: {tenant}' \
+    --data-raw '{"action_type":"{action_type_name}","params":"{actual_text}","retry_count":0,
+    "release_notes":"","phases":[{"name":"Phase I","schedule_timestamp":1750930436563,
+    "filter":{"id":["1"]},"fraction":100}]}'
+```
+  </Accordion>
+</AccordionGroup>
+

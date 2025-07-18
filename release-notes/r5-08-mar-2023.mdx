@@ -1,0 +1,51 @@
+---
+title: R5 08-Mar-2023
+slug: 640x-r5-08-mar-2023
+description: Product Update by 08 Mar 2023, Changes in line chart, histogram, Configuration changes and other changes
+createdAt: Tue Mar 07 2023 13:32:21 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+## Line Chart - Ability to set custom range
+
+Now the users can set custom range for the Y-axis when showing values in line chart
+
+![](/assets/ChAlr9UxH0C4jXlHQ5Zue_screenshot-2023-03-08-at-84708-am.png)
+
+## Line Chart - Disable/Enable connect null values
+
+Null values can be connected or not represented in the line chart from the **View** settings
+
+![](/assets/RzqqTJOslZoaLeezhkNyd_connect-nulls.gif)
+
+## Histogram panel
+
+Now data can be visualised in the form of histogram, where we can select the stream and number of bins to classify the data into
+
+![](/assets/i0N1hyzYWZ7xnkagmr4Jc_screenshot-2023-03-08-at-84401-am.png)
+
+## Show confirmation "\<Version> is going to be deployed on \<n> devices" before triggering firmware update action
+
+When we trigger an action to update firmware, now we show a confirmation with version and device count as summary
+
+![](/assets/nTqLgFxdkQyM1D0p0cziB_screenshot-2023-03-07-at-103931-pm.png)
+
+## **Data pipeline metrics**
+
+We've added support to generate and collect important metrics in data pipeline. Metrics include:
+
+- Metering data like:
+  - Number of active connections   &#x20;
+  - Amount of data received from devices    &#x20;
+  - Amount of data received on subscription
+- Alerting data to capture errors&#x20;
+
+These metrics will be integrated with the UI and will be available for users soon.
+
+## Bug fixes & Minor changes
+
+- Change range in Line Chart only when the data has been fetched instead of before loading the complete data to avoid confusion
+- Line Chart - Tooltip not completely visible when have to show many data points
+- Fixed the loader not working properly when previous request was aborted in dashboard filters and time range change
+- Bug fix in Welcome screen when new user was seeing blank screen
+

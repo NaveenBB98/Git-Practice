@@ -1,0 +1,31 @@
+---
+title: Dependency of Versions between Components
+---
+
+## Why Are Version Dependencies Needed Between Components?
+In many devices, certain components depend on specific versions of other components to function correctly. When updating the firmware of one component, it’s essential to check that other interdependent components are running compatible versions.
+
+For instance, you might set a dependency between the Motor and Engine components, so that if the Engine is upgraded to version 3, the Motor must be on at least version 2 for the device to operate as expected.
+
+
+You can add a version dependency for a component while uploading the new firmware version by following the below steps:
+
+<Steps>
+  <Step title="Access Actions Tab">
+    Click on the **Actions** tab
+  </Step>
+  <Step title="Go to Inventory Tab and Access Firmware Files Tab">
+    Navigate to the **Firmware Files** tab by clicking on Inventory section
+  </Step>
+  <Step title="Go to the desired Device Component Tab and Initiate Upload">
+    Click on **Firmware Files** tab, click on the desired **Device Component** tab and click on **Upload New Firmware** button
+</Step>
+<Step title="Fill Details">
+    Enter details like version, upload the firmware file, enter uncompressed file size(Optional).
+</Step>
+<Step title="Click on Add Dependencies">
+    Click on **Add Dependencies** button and select the components and corresponding versions and click on **Submit** button.
+</Step>
+</Steps>
+
+<Note>You can [view](/platform-guide/actions/inventory-management/firmware-files/with-device-components/viewing-a-dependency-for-a-component) and [update](/platform-guide/actions/inventory-management/firmware-files/with-device-components/updating-a-dependency-for-a-component) the dependencies for existing firmware versions </Note>

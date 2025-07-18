@@ -1,0 +1,78 @@
+---
+title: Receiving actions
+slug: receiving-actions
+description: Guide on receiving actions in Rust ESP-IDF
+createdAt: 2022-09-20T07:07:59.000Z
+updatedAt: 2024-07-24T05:10:56.472Z
+---
+
+[Actions](/platform-guide/actions/action-details/introduction) are commands that platform sends to the client. The JSON format for Actions would look like:
+
+```json
+{
+    "name": "toggle_board_led",
+    "action_id": "101",
+    "payload": "ON",
+    "kind": "process"
+}
+```
+
+On device end, we need to write an action handler for handling individual action based on the name. Following example shows a way to create action handler and mapping it to a particular action:
+
+```cpp
+// handler for toggle led action
+int handle_toggle_led(bytebeam_client_t *bytebeam_client, char *args, char *action_id)
+{
+    // Log the received arguments and action id to serial for refrence
+    ESP_LOGI(TAG, "*** args : %s, action_id : %s ***", args, action_id);
+
+    //
+    // Include command for toggling LED over here
+    //
+
+    int ret_val = 0;
+
+    // This function allows platform to know about the completion of particular action
+    ret_val = bytebeam_publish_action_completed(bytebeam_client, action_id);
+
+    if(ret_val != 0)
+    {
+        //
+        // handle the publish action completed error here
+        //
+
+        return -1;
+    }
+
+    return 0;
+}
+
+/* Once you have created an action handler for particular action then it should
+ * be mapped with particular action. Below function call would do that mapping
+ */
+
+// bytebeam_client : Bytebeam Client object
+// handle_toggle_led : pointer to action_handler
+// toggle_board_led : action
+bytebeam_add_action_handler(&bytebeam_client, handle_toggle_led, "toggle_board_led");
+```
+
+### Action status response&#x20;
+
+While we execute the action, we need to send the progress back to the server so that the user can monitor the action remotely. To do so the following APIs can be used:&#x20;
+
+```cpp
+/* Action completed status response can be published by using below function */
+bytebeam_err_t  bytebeam_publish_action_completed(bytebeam_client_t *bytebeam_client, char *action_id);
+
+/* Action failed status response can be published by using below function */
+bytebeam_err_t  bytebeam_publish_action_failed(bytebeam_client_t *bytebeam_client, char *action_id);
+
+/* Action progress status response can be published by using below function */
+bytebeam_err_t  bytebeam_publish_action_progress(bytebeam_client_t *bytebeam_client, char *action_id, int progress_percentage);
+
+/* Custom Action Status response can be published by using below function */
+bytebeam_err_t bytebeam_publish_action_status(bytebeam_client_t* bytebeam_client, char *action_id, int percentage, char *status, char *error_message);
+```
+
+Have a look at <a href="https://github.com/bytebeamio/bytebeam-esp-idf-sdk/tree/main/examples/receive_data/toggle_led" target="_blank">toggle\_led</a> example app for a full fledged example showing how to add the action and publish the action status response to bytebeam cloud.

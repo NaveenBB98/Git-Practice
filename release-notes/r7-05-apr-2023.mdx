@@ -1,0 +1,42 @@
+---
+title: R7 05-Apr-2023
+slug: Z1Dq-r7-05-apr-2023
+description: Product Update by 05 Apr 2023, Addition of Increament loading, Latest release notes in cloud and other changes
+createdAt: Tue Apr 04 2023 15:40:55 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+### Incremental loading of panels when loading dashboards
+
+The dashboard's panels will load progressively rather than attempting to load all panel data simultaneously. This approach enhances dependability and improves error management within the dashboard. If a particular panel encounters an issue, it will not hinder the entire dashboard's functionality. Instead, only the affected panel will be emphasised, with the option to refresh its data.
+
+![](/assets/PYfJZiRyjKJkTfftewVPc_screenshot-2023-04-04-at-113059-pm.png)
+
+### Added Bytebeam documentation integration
+
+Now you can access the Bytebeam documentation within the cloud. You can click on help icon to get relevant documentation
+
+![](/assets/Tt_HSxb5nvjgyr8D69SMr_screenshot-2023-04-04-at-104352-pm.png)
+
+### Access latest release notes from cloud
+
+![](/assets/Snjzrjgiyt_EKHhfZbnHe_screenshot-2023-04-04-at-113909-pm.png)
+
+### Basic validations for data type in Panels
+
+Added basic validation in panels based on the data type of columns, it will prevent basic errors in the panel data due to mismatch between data types
+
+- Will be only able to set numerical fields in GPS columns
+- If the String type column is selected in the panels, it will only show 'Min' and 'Max' Aggregates
+
+### Showing action errors in device management
+
+If any action has failed, you can see the status as well as the error message in Device Management directly
+
+![](/assets/qCBB0S4nMz2OXf_7M5zVh_screenshot-2023-04-05-at-84358-pm.png)
+
+### Bug fixes & Minor changes
+
+- Downloaded metadata CSV file will have empty string to represent null values
+- Fixed device pulse sorting bug and started showing Total count in the panel
+

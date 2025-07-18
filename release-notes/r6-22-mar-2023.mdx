@@ -1,0 +1,56 @@
+---
+title: R6 22-Mar-2023
+slug: r4OF-r6-22-mar-2023
+description: Product Update by 22 Mar 2023, Changes in configuration, changes in device pulse, UI imporvements and other changes
+createdAt: Wed Mar 22 2023 03:34:04 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+### Show config\_version in Device Management if its present in device\_shadow
+
+View the config version JSON for the device if it is pushed in the **device\_shadow**.
+
+![](/assets/SQIx_0OeFxfb2jAwX-tpN_screenshot-2023-03-22-at-91517-am.png)
+
+![](/assets/IOKMfUomGRnQSu4ewHjdS_screenshot-2023-03-22-at-94509-am.png)
+
+### Device Pulse panel enhancements
+
+UI improvements in Device pulse panel to show clickable device Pulse. Also you can redirect to the device dashboard from the device list in the panel.
+
+![](/assets/QX87FyGSwCSiEPx9_6DFX_pulse-video.gif)
+
+### UI improvement and Validations in Histogram bin size (1-250)
+
+Histogram panel has limitation on Number of bins max limit being 250.&#x20;
+
+![](/assets/Lvd24bphgnxpEWqOFyC84_screenshot-2023-03-22-at-94840-am.png)
+
+### Remote shell in full screen mode
+
+Remote shell now works in full screen, providing more real estate. And also will not close on clicking outside the modal.
+
+![](/assets/Mdpi9HdSSVextupVYKngd_screenshot-2023-03-22-at-94256-pm.png)
+
+### Find and replace option inside dashboard advanced edit
+
+You can search inside the dashboard JSON, which will help navigate the huge JSON easily.
+
+![](/assets/c15IJu1nUB9AKEJT5_KzO_screenshot-2023-03-22-at-100713-am.png)
+
+### File size validation while uploading Firmware and sendFile Action
+
+Firmware upload and sendFile action used to fail silently in background, if the file size exceeded 1GB. Now it will not allow the files beyond 1GB size.&#x20;
+
+### Bug fixes & Minor changes
+
+- Fixed a bug line chart ends before current time if the data is not present
+- We now show a confirmation modal when launching any Action to avoid triggering the actions by mistake
+- We are now showing dashboard types in dashboards list
+- Fixed a bug where device dashboard would automatically select a device instead of showing the device list.
+- We now show the version when launching any action and activating/deactivating any device config.
+- Added error handling in case tenant already exists when creating new tenant.
+- Valid zero values are now show up as 0 instead of  '-' in Timeseries panels
+- Showing proper message instead of empty Table when there is no data
+- Fixed alignment when showing Loaders throughout the project
+

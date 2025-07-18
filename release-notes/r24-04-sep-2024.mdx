@@ -1,0 +1,49 @@
+---
+title: R24 04-Sep-2024
+slug: ZED--r24-04-sep-2024
+createdAt: Wed Sep 04 2024 13:53:44 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Sep 05 2024 09:41:30 GMT+0000 (Coordinated Universal Time)
+---
+
+### **Alert Groups**
+
+![](/assets/cnNH2TtsognywFGU1FgsQ-pWp_XAGk5iYOsrX1SIfDD-20240904-163721.png)
+
+We've added alert groups to enhance alert rule management. You can now create or assign existing groups to alert rules. If no group is specified, rules are added to the 'default' group. This grouping displays alert rules in an organized manner, making it easier to manage a large number of alerts efficiently.&#x20;
+
+### **Filters in Alerts Panel**
+
+![](/assets/cnNH2TtsognywFGU1FgsQ-BKNDomvwsjAVbjvj1Xrab-20240904-164023.png)
+
+We have introduced advanced filtering options in the Alerts panel, allowing you to choose between viewing 'All' alerts or specific alerts. Additionally, a new toggle enables filtering by alert groups rather than individual alert rules. When this toggle is enabled, you can filter by 'All' alert groups or select specific groups. The results are sorted in the panel, prioritizing alert rules or groups with the highest number of alerts at the top, followed by those with fewer or no alerts. This enhancement is designed to improve visibility and streamline alert management.
+
+### **Aggregates in Alerts Panel**
+
+![](/assets/cnNH2TtsognywFGU1FgsQ-wByc4ZLEgBdkKhD_8CleQ-20240904-173155.png)
+
+The alerts panel now includes a dropdown menu for selecting aggregate data options, such as min, max, sum, avg, count, first, and last. These aggregates provide a detailed overview of the data generated during alerts, enhancing analysis and decision-making. Once selected, the chosen aggregate appears in a separate column within the panel, making it easier to compare and quickly assess alert data.
+
+### **LTTB Aggregate**
+
+![](/assets/cnNH2TtsognywFGU1FgsQ-ayIdxFkYl9B7OGR77xOJ7-20240904-155847.png)
+
+We've introduced a new aggregate option called LTTB (Largest Triangle Three Buckets) for line charts, now available in the Aggregator dropdown. LTTB provides a more accurate representation of data compared to traditional aggregators like min, max, and others. This enhancement ensures that your line charts more precisely reflect the underlying data, improving the accuracy and reliability of visual analyses. [Learn more about LTTB](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets)
+
+### **Timezone support added to notification rules.**
+
+![](/assets/cnNH2TtsognywFGU1FgsQ-sAvIV1cA_Lk-qe5zH4vZ9-20240904-163503.png)
+
+Timezone support has been added to notification rules, allowing you to set timezone information when creating a notification rule. Once configured, notifications will be sent according to the selected timezone. A wide range of timezones are available, including Asia/Kolkata, UTC, America/New York, and more, ensuring your alerts are aligned with your local time.
+
+### Bug fixes & Minor changes
+
+- 🛑 Disabled the delete icon and added a popup when a notification rule cannot be deleted.
+- 📄 Added pagination support in the Alerts panel for easier navigation.
+- 🔍 Sessions Panel: Implemented validation to prevent duplicate aggregate names.
+- 🛠️ \[Fixed] Issue where edited notification templates were not displaying correctly in the UI.
+- ✅ Applied filters are now accurately displayed in the download filter metadata modal.
+- 🚫 Added validation to prevent creating a DBC with existing table names.
+- 🖥️ Displaying Device Type data in the Profile dropdown menu.
+
+
+

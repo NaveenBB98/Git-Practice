@@ -1,0 +1,22 @@
+---
+title: Streams
+slug: streams
+description: Guide on Streams in Bytebeam console
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+Streams are how you push data to Bytebeam console. A stream represents a series of time-series data points.&#x20;
+
+For example, if your device has a GPS sensor you will probably be collecting data packets containing latitude, longitude, timestamp, etc periodically. You can create a GPS stream on Bytebeam and push this data to the stream.
+
+By default Bytebeam expects every stream to have at least three fields:
+
+- `id`  to represent device id
+- `timestamp` to represent the timestamp at which the event happened
+- `sequence` an auto-incrementing number used to ensure all data has been transmitted correctly to the cloud.
+
+You can learn more about stream here:
+
+[Streams (Tables)](/platform-guide/streams-tables/streams)
+

@@ -1,0 +1,33 @@
+---
+title: Process Stats
+slug: rJ-b_fRbJwFG3uAxISzJw
+description: Learn how to view resource usage statistics of specific processes with this comprehensive guide. Discover how to specify process names in the config.toml file and access the uplink_process_stats stream. Explore the various fields available, such as PID, s
+createdAt: Mon Jun 19 2023 10:30:16 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sat Nov 11 2023 11:49:07 GMT+0000 (Coordinated Universal Time)
+---
+
+Process stats allow you to monitor individual processes. To enable process stats we need to modify uplink's `config.toml` file to mention the process names that need monitoring. If you have followed the setup guide, this file should be present in `/usr/share/local/byebeam`. Add the below section to `config.toml`
+
+```none
+[system_stats]
+enabled = true
+process_names = ["uplink", "journalctl"]
+update_period = 30
+
+```
+
+NOTE: The names of processes mentioned in the config should be the same as those in the output of `ps -eaf`
+
+The stream corresponding to process stats is **uplink\_process\_stats**. This stream has the below fields
+
+| Field name                | Description                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------- |
+| pid                       | This field corresponds to a particular process's ID.                                        |
+| start\_time               | Time at which the process had started execution.                                            |
+| cpu\_usage                | Percentage of CPU being used by the process.                                                |
+| mem\_usage                | RAM is used by the process, in bytes.                                                       |
+| disk\_read\_bytes         | The number of bytes of data read from the disk(or storage device) since the last update.    |
+| disk\_total\_read\_bytes  | Total number of bytes of data written to the disk(or storage device) since the last update. |
+| disk\_write\_bytes        | A number of bytes of data read from the disk(or storage device) since the last update.      |
+| disk\_total\_write\_bytes | Total number of bytes of data written to the disk(or storage device).                       |
+

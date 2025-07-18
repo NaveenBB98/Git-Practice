@@ -1,0 +1,57 @@
+---
+title: Signal Based Alerts
+---
+
+## What Are Signal-Based Alerts?
+Signal-based alerts are triggered when certain conditions or thresholds within your data stream are met. 
+
+These alerts are typically defined by specific criteria, such as exceeding a value, crossing a threshold, or when the data satisfies a predefined condition. Signal-based alerts are highly customizable, allowing you to set precise conditions to monitor the health and performance of your systems.
+
+## Uses of Signal-Based Alerts
+Signal-based alerts are used to monitor specific, actionable events in real-time. By setting thresholds or conditions, you can be notified immediately when important changes occur in your data.
+
+For instance, in an industrial setting, you may set a signal-based alert if the temperature of a machine exceeds a critical threshold, ensuring that operators can act quickly to prevent equipment failure.
+
+## Creating Signal-Based Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/f4347223-8b34-49bd-993b-0bdab9f9747f.gif)
+
+To create a Signal-Based Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Creation"> Click on the **+ Alert Rule** button and select the **Signal Based Alert** option. </Step> 
+<Step title="Fill Details"> Select the stream you want to monitor and define the condition or threshold that will trigger the alert. Specify other parameters such as alert name, criticality, alert group, [activation and deactivation thresholds](/platform-guide/alert-system/alert-rules/activation-and-deactivation-thresholds-in-alerts), select the dashboard to link from dropdown list then click **Submit**. </Step> 
+</Steps>
+Your new Alert Rule will appear in the table under the selected **Alert Group** on the **Alert Rules** tab.
+
+<Note>To activate the alert, click the Start icon next to it.</Note>
+<Note>You can stop any active alert by clicking the Stop icon next to it.</Note>
+<information>Hover over the alert rule name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</information>
+
+## Editing Signal-Based Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/7ed124b0-acc0-42bb-9530-284bcf49d947.gif)
+
+To edit an existing Signal-Based Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Edit"> Find the alert within any **Alert Groups** and click the **Edit** icon next to it. </Step> 
+<Step title="Modify Details"> Change the alert conditions, such as the alert name, alert group, [activation and deactivation thresholds](/platform-guide/alert-system/alert-rules/activation-and-deactivation-thresholds-in-alerts), change the linked dashboard using dropdown list or clear the linked dashboard and click **Submit** to save your changes. </Step> 
+</Steps>
+<Note>If you change the alert group, the alert will be moved to the selected group, so be sure to check the corresponding alert group after updating.</Note>
+
+## Deleting Signal-Based Alerts
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/46e36b8d-7fed-47c8-9cc7-2a874468dfd1.gif)
+
+To delete an existing Signal-Based Alert in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Alert Rules"> Navigate to the **Alerts** tab and click on **Alert Rules**. </Step> 
+<Step title="Initiate Deletion"> Find the alert within any **Alert Groups** and click the **Delete** icon next to it. </Step> 
+<Step title="Confirm Deletion"> Enter the correct alert rule name and click **Submit** to delete the alert. </Step> 
+</Steps>
+<Note>Alert rules cannot be deleted while they are running.</Note>
+<Warning>Deleting an alert rule will also delete all the associated notification rules.</Warning>

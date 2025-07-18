@@ -1,0 +1,33 @@
+---
+title: R2 01-Feb-2023
+slug: MeBl-r2-01-feb-2023
+description: Product Update by 01 Feb 2023, New internals, Improved logging with distributed logging and other changes.
+createdAt: Wed Feb 01 2023 09:59:52 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+We've made a lot of improvements and additions in the open source version of our MQTT broker - [rumqttd](https://github.com/bytebeamio/rumqtt). All of the latest advancements from it have been added to the cloud deployment.
+
+### New internals&#x20;
+
+The internal architecture of rumqttd (broker) has been revamped. Broker internally maintains a commitlog that publishers write to and subscribers read from. The earlier design maintained a copy of the entire commit log for each subscriber.
+
+In this version, there is now only one copy of the commit log per filter for all subscribers to read from. We maintain a read offset for subscribes into the commit log. This drastically reduces memory usage when there are multiple subscribers subscribed on the same filter.​
+
+Read about other changes to broker's internals in our blog post [here](https://bytebeam.io/blog/the-rust-based-mqtt-broker-rumqtt-gets-new-internals-cl8d5ur0u650711mmnqn9elrxg/).
+
+### Improved logging with Distributed Tracing
+
+Tracing support has been added to broker. Every log line emitted by the broker now contains contextual information and machine readable field structure. ​Logs are enriched with information like device id, packet and event types. This means that logs can be used effectively with other programs.
+
+Filtering based on a field like client id, topic, tenants, etc. or changing log levels can be done dynamically instead of restarting broker which would result in loosing old logs.
+
+A demo of tracing and other related changes can be found in our blog post [here](https://bytebeam.io/blog/rumqtt-release-r18-traceability-metering-and-native-tls-support-clati1td2571801kpsqcjku5bj/).
+
+### Bug fixes & Minor changes
+
+- **MQTT v5 experimental support**: Broker supports MQTT v5 for connects, publishes, and subscribes
+- **Prometheus integration**: With this the broker exposes metrics on an endpoint your Prometheus instance can scrape directly from
+
+
+

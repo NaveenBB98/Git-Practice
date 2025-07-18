@@ -1,0 +1,23 @@
+---
+title: Over The Air (OTA) Updates
+slug: nkwM-over-the-air-ota-updates
+description: Guide on enabling Over the air updates in Rust ESP-IDF
+createdAt: Thu Feb 02 2023 09:15:25 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+OTAs can be enabled like :
+
+```rust
+let bytebeam_client = ByteBeamClient::init()?;
+
+// This will register the ota handler for "update_firmware" action
+bytebeam_client.enable_ota();
+```
+
+Follow this steps to trigger OTA update :
+
+1. Create a new firmware version and upload the firmware on Bytebeam as per the instructions mentioned in the [Creating new Firmware Version](/platform-guide/actions/inventory-management/firmware-files/without-device-components/creating-a-new-firmware-version).
+2. Once, new firmware version is created, trigger OTA update as per the instructions mentioned in the [Triggering OTA update](/platform-guide/device-management/triggering-ota-update).
+3. Progress of the firmware update can be monitored on Bytebeam platform using **Action status**
+

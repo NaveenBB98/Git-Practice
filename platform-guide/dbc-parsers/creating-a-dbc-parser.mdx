@@ -1,0 +1,44 @@
+---
+title: Creating a DBC Parser
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/246efdc5-ecb7-4ee7-9b4b-c1d0da52923f/00129675-d005-494d-8dc9-71cdbebc0632/images/eacd204f-c899-4f7c-aa01-7db33e4fe889.gif)
+
+To create a new dbc parser in Bytebeam console,
+
+<Steps>
+  <Step title="Access Settings Tab">
+    Navigate to the **Settings Tab** by clicking on your username at the top right
+  </Step>
+  <Step title="Go to DBC Parsers Tab and Initiate DBC Parser Creation">
+    Navigate to the **DBC Parsers** tab and click on the **+ Add DBC Parser** button
+  </Step>
+  <Step title="Fill Details">
+    Select the DBC Type and fill all the other details such as DBC Name, DBC Version, Input Stream, Output Stream, Cycle time and Advanced settings(Optional) and click on **Submit** button to create the parser.
+</Step>
+</Steps>
+
+## DBC types
+
+There are 3 DBC types available.
+
+<AccordionGroup>
+  <Accordion title="custom" icon="upload">
+    You can upload the custom DBC file to create the parser instead of relying on standard DBCs.
+  </Accordion>
+
+  <Accordion title="j1939" icon="wrench">
+    You can choose this and select the PGNs(Parameter Group Numbers) from the dropdown to create the parser.
+  </Accordion>
+
+  <Accordion title="obd" icon="car">
+    You can choose this and enter the CAN ID to create the parser.
+  </Accordion>
+</AccordionGroup>
+
+## Important Info
+
+<Note>Use the icons next to each created dbc parser to start or stop the parser.</Note>
+<Warning>Adding CAN ID as suffix to columns and disabling enum parsing is not allowed when you choose DBC type as j1939 or obd.</Warning>
+<Info>Hover over the DBC name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</Info>
+

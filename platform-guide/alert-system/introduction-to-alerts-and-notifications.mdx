@@ -1,0 +1,64 @@
+---
+title: Introduction to Alerts and Notifications
+---
+
+Alerts and notifications play a pivotal role in the dynamic world of IoT by delivering timely insights and keeping users informed of key events, thresholds, and changes within the IoT ecosystem.
+
+You can set up alerts to trigger notifications for specific events or conditions, like a sudden temperature spike, a device going offline, or an unusual data pattern. 
+
+You decide the conditions, and we’ll make sure you’re notified across your preferred channels—whether it’s email, SMS, messaging apps, or webhooks. 
+
+This way, you’re always in the loop, able to respond quickly, and stay in control of your IoT environment.
+
+<Tabs> <Tab title="🧯 Alert Rules" icon="file-code">
+
+Alert rules let you define the conditions that matter most. You can create rules that trigger alerts based on specific signals, such as when data crosses a set threshold, or set up no-signal alerts to notify you if a data stream goes silent. 
+
+With flexible options for customizing each rule, you’re in control of how and when you’re alerted, ensuring you’re always aware of important changes or potential issues in your system.
+
+## Alert Groups
+Alert groups make it simple to organize and manage your alert rules, giving you a clear, streamlined view on the dashboard. By grouping related alerts, you can quickly see patterns, track issues by category, and focus on what’s most important—all from one place. 
+
+This organized approach enhances visibility, helping you keep a pulse on critical events and respond swiftly to any changes in your IoT environment.
+
+You can add a group for the alert while creating the alert itslef.
+You can even edit the existing alert rule and change the alert group in that to move the alert rule into a specified alert group.
+
+<Warning>The alert group disappears when all the alert rules written in it are either deleted or moved to some other alert group</Warning>
+<Note>All the existing alert rules are grouped under Default alert group.</Note>
+
+Following are the two types of alerts that you can configure in Bytebeam console:
+<CardGroup cols={2}> 
+<Card title="No Signal Alerts" icon="ban" href="/platform-guide/alert-system/alert-rules/no-signal-alerts"> No-signal alerts are designed to notify you when expected data goes missing. They activate when a data stream unexpectedly stops, signaling a potential issue with connectivity, device status, or data flow. </Card> 
+<Card title="Signal Based Alerts" icon="signal" href="/platform-guide/alert-system/alert-rules/signal-based-alerts"> Signal-based alerts keep you informed whenever key conditions are met in your data streams. These alerts are triggered by specific thresholds or parameters you set, such as temperature limits, sensor readings, or activity levels </Card> 
+</CardGroup> 
+</Tab> 
+<Tab title="🔔 Notification Rules">
+Notification rules let you decide how and where you want to be alerted when an event occurs. Once an alert is triggered, notification rules determine which channels—like email, Slack, SMS, WhatsApp, or webhooks—will deliver the message.
+
+## Alert Templates
+
+The alert template for Email, Slack and Webhook channels looks like this:
+
+```json JSON
+{% for alert in alerts -%}
+    {{ alert.name }} triggered at {{ alert.start_time }} on device {{ alert.device.id }}
+From ByteBeam
+    {% if not loop.last %}
+
+    {% endif %}
+{% endfor %}
+```
+With alert template, you can get the data of device like Metadata, Device Shadow, Status, Start Time, End Time, Last Action Details, Activation Values & Deactivation Values. You can customize the template for the above mentioned channels to see the corresponding data in the notification message.
+
+Following are the available notification channels in Bytebeam console:
+
+<CardGroup cols={2}> 
+<Card title="Slack" icon="slack" href="/platform-guide/alert-system/notification-system/slack-notification"> Integrate with Slack to bring alerts directly to your team’s workspace. With Slack notifications, your team can monitor updates, discuss incidents, and respond in real-time, all within a familiar communication tool.</Card> 
+<Card title="Email" icon="envelope" href="/platform-guide/alert-system/notification-system/email-notification"> With email notifications, alerts are delivered directly to your inbox, ensuring you never miss a critical update. Configure email notifications to reach specific individuals or groups for prompt awareness and action.</Card> 
+<Card title="Webhook" icon="webhook" href="/platform-guide/alert-system/notification-system/webhook-notifications-for-other-channels"> Webhook notifications allow you to seamlessly pass alerts to other applications or systems, enabling customized workflows. With webhooks, you can trigger specific actions or integrate alerts with third-party tools for advanced processing.</Card> 
+<Card title="SMS" icon="phone" href="/platform-guide/alert-system/notification-system/sms-notification"> SMS notifications offer instant, on-the-go alerts sent right to your phone. Ideal for time-sensitive updates, SMS ensures that you stay informed even when away from other devices.</Card> 
+<Card title="Whatsapp" icon="whatsapp" href="/platform-guide/alert-system/notification-system/whatsapp-notification"> WhatsApp notifications provide convenient, real-time alerts within a widely-used messaging platform. Ideal for teams and individuals who rely on WhatsApp for communication, this channel ensures alerts reach you quickly, wherever you are.</Card> 
+</CardGroup> 
+</Tab> 
+</Tabs>

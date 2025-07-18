@@ -1,0 +1,77 @@
+---
+title: Creating a Dashboard
+slug: creating-a-dashboard
+description: Steps to create a visually appealing dashboard in Bytebeam console
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Oct 25 2023 07:53:07 GMT+0000 (Coordinated Universal Time)
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/049b24b7-77cf-4c22-a7ee-23ae98e570eb/567cf113-3cab-4799-810e-c7b45dbe90be/images/f4569828-736d-4314-8cd1-335aeebd5e93.gif)
+
+To create a Dashboard in Bytebeam, follow the steps below. The process applies to both **Device Dashboards** and **Fleet Dashboards**, with some differences in metadata and available options.
+
+## Steps to Create a Dashboard
+
+<Steps> 
+  <Step title="Navigate to Dashboards">
+    Go to the **Dashboards** tab and click on the **Create Dashboard** button.  
+    ![](/assets/ecsa0-EgRyFV8qkudZHSc_screenshot-41.jpg)
+  </Step> 
+  
+  <Step title="Fill in Dashboard Details">
+    Provide the necessary information in the following sections:
+
+    - **General**:
+      - **Title**: A name for the dashboard.
+      - **Dashboard Type**: Choose between **Fleet Dashboard** and **Device Dashboard**.  
+        To switch between these types, use the dropdown for the **Dashboard Type** field.
+        ![](/assets/select-dashboard-type.png)
+        
+    - **Device Metadata**:  
+      - **Allow filtering by**: Select from a list of device metadata options to enable filtering in the dashboard.
+
+      For Device Dashboard: Displays only the devices that meet the selected filter conditions in the Devices List page.
+
+      For Fleet Dashboard: Shows data specifically for devices that satisfy the filter conditions, applying these filters to panels as they are added.
+
+    - **Show Metadata** (Available only for Device Dashboards):  
+      - **Allow Viewing**: Show the selected metadata keys and corresponding values for selected device in the dashboard.
+
+    - **Time Range**:
+      - **Default Time Range**: Sets the default recency for the data displayed on the dashboard.
+      - Optionally, enable or disable the ability for users to change the time range.
+
+    - **Refresh Interval**:  
+      - Set an interval (in seconds) to refresh the dashboard data automatically.
+
+    - **Dashboard Links**: 
+      - Select additional dashboards from the dropdown list to open in a new tab while remaining on the current dashboard.
+      - The selected dashboards will be displayed within the current dashboard, allowing you to open the corresponding dashboard in a new tab by clicking on them.
+
+    - **Access Control**:
+      - **Owners**: Define who can modify the dashboard.
+      - **Viewers**: Define who can view the dashboard.  
+      Refer to [Sharing a Dashboard](/platform-guide/dashboards/sharing-a-dashboard) for more details.
+  </Step>
+  
+  <Step title="Redirected to Dashboard or Device List Page">
+    Once the dashboard is created:
+    - For **Device Dashboards**: You will be redirected to the device list page.  
+      ![](/assets/OGvXCVIRD0HMkcNLlTJg8_screenshot.png)
+    - For **Fleet Dashboards**: You will be redirected directly to the empty dashboard.  
+  </Step>
+
+  <Step title="Add Panels to Your Dashboard">
+    Once on the dashboard page, click the **+ Panel** button to start adding panels to your dashboard.  
+    ![](/assets/QMIBUq2Xfxj1pEKGRVyzL_screenshot-2.jpeg)
+    Learn about [Panels](/platform-guide/dashboards/panels/introduction-to-panels) and how to add different panels to a dashboard.
+  </Step>
+</Steps>
+
+## Important Info
+
+<Note>
+You can always switch between dashboard types during the creation process, but note the differences in available features and metadata options.
+</Note>
+
+<Note>Dashboard Links will display device dashboards when a Device Dashboard is selected and fleet dashboards when a Fleet Dashboard is selected.</Note>

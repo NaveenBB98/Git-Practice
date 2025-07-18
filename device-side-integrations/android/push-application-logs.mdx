@@ -1,0 +1,62 @@
+---
+title: Push application logs
+slug: D1SYCIvSIw5HncH8g0ExO
+description: Learn how to effectively view journalctl logs on Bytebeam cloud with this comprehensive document. Discover the step-by-step instructions on setting up streams and dashboards, adding logging to devices, and configuring logging from the cloud. Detailed scre
+createdAt: Thu Apr 27 2023 10:01:44 GMT+0000 (Coordinated Universal Time)
+updatedAt: Thu Nov 16 2023 10:50:30 GMT+0000 (Coordinated Universal Time)
+---
+
+Using Bytebeam cloud, it is possible to view the logs of the device. Uplink is capable of collecting logcat logs and pushing them to cloud, which can then be visualized using the logs panel. You should create a stream called `logs` with this schema in your project:
+
+![](/assets/xbZiLBBLvlrpqzBfRPXfS_linuxdocslogs11.png)
+
+Now, we need to create a "**logs**" dashboard.
+
+# Create logs dashboard
+
+Go to the "**Dashboards**" section of Bytebeam Cloud and select  "**Create Dashboard**"
+
+![](/assets/HeMZUtDY4LNscO6g5x9GB_linuxdocslogswhite11.png)
+
+Give the title "**logs**" and select the Dashboard type as "**Device Dashboard**". Click on submit.
+
+![](/assets/niU7r9Asl61jM089Wk-lK_linuxdocslogswhite12.png)
+
+The created dashboard should be visible now.
+
+![](/assets/l92yeiGitD50gn4w61Mtt_linuxdocslogs12.png)
+
+Click on the "**logs**" dashboard and select the device for which you want to see the logs.
+
+![](/assets/SGFeCzRifwe9uJHmFu6-O_linuxdocslogs13.png)
+
+Create a New Panel. Select the "Logs" panel.
+
+![](/assets/0Q9raxRwkG5kL_hHpc5_a_linuxdocslogswhite14.png)
+
+Give the appropriate title and select the "**Logs**" option from the "**Table**" drop-down menu. Click on submit.
+
+![](/assets/4OCFJA7-Ny-Tf7R14jcFL_linuxdocslogswhite13.png)
+
+To enable the logging feature on the device, the following lines are to be added to the config.toml file.
+
+```none
+[logging]
+# logcat tags you want to upload
+tags = [
+    "AndroidContext",
+    "io.bytebeam.android_web_wrapper.BluetoothService.R1",
+    "io.bytebeam.android_web_wrapper.interfaces.WifiInterface",
+    "BluetoothGatt"
+]
+# 0 will collect all logs (VERBOSE) 
+# 6 will collect only logs with priority "Fatal"
+min_level = 6
+stream_size = 32
+```
+
+Restart uplink.
+
+The logs should be visible on the cloud now.
+
+![](/assets/IwmOFMKewtI09CiM6iEIr_onlysshlogs.png)

@@ -1,0 +1,39 @@
+---
+title: Bar Chart
+slug: HbHE-bar
+createdAt: Wed May 24 2023 07:21:56 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 29 2023 20:46:36 GMT+0000 (Coordinated Universal Time)
+---
+
+The Bar Chart panel visualization enables you to represent categorical data graphically, particularly when you want to visualize data from a specific field across all devices in a fleet dashboard.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0da98d18-fcec-4c69-81b9-26c8b6d0e7ee/74c4ebcd-727f-48d5-8703-01e8212b0c43/images/2bea5e39-191d-4d48-867e-d302042b4a35.gif)
+
+## Add Bar Chart Panel
+
+<Steps>
+  <Step title="Navigate to Dashboards">
+    Go to the **Dashboards** tab, select the desired dashboard, and click on the **+ Panel** button to create a new panel.
+  </Step>
+  <Step title="Select Bar Chart Panel">
+    Choose **Bar Chart Panel** from the list of available panels.  
+  </Step>
+  <Step title="Configure General Settings">
+    In the **General** tab:
+    - **Title**: Add a title for the panel (optional).
+    - **Stream**: Select the data stream to use.
+    - **Group By Field**: Specify the column by which the data should be grouped (e.g., device ID or firmware version).
+    - **Aggregated Field**: Select the column you want to visualize (e.g., range, timestamp).
+    - **Select Aggregator**: Choose the aggregation method (e.g., average, sum, count).  
+
+    For instance, you can group data by firmware version to visualize the average range value across different firmware versions. 
+  </Step>
+  <Step title="Customize View Settings">
+    Switch to the **View** tab to adjust the graph settings:
+    - **Custom Y-Axis Range**: Define a minimum and maximum range for the Y-axis to focus on specific data ranges.
+  </Step>
+  <Step title="Submit the Panel">
+    Once all configurations and customizations are complete, click **Submit** to add the Bar Chart Panel to the dashboard.  
+    The bar chart will now display the data grouped and aggregated based on the configured settings.
+  </Step>
+</Steps>

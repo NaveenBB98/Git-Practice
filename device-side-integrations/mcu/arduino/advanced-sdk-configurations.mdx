@@ -1,0 +1,76 @@
+---
+title: Advanced SDK Configurations
+slug: aIqC-advanced-sdk-configurations
+description: Customise the SDK as per your requirements by configuring the Bytebeam Aurdino via begin method
+createdAt: Fri Mar 17 2023 14:16:54 GMT+0000 (Coordinated Universal Time)
+updatedAt: Fri Sep 01 2023 07:23:14 GMT+0000 (Coordinated Universal Time)
+---
+
+You can additionally configure the **BytebeamArduino** via `begin` method. This would be helpful to customize the SDK as per your requirements.
+
+## Provisioning Configuration
+
+As long as the file system is supported by the device, you can pick any of the following file systems for device provisioning.
+
+- SPIFFSProvisioning
+- LITTLEFSProvisioning
+- FATFSProvisioning
+
+Default Configuration inside the SDK are as follows,
+
+| Arch    | File Sytem | File Name            |
+| :------ | :--------- | :------------------- |
+| ESP32   | SPIFFS     | /device\_config.json |
+| ESP8266 | LITTLEFS   | /device\_config.json |
+
+
+You can override the default configurations as follows,
+
+- Provision your device with the required configurations.
+- Specify the same configurations in your sketch via `begin` method.
+
+Before moving further make sure you have the selected file system partition (say SPIFFS). For this to ensure, you can select the partition table setting under `Tools` section. See Tools > Partition Scheme within the Arduino IDE.
+
+![](/assets/febJoHK9FRoa0Fr1jkqoy_pic2.png)
+
+```cpp
+
+// using spiffs file system
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json");
+
+// using littlefs file system
+Bytebeam.begin(BytebeamArduino::LITTLEFS_FILE_SYSTEM, "/my_device_config.json");
+
+// using fatfs file system
+Bytebeam.begin(BytebeamArduino::FATFS_FILE_SYSTEM, "/my_device_config.json");
+
+```
+
+## Debug Configuration
+
+We have implemented the various log levels inside the **BytebeamArduino** and with this you can control the SDK logging as per your requirement. Default log level is `BytebeamLogger::LOG_WARN` inside the SDK.
+
+**Note:** We recommend going for `BytebeamLogger::LOG_INFO` log level while prototyping your sketch.
+
+```cpp
+
+// debug level : none
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_NONE);
+
+// debug level : error
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_ERROR);
+
+// debug level : warn
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_WARN);
+
+// debug level : info
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_INFO);
+
+// debug level : debug
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_DEBUG);
+
+// debug level : trace
+Bytebeam.begin(BytebeamArduino::SPIFFS_FILE_SYSTEM, "/my_device_config.json", BytebeamLogger::LOG_TRACE);
+
+```
+

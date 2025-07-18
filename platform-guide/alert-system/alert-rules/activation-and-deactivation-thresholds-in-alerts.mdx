@@ -1,0 +1,34 @@
+---
+title: Activation and Deactivation Thresholds in Alerts
+---
+
+## Overview
+Activation threshold and deactivation threshold are key parameters that define how and when an alert session is triggered or ended. 
+
+These thresholds help prevent false positives by requiring conditions to persist over a specified period before initiating or ending an alert session.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/11ab834c-dbf9-4e67-ae66-64e087292952/2175255f-5fc9-4c47-8762-e6e8b50af599/images/a65b958c-2f57-4fdd-baac-aff6fb86d8a1.gif)
+
+## Activation Threshold
+
+The activation threshold specifies the minimum duration that the condition must be met before triggering an alert. This ensures that the alert is not activated prematurely, allowing for a more stable and reliable alerting mechanism.
+
+For example, if you are monitoring a temperature sensor, the alert will only trigger if the temperature exceeds a predefined threshold for a specific duration (e.g., 10 minutes). If the temperature briefly exceeds the threshold but returns to normal before the activation threshold is reached, the alert will not be triggered.
+
+## Deactivation Threshold
+
+The deactivation threshold specifies the minimum duration that the condition must remain met before ending the alert session. The alert will continue as long as the condition holds and will only stop after the condition persists for the specified deactivation threshold.
+
+<Note>For No Signal Alerts, there is no deactivation threshold because the alert is triggered when data stops arriving, and it ends as soon as the data stream resumes.</Note>
+
+For signal-based alerts, both activation and deactivation thresholds come into play. Even when the condition is met (e.g., a value exceeds a threshold), the alert will wait for the activation threshold to pass before starting the alert session. Similarly, for the alert to end, the condition must persist for the deactivation threshold to pass.
+
+**Example Use Case:**
+
+**Condition:** A device's battery level drops below 20%.
+
+**Activation Threshold:** 10 minutes.
+
+**Deactivation Threshold:** 5 minutes.
+
+The alert will only trigger after the battery level has been below 20% for 10 minutes. Once triggered, the alert will continue until the battery level goes above 20%, but only if it remains above 20% for at least 5 minutes.

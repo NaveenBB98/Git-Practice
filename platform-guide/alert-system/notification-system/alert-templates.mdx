@@ -1,0 +1,110 @@
+---
+title: Alert Templates
+createdAt: Tue Mar 12 2024 14:22:50 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Mar 13 2024 09:50:21 GMT+0000 (Coordinated Universal Time)
+---
+
+## Overview
+
+The templates are available in the create/edit notification rule modal both for activation and deactivation conditions! By customizing these alert templates, you can easily tailor notifications to include the most relevant device, action, or other alert data. These templates help ensure you receive the exact information you need.
+
+<Warning>
+These templates can be edited only for **Email**, **Slack**, and **Webhook** channels. For **SMS** and **WhatsApp**, the templates are standard and cannot be modified.
+</Warning>
+
+Enable the Advanced toggle in the create/edit notification rule modal to access the following templates:
+
+Default alert activation template:
+
+```json JSON
+{% for alert in alerts -%}
+    Alert {{ alert.name }} triggered at {{ alert.start_time }} on device {{ alert.device.id }}
+From ByteBeam
+    {% if not loop.last %}
+
+    {% endif %}
+{% endfor %}
+```
+
+Default alert deactivation template:
+
+```json JSON
+{% for alert in alerts -%}
+    Alert {{ alert.name }} resolved at {{ alert.end_time }} on device {{ alert.device.id }}
+From ByteBeam
+    {% if not loop.last %}
+
+    {% endif %}
+{% endfor %}
+```
+
+These templates can be edited to include any relevant details you want in the received notification. Below is an example of the JSON structure that is available in `{alert}`:
+
+```json JSON
+{
+  "id": "alert rule id",
+  "name": "alert name",
+  "notification_rule_id": "id of notification rule",
+  "notification_rule_name": "name of notification rule",
+  "session_id": "alert instance id",
+  "start_time": "2024-11-12 16:11:54.000 IST",
+  "end_time": "2024-11-12 16:12:08.000 IST",
+  "device": {
+    "id": 1,
+    "metadata": {
+      "registration_number": null,
+      "city": "city1",
+      "town": null,
+      "IMEI": "12345678901234567890",
+      "Country": "Australia",
+      "location": "Melbourne",
+      "Branch": "branch1",
+      "owner": "Liam",
+      "model": "v1",
+      "vin": "vin5627456"
+    },
+    "state": {
+      "mode": "off",
+      ".range_timestamp": "2024-11-12T10:42:46.815",
+      "IMEI": 0.0,
+      ".ICCID_timestamp": "1970-01-01T00:00:00",
+      "ICCID": 0.0,
+      ".testfive_timestamp": "1970-01-01T00:00:00",
+      "break": null,
+      ".break_timestamp": "1970-01-01T00:00:00",
+      "timestamp": "2024-11-12T10:42:39.655",
+      "range": 53101
+    },
+    "status": "active",
+    "action": {
+      "errors": "[]",
+      "type": "update_config",
+      "user_email": "tester@bytebeam.io",
+      "action_id": 15298,
+      "icon": "configure",
+      "updated_at": "2024-11-06T09:08:24Z",
+      "status": "Completed",
+      "user_name": "Test User",
+      "progress": 100,
+      "created_at": "2024-11-06T09:08:12Z"
+    }
+  },
+  "activation_values": {
+    "s1": 10,
+    "percentage_of_can_ids": 100.0,
+    "number_of_records": 1,
+    "sequence": 45
+  },
+  "deactivation_values": {}
+}
+```
+- **state** in the JSON corresponds to the device_shadow data.
+- **action** refers to the last action that was triggered on the device.
+
+For example, if you want the VIN number and range values from the device, you can use the following in the template:
+
+```
+{{alert.device.metadata.vin}}
+{{alert.device.state.range}}
+```
+

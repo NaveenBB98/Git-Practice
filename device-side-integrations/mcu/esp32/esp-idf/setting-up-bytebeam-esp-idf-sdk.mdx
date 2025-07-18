@@ -1,0 +1,170 @@
+---
+title: Setting up Bytebeam ESP IDF SDK
+slug: setting-up-bytebeam-esp-idf-sdk
+description: Steps on how to set up and start using the Bytebeam ESP-IDF SDK
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 15 2023 18:45:35 GMT+0000 (Coordinated Universal Time)
+---
+
+This section provides step by step instructions on how to set up and start using the [Bytebeam ESP IDF SDK](https://github.com/bytebeamio/bytebeam-esp-idf-sdk) . This SDK can be used with any ESP32 board. The only requirements are WiFi and a working internet connection.
+
+## **Step 1. Integrate Bytebeam SDK with an ESP project**
+
+### Clone Bytebeam ESP IDF SDK
+
+Clone `bytebeam-esp-idf-sdk` using a Git client bytebeam-esp-idf-sdk
+
+```shell
+git clone https://github.com/bytebeamio/bytebeam-esp-idf-sdk.git
+```
+
+This repository consists of three folders:
+
+1. src: This folder contains source code for various functions that can be used by applications for interacting with Bytebeam platform.
+2. examples: This folder contains few example projects showing how you can use the SDK.
+3. provisioning: Application to push device config data to file system of device (say SPIFFS).&#x20;
+
+### Provision device with device config data
+
+Each device needs a configuration file to connect to Bytebeam.  Download the configuration file and flash it to SPIFFS by following the below steps:
+
+1. Download the device configuration JSON file from Bytebeam cloud by following the [Provisioning a Device](/platform-guide/device-management/provisioning-a-device) guide.
+2. After downloading the config file, rename it to the **device\_config.json**
+3. Step into **config\_data** folder within the **provisioning** project and place **device\_config.json** file within this folder i.e Replace the file if it is already there.
+4. Launch the ESP-IDF terminal and run the following command's.
+
+```shell
+# Make sure idf.py tool is accessible
+$ idf.py --version
+
+# Step into provisoning project
+$ cd path_to_provisioning_project
+
+# Set the target (say esp32)
+$ idf.py set-target esp32
+
+# Configure the provisioning project (say partition table setting)
+$ idf.py menuconfig
+
+# Clear the entire flash
+$ idf.py erase-flash
+
+# Build, Flash and Monitor
+$ idf.py -p PORT flash monitor
+```
+
+### Add Bytebeam ESP IDF SDK to the CMake Build System of ESP project
+
+Once the device is provisioned, integrate the `bytebeam-esp-idf-sdk` into your existing ESP project:
+
+- Open top-level `CMakeLists.txt` from your ESP project in an editor.
+- Add `bytebeam-esp-idf-sdk`  component to your project by setting `EXTRA_COMPONENT_DIRS`&#x20;
+
+```none
+set(EXTRA_COMPONENT_DIRS "<path-to-bytebeam-esp-idf-sdk>")
+```
+
+This command needs to be after the `cmake_minimum_required()` command. Look at the example project for reference.
+
+- Open project-level `CMakeLists.txt` from your ESP project in an editor.
+- Add `bytebeam-esp-idf-sdk` component to your project `PRIV_REQUIRES`
+
+## **Step 2. Configure Hardware**
+
+To connect your ESP device to Bytebeam cloud and exchange data, you need to configure wifi and partition settings. Follow the below steps to configure your project :)
+
+Launch the ESP-IDF terminal and run the following command's.
+
+```shell
+# Make sure idf.py tool is accessible
+$ idf.py --version
+
+# Step into project
+$ cd path_to_project
+
+# Set the target (say esp32)
+$ idf.py set-target esp32
+
+# Configure your project
+$ idf.py menuconfig
+```
+
+### Configure Wifi/Ethernet
+
+1. Configure Wi-Fi/Ethernet settings by selecting **Example Connection Configuration** option.
+2. Enter your WiFi SSID and Password.
+3. Press `ESC` to exit out of the menu
+
+![](/assets/Z1NN6EorQCXLFgmG3fEUo_screenshot-2022-09-26-230138.png)
+
+![](/assets/KjuOQCLH-5NrpIIr0L7Kl_screenshot-2022-09-26-230628.png)
+
+### Configure Partition table settings
+
+This is required for implementing Over the air updates. The below steps partition your ESP flash into two app partitions and one partition for storing the device config file.
+
+1. Copy `examples_partition.csv` file from example project and paste it into your ESP project.
+2. Open menuconfig and select **Partition Table** option.
+3. Select **Custom partition table CSV** option from the available options and press `ESC` button.
+4. Set the name of Custom partition table CSV to partitions\_example.csv and press` ESC` button. &#x20;
+
+![](/assets/Y5EmnyHstku1FOr87us5__custompartition.png)
+
+![](/assets/u7X_ohLKqti_vkYWbR10v_cutomparitionname.png)
+
+**Note:** With above partition table selected, flash size of 4MB or more is recommended.
+
+## **Step 3: Initialize and start bytebeam client**
+
+The next step is to initialhe below code to do so:
+
+```cpp
+// Add this include to your file
+#include "bytebeam_sdk.h"
+
+// Declare and initialise bytebeam client object.
+bytebeam_client_t bytebeam_client;
+
+void app_main(void)
+{
+    // Initialise esp
+    // Make sure you initialise the network as well as ntp before stepping ahead
+    
+    // setting up the device info i.e to be seen in the device shadow
+    bytebeam_client.device_info.status           = "Device is Up!";
+    bytebeam_client.device_info.software_type    = "setup-client-app";
+    bytebeam_client.device_info.software_version = "1.0.0";
+    bytebeam_client.device_info.hardware_type    = "ESP32 DevKit V1";
+    bytebeam_client.device_info.hardware_version = "rev1";
+    
+    // initialize the bytebeam client        
+	bytebeam_init(&bytebeam_client);
+
+    // start the bytebeam client
+    bytebeam_start(&bytebeam_client);
+
+    /* Use the bytebeam_stop api to stop the bytebeam client at any point of time in th
+     * the code, Also you can mantain the bytebeam client start and bytebeam client 
+     * stop flow as per you application needs
+     */
+    // bytebeam_stop(&bytebeam_client);
+
+    /* Use the bytebeam_destroy api to destroy the bytebeam client at any point of time 
+     * in the code, Also you can mantain the bytebeam cient init and bytebeam client     
+     * destroy flow as per you application needs
+     */
+    // bytebeam_destroy(&bytebeam_client);
+
+}
+```
+
+Look at the [setup\_client](https://github.com/bytebeamio/esp-bytebeam-sdk/tree/main/examples/setup_client) example app for reference.
+
+## **Step 4: Build and Flash application**
+
+You can build and flash your application as usual with `idf.py` .&#x20;
+
+```shell
+idf.py -p PORT flash monitor
+```
+

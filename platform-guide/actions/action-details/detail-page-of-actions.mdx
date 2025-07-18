@@ -1,0 +1,117 @@
+---
+title: Action Details & Device Management
+---
+
+The detail view enables you to manage ongoing actions and monitor each device's progress in an action.
+
+To access the detailed page of an action: 
+
+<Steps> 
+<Step title="Access Actions Tab"> Go to the **Actions** tab at the top of the console. </Step> 
+<Step title="View Devices List"> Select an action, then click on the **View Details** button to see the detailed view of the action. </Step> 
+</Steps>
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/aa67c80f-6e9a-4d8d-8e99-e92205eac0f4/36ce91f7-19c5-4f6a-a6d9-5260c73a0989/images/7171b5c3-dc81-41a9-bd20-307a762ac435.gif)
+
+## Viewing Payload and Additional Information
+
+**View Payload:** 
+
+Click on View Payload to see the payload data for the selected action.
+
+<Note>This option will be disabled if the action has no payload.</Note>
+
+**More Info:**
+
+Click on More Info for action details such as type, ID, trigger time, schedule, auto-retry setting, and timeout duration.
+
+## Data Visualizations
+The detail page includes the following graphs for visualizing action progress:
+
+**Status Distribution Graph**: Displays the number of devices in each state for the action.
+
+**Failure Distribution Graph**: Shows the reasons for any device failures during the action.
+
+**Latency Histogram**: Displays the time, devices spend in each state across phases. 
+
+<Note>To view the Latency Histogram, click on the forward (>) icon.</Note>
+
+## Adding Phases
+You can add additional phases to an action to include more devices, set a custom trigger time, and execute the action on the newly added devices.
+
+To add a phase: 
+<Steps> 
+<Step title="Access Detailed Action"> Select the action and click on **View Details**. </Step> 
+<Step title="Click Add Phase"> Click on **Add Phase** at the top. </Step> 
+<Step title="Fill Details"> Choose the devices and set a **Custom Time** using the **Calendar dropdown**, then click **Submit**. </Step> 
+</Steps> 
+<Warning>Devices already included in previous phases cannot be selected for a new phase.</Warning>
+
+## Filtering Devices by Action State
+The Filters feature allows you to view devices in a specific action state, such as Scheduled, Completed, or Failed.
+
+To filter devices by state: 
+<Steps> 
+<Step title="Access Actions Tab"> Navigate to the **Actions** tab at the top. </Step> 
+<Step title="View Filters Section"> Select an action, open the **View Details** button, and scroll down to the **Filters** section. </Step> 
+<Step title="Apply Filters"> Click **Filters** in the device list, select states by checking boxes like Scheduled, Completed, or Failed. </Step> 
+</Steps> 
+Once applied, the selected filters will appear at the top of the device list.
+
+## Managing Actions for Devices
+
+Within the device list, you can manage actions on individual devices:
+
+<AccordionGroup>
+<Accordion title="Mark All Actions as Complete">
+
+Marks all previous actions as complete on the selected device. Click the **Mark All Actions as Complete** icon next to the device to confirm.
+
+</Accordion>
+
+<Accordion title="Action Progress Logs">
+
+View logs detailing action progress by clicking the **Action Progress Logs** icon beside the device.
+</Accordion>
+
+<Accordion title="More Details">
+
+Access a comprehensive device overview, including historical actions, by clicking the More Details icon.
+</Accordion>
+
+<Accordion title="Cancel Action">
+
+Cancel an action if it is no longer needed by selecting the device, clicking **Cancel Action**, and confirming. 
+
+<Note>This option is disabled if the action is already completed or failed for the device.</Note>
+</Accordion>
+
+<Accordion title="Retry Action">
+
+Retry a failed action by selecting the device, clicking **Retry Action**, and confirming. 
+
+<Note>This option is disabled if the action is not in a 'Failed' state.</Note>
+</Accordion>
+
+<Accordion title="Complete Action">
+
+Manually mark an action as complete by selecting the device, clicking **Complete Action**, and confirming. 
+
+<Note>This option is disabled if the action is already in a 'Completed' or 'Failed' state.</Note>
+</Accordion>
+
+<Accordion title="Cancel Phase">
+
+Cancel an entire phase if it is no longer needed by selecting the phase at the top, clicking **Cancel Phase**, and confirming. 
+
+<Note>This option is disabled if all devices in the phase are already in completed or failed states.</Note>
+</Accordion>
+
+<Accordion title="Retry Phase">
+
+Retry a failed phase by selecting the phase at the top, clicking **Retry Phase**, and confirming. 
+
+<Note>This option is disabled if any of the device is in a state other than 'Failed'.</Note>
+</Accordion>
+
+</AccordionGroup>

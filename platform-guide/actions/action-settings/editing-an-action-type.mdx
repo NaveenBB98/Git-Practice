@@ -1,0 +1,132 @@
+---
+title: Editing an Action Type
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/95fc0fba-36b6-472a-857a-1b5a582c85b1/f163bc46-1a2e-43e3-9b51-dd57aa3fdd89/images/238d57d9-5afc-4cfa-98f3-0e6fd52ab425.gif)
+
+To edit the existing action type in Bytebeam console,
+
+<Steps>
+  <Step title="Access Actions Tab">
+    Click on the **Actions** tab at the top
+  </Step>
+  <Step title="Go to Action Settings Tab and Initiate Action Type Edit">
+    Navigate to the **Action Settings** tab and click on the **edit** icon against the target action type
+  </Step>
+  <Step title="Fill Details">
+    Select the [payload](#payload-in-action-types), icon and the timeout duration and click on **Submit** button to edit the action type.
+</Step>
+</Steps>
+
+<Warning>Only timeout duration can be changed for default action types like update_firmware, update_config etc.</Warning>
+
+## <a id="payload-in-action-types"></a>Payload for Action Types
+There are 3 payload options in 4 variations available while editing the action type.
+
+<AccordionGroup>
+  <Accordion title="None" icon="circle">
+    You can choose this for action types like Shutdown which don't need any payload to be sent to the device while triggering the action.
+  </Accordion>
+
+  <Accordion title="JSON" icon="file-code">
+    You can choose this for action types which need the JSON payload to be sent to the device while triggering the action.
+
+  </Accordion>
+
+  <Accordion title="JSON Data via form" icon="file-signature">
+  You can choose this for action types like **Update CAN Config**, which enables JSON data to be sent via a form to the device while triggering the action.
+
+  To choose this option:
+  1. Select **JSON** from the dropdown.
+  2. Enable the **Allow user to input data via form** toggle.
+  3. Enter the **JSON Schema** along with the **JSON UI Schema** while creating or editing the action type.
+
+  <Tabs>
+    <Tab title="JSON Schema Example">
+    
+    ```json
+    {
+      "title": "",
+      "type": "object",
+      "required": [
+        "can_bitrate",
+        "can_filter_mask",
+        "data_frequencies"
+      ],
+      "properties": {
+        "can_bitrate": {
+          "type": "string",
+          "title": "CAN BitRate (kbps)",
+          "default": "500"
+        },
+        "can_filter_mask": {
+          "type": "string",
+          "title": "CAN Filter Mask",
+          "default": "0x00"
+        },
+        "data_frequencies": {
+          "type": "array",
+          "title": "Data Frequencies",
+          "items": {
+            "type": "object",
+            "required": [
+              "can_mask",
+              "frequency"
+            ],
+            "properties": {
+              "can_mask": {
+                "type": "string",
+                "title": "CAN Mask"
+              },
+              "frequency": {
+                "type": "string",
+                "title": "Frequency (Hz)"
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
+    
+    </Tab>
+    <Tab title="JSON UI Schema Example">
+    
+    ```json
+    {
+      "can_bitrate": {
+        "ui:placeholder": "Eg: 250"
+      },
+      "can_filter_mask": {
+        "ui:placeholder": "Eg: 0xffD",
+        "ui:emptyValue": ""
+      },
+      "data_frequencies": {
+        "ui:options": {
+          "orderable": false,
+          "inline": true
+        },
+        "items": {
+          "can_mask": {
+            "ui:inline": true,
+            "ui:placeholder": "Eg: 0x7ff"
+          },
+          "frequency": {
+            "ui:inline": true,
+            "ui:placeholder": "Eg: 100"
+          }
+        }
+      }
+    }
+    ```
+    
+    </Tab>
+  </Tabs>
+  When the above configuration is used while editing the action type, it appears like this when triggering the action:
+  ![](/assets/update_can_config.jpg)
+  </Accordion>
+
+  <Accordion title="Text" icon="pencil">
+    You can choose this for action types which need the payload in text format to be sent to the device while triggering the action.
+  </Accordion>
+</AccordionGroup>

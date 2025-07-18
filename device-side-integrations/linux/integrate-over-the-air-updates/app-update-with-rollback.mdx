@@ -1,0 +1,115 @@
+---
+title: App Update with rollback
+slug: jXXcFfrQB4E2FzuieoDIz
+description: Learn how to update and rollback your app with this comprehensive document. It includes step-by-step instructions and an example on GitHub with four essential files. Discover how to set the application path, integrate it with systemd, create an update tar
+createdAt: Tue Apr 18 2023 14:12:33 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sat Nov 18 2023 15:19:08 GMT+0000 (Coordinated Universal Time)
+---
+
+This section talks about how to do an app update and roll back to the previous working version of the app if the update fails. We have provided an example on our [Github](https://github.com/bytebeamio/uplink/tree/main/examples/rpi/updates/app_update_rollback) page. There are four files in the example.
+
+- **hello\_app** - Prints "Hello from Bytebeam" every 3 seconds.
+- **app\_update\_rollback.sh** - This script replaces the old application with the new application. If the new application doesn't work, this script replaces it with the working version of the application.
+- **updater** - This is a wrapper script for app\_update\_rollback.sh script.
+- **make\_firmware\_update.sh** - It creates the update tar file.
+
+It is expected that there is a working version of the application on the remote device and is expected to be run by systemd.
+
+To create an update file, with the custom application, follow these steps.
+
+## Step1: Prepare update tar
+
+Firstly on your Linux system, we need to create an update tar file for Raspberry Pi. For that, Download all the files mentioned above from GitHub. Next, we need to change the permissions for all these files using `chmod` command
+
+```shell
+chmod a+x hello_app
+chmod a+x app_update.sh
+chmod a+x update.sh
+chmod a+x make_firmware_update.sh 
+```
+
+Next run **make\_firmware\_update.sh** to create a tar.gz file.
+
+```shell
+./make_firmware_update.sh
+```
+
+## Step 2: upload update Tar
+
+Next, we need to upload the tar to [bytebeam cloud.](https://cloud.bytebeam.io/) For that go to the device management panel and navigate to the **Firmware Versions** tab. Then click on **Upload New Firmware**
+
+![](/assets/fMbfI0lXT9lFhIIRrYdAH_linuxdocsupdaterollback2.png)
+
+
+Under the Firmware version tab, you will find an option to create a firmware version number and upload your updated tar file.
+
+Enter the new **Firmware version number**  and click on **choose file** to upload tar file. Then click on **Create.**&#x20;
+
+![](/assets/mfmYWY5U600UFfpMEUZyP_linuxdocsupdaterollback6.png)
+
+## Step 3: Set the application path
+
+In **step 1** we have already assumed that you want to update the **hello\_app** that exists on your remote device and we created an update tar accordingly. On the remote device, the app is expected to be in **/usr/local/bin** location. If it's not there then create a new **hello\_app** in **/usr/local/bin.**
+
+```shell
+#!/bin/bash
+
+while [ 1 ]
+        do
+                sleep 3
+                echo "Hi from Bytebeam"
+        done
+```
+
+If the application location and app name are different, set the path in app\_update.sh script in **Step 1**.&#x20;
+
+```shell
+APP_NAME=hello_app
+APP_BIN_PATH=/usr/local/bin
+```
+
+## Step 4: Create systemctl service to debug update changes
+
+To debug your changes after the app update, Let's create a service that runs hello\_app. So, create this service named **\<App Name>.service** and place it in **/etc/systemd/system**.
+
+```none
+[Unit]
+Description=Simple Application service
+After=network.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/bash /usr/local/bin/hello_app
+KillMode=process
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemctl daemon and start the service.
+
+```shell
+sudo systemctl daemon-reload 
+sudo systemctl enable app.service
+sudo systemctl start app 
+```
+
+## Step 5: Trigger the "update firmware" action from bytebeam cloud&#x20;
+
+Now let's proceed with our OTA update. For that, Go to **Device Management** panel and select the device
+
+Next, Click on the **update firmware**
+
+![](/assets/6MlngSr12A-IQ9xnVu2Ow_linuxdocsupdate12.png)
+
+In the next prompt choose the **firmware version** and click on **next**
+
+![](/assets/IRYTv7pEt3OfONJJYMXzZ_linuxdocsupdaterollback8.png)
+
+
+
+![](/assets/2AUrhHP6FiObrszaHFsNC_linuxdocsupdate16.png)
+
+![](/assets/oJ308k_0GHR1bQgBYuw5V_linuxdocsupdate17.png)
+

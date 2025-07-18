@@ -1,0 +1,74 @@
+---
+title: BeagleBone Black
+slug: VaS6xlApu1YYQcAyaKzSD
+description: Learn how to set up a BeagleBone Black device using this comprehensive document. From flashing the ByteBeam BeagleBoneBlack image onto the SD card to accessing the device via UART, this guide covers it all. Get the step-by-step instructions and necessary 
+createdAt: Thu Jan 19 2023 09:03:53 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sat Nov 11 2023 08:02:13 GMT+0000 (Coordinated Universal Time)
+---
+
+# Selecting the OS
+
+This section explains how to do an initial setup, for an off-the-shelf BeagleBone Black. To get started, the following things are needed.
+
+1. BeagleBoneBlack development kit.&#x20;
+2. An SD Card (of size 64GB).
+3. An adapter for power supply (with at least 15W of power)&#x20;
+4. ByteBeam BeagleBoneBlack image
+
+ByteBeam BeagleBone image can be downloaded from this link.
+
+Install the balena etcher software by following the instructions in this link.&#x20;
+
+Once the installation is done, plug in the SD card into the system and launch balena-etcher software. Follow these steps to flash the Bytebeam BeagleBone image to the SD Card.
+
+**Select the Flash from file option in balena-ecther**
+
+![](/assets/kQMbXH3j_Pxb2fgrYOFV9_1etcherselectflashfromfile.png)
+
+**Select Bytebeam BeagleBone image**
+
+![](/assets/A4HYqO-b0VXmbOEhFB3M-_2balenaselectbytebeambbbimg.png)
+
+**Select the appropriate SD Card and flash the image.**
+
+![](/assets/k-iV3eLwuL5QKDpL10tNI_3balenaselectsdcard.png)
+
+# Partition Schema&#x20;
+
+The SD Card is now setup to contain 4 partitions.
+
+1. Partition 1 - Boot partition (/dev/mmcblk0p1)
+2. Partition 2 - Root partition 1  (/dev/mmcblk0p2)
+3. Partition 3 - Root partition 2 (/dev/mmcblk0p3)
+4. Partition 4 - download partition (/dev/mmcblk0p4)
+
+![](/assets/9JNAg0SDuj-FxYwa-xZsJ_6partitioninfo.png "Raspberry Pi Partition Scheme")
+
+At any given point in time either "Partition 2" or "Partition 3" will be the active rootfs partition, and the other partition is referred to as the inactive partition. The download partition is where the persistent files are stored. During kernel & rootfs updates, the contents of inactive partitions are replaced with the new rootfs.
+
+# Booting BeagleBone&#x20;
+
+Once the flashing is complete, insert the SD card into the BeagleBone. Push and hold the boot button(S2) on the BeagleBone dev. kit and power on the board. This ensures that the device boots from the SD Card and not from the onboard eMMC. Refer to this [link](https://subscription.packtpub.com/book/iot-and-hardware/9781785285059/1/ch01lvl1sec14/booting-your-beaglebone-board-from-a-sd-card) for a detailed description of this process.&#x20;
+
+In order to flash the eMMC with the contents of the SD card:
+
+**Step 1:** Uncomment the following line from uEnv.txt in the boot partition.
+
+```shell
+cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh
+```
+
+**Step 2:** Push and hold the boot button(S2) on the BeagleBone dev. kit and power on the board.
+
+This process generally 30 to 40 minutes.&#x20;
+
+This "[Getting Started](https://docs.beagleboard.org/latest/boards/beaglebone/black/ch03.html#connect-the-cable-to-the-board)" guide talks about different ways of accessing the BeagleBone from the Laptop/PC. It is also possible to access the BeagleBone via UART. Refer to [this](https://www.dummies.com/article/technology/computers/hardware/beaglebone/how-to-connect-the-beaglebone-black-via-serial-over-usb-144981/) link for details on connecting BeagleBone to the system via UART.
+
+# Download the one-time setup scripts
+
+Once the BeagleBone is up, run the below one-time setup script. This script installs Bytebeam's Linux agent [uplink](https://github.com/bytebeamio/uplink) as well as scripts required for over-the-air updates
+
+```shell
+curl  --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/bytebeamio/uplink/main/scripts//one_time_setup.sh | bash
+```
+

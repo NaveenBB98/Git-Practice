@@ -1,0 +1,63 @@
+---
+title: R23 14-Aug-2024
+slug: Q4Fv-r
+createdAt: Wed Aug 14 2024 07:52:08 GMT+0000 (Coordinated Universal Time)
+updatedAt: Mon Aug 26 2024 07:18:16 GMT+0000 (Coordinated Universal Time)
+---
+
+### **Global Action Timeouts**
+
+![](/assets/grvJnKdEgvUAfeVLuZFWJ-5dMKuQjlTydMa3uVhEpfP-20240815-023617.png)
+
+Global timeouts for actions have been introduced across the platform, enabling you to define timeouts at both the action-type and tenant setting levels. In addition to setting timeouts when triggering actions, you can now establish them at a broader level. Actions that exceed the defined timeouts will automatically fail with a message indicating the timeout has been reached. This feature helps prevent older, stale actions from piling up and interfering with the execution of new actions, ensuring smoother and more reliable system performance. **Default timeouts have been set for 30 days at tenant level setting.**
+
+### **Device Action History Improvements**
+
+![](/assets/grvJnKdEgvUAfeVLuZFWJ-8T0XNfACe4Tb45pVqu1TA-20240815-024133.png)
+
+- Pagination improvements
+- Addition of filters
+- Efficient column sorting
+
+### **Enhanced Partial Search in Device Management Filters**
+
+![](/assets/grvJnKdEgvUAfeVLuZFWJ-JR2HSv1YCKeTeutggeQ1J-20240815-024742.png)
+
+We’ve upgraded the device management filters to support partial search functionality when searching for metadata. If you're searching for a single metadata key, the system now allows partial search across metadata keys, device shadow fields, and other relevant fields. This makes it easier to locate specific data with minimal input. However, when searching with two or more metadata values, the system will perform a complete exact search, ensuring precise results. This dual approach offers both flexibility and accuracy, enhancing your ability to manage and locate device information efficiently.
+
+### **Serial Metadata in Alerts Panel**
+
+![](/assets/grvJnKdEgvUAfeVLuZFWJ-PDYikNGXRFlKupVz3t_Bt-20240815-025521.png)
+
+When the serial metadata key is configured in tenant settings, it now replaces the device ID column in the Alerts panel as well. While this feature was previously implemented across other sections following the serial metadata key update, the Alerts panel had been an exception. Support for this feature has now been added to the Alerts panel, ensuring consistent display across the platform.
+
+### **Uploader Name in Firmware Inventory**
+
+We've added the ability to view the uploader's name directly in the Firmware list within the Inventory. This enhancement provides greater transparency and accountability, making it easier to track who uploaded each firmware version.
+
+### **Improved Error Handling in Device Management**
+
+We've enhanced error handling in Device Management to provide clearer and more specific error messages. Whether you’re provisioning a device, performing a metadata bulk update, or updating metadata when a default serial key is set, the system now delivers precise error messages to help you quickly identify and resolve issues.
+
+- Serial-metadata value not being unique.
+- Serial-metadata value being null or empty.
+- Invalid device IDs
+- Invalid metadata keys
+
+### **Improved Metadata File Download for Bulk Updates**
+
+We have enhanced the template file for bulk metadata updates. Previously, downloaded files included all metadata keys for which view access was granted, leading to complications during bulk updates. With this update, the downloaded file now only includes metadata keys for which edit access is available. This change simplifies the bulk update process by ensuring that only editable metadata is included, reducing the potential for errors and streamlining your workflow.
+
+### Bug fixes & Minor changes
+
+- 😊 \[Fixed] The Device Overview page fails to load when stream data access is not granted in the role creation modal.
+- ⏳ Added a loader to the test notification submit button.
+- 🔄 Automatic data refresh enabled on the DBC parsers page.
+- 🚫 \[Fixed] The Action Details page displays as empty when access is not granted.
+- 🔍 Enhanced URL validation in the Iframe panel.
+- 🛠️ Bug fixes in bulk metadata updates when filters are applied.
+- 🔠 Lowered the minimum font size setting for the aggregate and last value panels from 50 to 15.
+- 📦 Displaying the current release version in the profile dropdown.
+
+
+

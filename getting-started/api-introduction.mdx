@@ -1,0 +1,138 @@
+---
+title: Introduction to Bytebeam APIs
+description: Learn how to fetch data from Bytebeam using APIs, including constructing URLs, creating API keys, and fetching time-series data.
+---
+
+## Overview
+Bytebeam provides APIs to fetch various types of telemetry and processed data. This guide explains how to construct API requests, authenticate, and retrieve data from different streams.
+
+## Constructing URLs and Finding Project ID
+
+- **Base URL:** `https://<cluster_name>.bytebeam.io/api/v1/panel-data` 
+
+  Example for cluster_name: cloud or any enterprise name
+- **Project ID:** Locate your project/tenant ID in the platform’s URL or locate it by clicking on your user profile in the platform.
+
+## Creating an API Key
+
+To generate an API key, [follow the steps](/platform-guide/api-keys/create-an-api-key)
+
+
+## Available Data Streams
+
+ByteOne device publishes the following streams:
+
+## Available Data Streams & Columns
+
+| **Stream Name**      | **Stream Description**                               | **Column Name**             | **Column Description**                                                   |
+|----------------------|------------------------------------------------------|-----------------------------|---------------------------------------------------------------------------|
+| `device_shadow`      | Important parameters related to the ByteOne TCU     | `Status`                    | Last known status of the device                                           |
+|                      |                                                      | `dev_battery_voltage`       | Internal battery voltage                                                  |
+|                      |                                                      | `input_voltage`             | External voltage                                                          |
+|                      |                                                      | `nw_processor_fw_version`   | FW version of the GSM Modem                                               |
+|                      |                                                      | `controller_fw_version`     | FW version of the controller                                              |
+| `c2c_gps`            | GPS location data                                    | `latitude`                  | GPS latitude                                                              |
+|                      |                                                      | `longitude`                 | GPS longitude                                                             |
+|                      |                                                      | `altitude`                  | Altitude in meters                                                        |
+|                      |                                                      | `course_over_ground`        | Course over ground in degrees                                             |
+|                      |                                                      | `speed`                     | Speed in km/h                                                             |
+|                      |                                                      | `hdop`                      | Horizontal Dilution of Precision                                          |
+|                      |                                                      | `vdop`                      | Vertical Dilution of Precision                                            |
+|                      |                                                      | `pdop`                      | Position Dilution of Precision                                            |
+|                      |                                                      | `fix`                       | GPS fix type                                                              |
+|                      |                                                      | `gps_date`                  | GPS date                                                                  |
+|                      |                                                      | `gps_time`                  | GPS time                                                                  |
+|                      |                                                      | `satellites_in_view`        | Number of satellites in view                                              |
+|                      |                                                      | `satellites_used`           | Number of satellites used                                                 |
+| `c2c_can`            | Raw CAN data                                         | `can_id`                    | CAN message identifier                                                    |
+|                      |                                                      | `byte1`                     | Byte 1 of CAN data payload                                                |
+|                      |                                                      | `byte2`                     | Byte 2 of CAN data payload                                                |
+|                      |                                                      | `byte3`                     | Byte 3 of CAN data payload                                                |
+|                      |                                                      | `byte4`                     | Byte 4 of CAN data payload                                                |
+|                      |                                                      | `byte5`                     | Byte 5 of CAN data payload                                                |
+|                      |                                                      | `byte6`                     | Byte 6 of CAN data payload                                                |
+|                      |                                                      | `byte7`                     | Byte 7 of CAN data payload                                                |
+|                      |                                                      | `byte8`                     | Byte 8 of CAN data payload                                                |
+| `can_parsed_joined`  | Parsed data as per provided dbc file                 | *Fields as per dbc file*      | Fields defined by the dbc file (refer to the dbc file for detailed schema)  |
+                                  |
+
+
+## Fetching Data via API
+
+#### Request Structure
+
+**Headers:**
+```yaml
+Content-Type: application/json
+x-bytebeam-tenant: <tenant>
+x-bytebeam-api-key: <api-key>
+```
+
+**Body Parameters:**
+- `startTime`: Start time in milliseconds (epoch format)
+- `endTime`: End time in milliseconds (epoch format)
+- `filterBys`: Filters based on device ID or other parameters
+- `panels`: Specifies tables, columns, and type of data requested
+
+#### Example Request
+```json
+{
+  "startTime": 1682479098031,
+  "endTime": 1683083898031,
+  "filterBys": {
+    "id": ["1"]
+  },
+  "panels": [
+      {
+        "table": "device_shadow",
+        "columns": [
+          "Status",
+          "dev_battery_voltage",
+          "input_voltage",
+          "nw_processor_fw_version",
+          "controller_fw_version"
+        ],
+        "type": "timeseries_table"
+      }
+    ]
+}
+```
+
+#### Curl Example
+
+In the following curl example, replace these details to fetch the timeseries data for any stream:
+- `cluster_name`
+- `api-key`
+- `tenant`
+- `startTime`
+- `endTime`
+- `table`
+- `columns`
+
+
+```bash
+curl 'https://{cluster_name}.bytebeam.io/api/v1/panel-data' \
+  -H 'x-bytebeam-api-key: <api-key>' \
+  -H 'Content-Type: application/json' \
+  -H 'x-bytebeam-tenant: <tenant>' \
+  --data-raw '{
+    "startTime": 1738738393517,
+    "endTime": 1738739293517,
+    "filterBys": {
+      "id": ["1"]
+    },
+    "panels": [
+      {
+        "table": "device_shadow",
+        "columns": [
+          "Status",
+          "dev_battery_voltage",
+          "input_voltage",
+          "nw_processor_fw_version",
+          "controller_fw_version"
+        ],
+        "type": "timeseries_table"
+      }
+    ]
+  }'
+```

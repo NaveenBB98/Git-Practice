@@ -1,0 +1,95 @@
+---
+title: R27 05-Dec-2024
+slug: ZED--r26-01-nov-2024
+---
+
+💡 **Explore Our Latest Features** 
+
+Take a deep dive into our new features! Have questions? [**Request a Demo**](https://cal.com/kraviteja/bytebeam-101) for a personalized walkthrough.
+
+## Important Update
+
+<Note>The documentation has been updated! Check out the [Beta Version](https://bytebeamio.mintlify.app/getting-started/signup) and share your valuable feedback.</Note>
+
+## Notify on Alert Deactivation
+
+![](/assets/notify_on_deactivation.png)
+
+We’ve introduced a new feature called **Notify on Deactivation**. Previously, users received notifications only when an alert was activated. Now, users can also receive notifications when an alert is deactivated, based on the configured deactivation template.
+To use this feature, simply enable the "Notify on Deactivation toggle" while creating or editing notification rules.
+
+**Important Note:**
+If you enable this toggle for existing notification rules, you will receive notifications for all the alerts that got deactivated within the last hour for the corresponding alert rule.
+
+[**Try Notify on Deactivation**](https://stage.bytebeam.io/projects/demo/alerts/alert-notification)
+
+## JSON View for Geofence Configurations
+
+![](/assets/json_view_for_geofence_configs.png)
+
+
+We’ve introduced a new **JSON View** feature for Geofence configurations. Previously, users needed to select a region on the map to define the geofence polygon while creating a geofence configuration.
+
+With this update, users can now directly input a JSON object containing latitude, longitude and enter the details such as alert threshold and version name. This allows for quicker and more precise geofence creation.
+Once the geofence configuration is created, users can update their devices with the corresponding geofence version to enable tracking.
+
+## Dashboard Linking for Alerts
+
+![](/assets/dashboard_linking_for_alerts.png)
+
+We’ve introduced a new feature that allows users to link dashboards directly to alert rules. While creating an alert rule, you can now include a device or fleet dashboard link. This link will be displayed in the **Alert Rules table**.
+
+Additionally, the linked dashboard is accessible from the **Alerts panel**. Clicking the link in the Alerts panel will redirect you to the corresponding dashboard, with the alert's time range automatically applied for seamless analysis.
+
+
+## Group by second aggregator
+
+![](/assets/group_by_second_aggregate.png)
+
+For **fleet dashboards**, we’ve introduced a new feature in the **Aggregate Value panel** enabling users to apply a secondary aggregation with grouping. When selecting a primary aggregator (e.g., min) and a secondary aggregator (e.g., max), it creates combinations like max(min).
+With the Group by Second Aggregator toggle enabled, the grouping operation is applied to the secondary aggregator. 
+
+**Example:**
+- If you select mode as the column and set the primary and secondary aggregators to max and count, it calculates count(max).
+- When the toggle is enabled, it groups by mode values (e.g., on and off) and shows the count of devices in each state.
+
+**Note:** This feature is exclusively available in fleet dashboards.
+
+## Disabled Auto-Refresh for Device Shadow Filters
+
+![](/assets/data_persistence_with_device_shadow_filters.png)
+
+
+We’ve disabled auto refresh functionality for device shadow filters to enhance usability and stability. Previously, when users applied filters like mode=on, the displayed devices would constantly update due to real-time data changes.
+
+With this update, the filtered data now remains stable, and users have the option to manually refresh the page using the **Refresh** button to update the device shadow data.
+
+**Note:** This feature applies only to device shadow filters and does not support metadata filters, such as City is Bangalore.
+
+## Action Settings in Role Management
+
+![](/assets/action_settings_in_create_role.png)
+
+We’ve moved the **Action Settings** tab inside Actions and updated the **Create Role modal** by introducing an additional permission option.
+
+**With this enhancement:**
+
+- Admins can now specify whether non-admin users can only view or also create, edit, and delete action types within the tenant.
+- Non-admin users will only see the action types for which the admin has granted access.
+
+This update provides more granular control over permissions for action types.
+
+
+
+## Bug fixes & Minor changes
+
+- 🕒 **Insert Timestamp Column:** Added an insert_timestamp column to every stream to facilitate easier debugging.
+- 🔗 **Dashboard Linking:** Enhanced dashboard linking by displaying both device and fleet dashboard links for better navigation.
+- 🆔 **Unique IDs:** Provided unique IDs for Notification Rules and DBC Parsers to improve identification and management.
+- 📤 **Firmware Upload Status:** Now showing upload status for individual firmware files for better visibility and tracking.
+
+💡 **Need More Insights?**  
+Want to better understand how these features work for you? [**Request a Demo**](https://cal.com/kraviteja/bytebeam-101) and schedule a personalized session with our team.
+
+
+

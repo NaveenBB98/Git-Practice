@@ -1,0 +1,61 @@
+---
+title: Rootfs Update
+slug: GZs90YEHI2V7mDx0tC2cG
+description: Learn how to update the root file system (rootfs) of your system easily with this document. It includes detailed steps and an example, utilizing rootfs_update.sh, updater, and make_firmware_update.sh files. Create a tar file of your current rootfs, genera
+createdAt: Tue Apr 18 2023 14:13:34 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sat Nov 11 2023 11:45:51 GMT+0000 (Coordinated Universal Time)
+---
+
+Rootfs update is one of the most common ways of updating the system. The example page on [Github](https://github.com/bytebeamio/uplink/tree/main/examples/rpi/updates/rootfs_update) talks about rootfs updates in detail. There are three files in the example.
+
+- **rootfs\_update.sh** - This script installs the rootfs (uploaded on the Bytebeam cloud) to the new partition and boots to the new rootfs.
+- **updater** - This is the wrapper script for rootfs\_update.sh.
+- **make\_firmware\_update.sh** - It creates the update tar file, that needs to be uploaded to the Bytebeam cloud.
+
+# Step 1: Create tar of the rootfs
+
+On the device, use the following command to take the backup of the rootfs.
+
+```shell
+#!/bin/bash
+
+# To create tar of current rootfs
+sudo find / -maxdepth 1 -mindepth 1 -not -type l -print0 | \
+sudo tar -cvpzf /mnt/download/rootfs.tar.gz \
+--exclude='/mnt/download/rootfs.tar.gz' \
+--exclude='/proc/*' \
+--exclude='/tmp/*' \
+--exclude='/mnt/*' \
+--exclude='/dev/*' \
+--exclude='/sys/*' \
+--exclude='/run/*' \
+--exclude='/media/*' \
+--exclude='/home/pi/*' / 
+```
+
+**NOTE:** For BeagleBone, use the following script to backup the rootfs. We do not take the backup of the boot partition(named uboot).
+
+```shell
+#!/bin/bash
+
+# To create tar of current rootfs
+sudo find / -maxdepth 1 -mindepth 1 -not -type l -print0 | \
+sudo tar -cvpzf /mnt/download/rootfs.tar.gz \
+--exclude='/mnt/download/rootfs.tar.gz' \
+--exclude='/uboot/*' \
+--exclude='/proc/*' \
+--exclude='/tmp/*' \
+--exclude='/mnt/*' \
+--exclude='/dev/*' \
+--exclude='/sys/*' \
+--exclude='/run/*' \
+--exclude='/media/*' \
+--exclude='/home/debian/*' / 
+```
+
+
+
+# Step 2: Create the update tar file
+
+Run the make\_firmware\_update.sh script, which generates the update tar file named rootfs\_update.tar.gz. Upload this file in the "Firmware Upload" section of the Bytebeam cloud. Once the update is complete, the device will be booted to the new rootfs.
+

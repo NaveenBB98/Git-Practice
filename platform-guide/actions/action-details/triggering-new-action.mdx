@@ -1,0 +1,73 @@
+---
+title: Triggering a New Action
+slug: adgo-triggering-ota-update
+createdAt: Sun Mar 12 2023 22:58:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Tue Oct 24 2023 20:36:28 GMT+0000 (Coordinated Universal Time)
+---
+## Overview
+In the Bytebeam console, you can initiate actions such as firmware updates, configuration changes, or geofence adjustments by selecting target devices. Below are detailed instructions for triggering an Over-the-Air (OTA) firmware update.
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/ff4f3197-e7c7-4eea-af21-f4024290f97b/f0639ca8-090e-4777-b7f3-0bd4a4ad5625/images/ca79678d-316c-4451-a592-33698809eabd.gif)
+
+
+## Steps to Trigger an OTA Update
+
+<Steps> 
+<Step title="Access New Action Tab"> Click on **Actions** tab and navigate to the **New Action** tab located at the top </Step> 
+<Step title="Select Devices"> Locate devices using pagination if necessary. Select individual devices by checking the boxes next to each one, or select all visible devices by using the **Select All** checkbox. 
+<Note>To refine results, apply filters using metadata keys or Device IDs, and then select the filtered devices.</Note> </Step> 
+<Step title="Initiate Firmware Update"> Select the action type as **Update Firmware** from the **Action Type dropdown**. From the options, choose the **Firmware Version** or **Firmware Bundle Version** (if Device Components is enabled) or upload **New Firmware Version** </Step> 
+<Step title="Fill Details"> Select the devices along with other options such as adding [phases](#phase-wise), enabling [auto retry](#auto-retry) or [abort phase](#abort-phase), choosing [timeout](/platform-guide/actions/action-details/device-level-timeouts) duration etc., check the **Summary** section at the bottom and click on **Trigger Action** button.</Step> 
+
+</Steps>
+
+<Warning>If using the same filter across multiple phases, make sure the total of all phase fractions equals 100%.</Warning>
+
+
+# <a id="phase-wise"></a>Phasewise Execution of Actions
+You can schedule the action in multiple phases, with each phase targeting a specific number or percentage of devices. This enables more controlled rollouts and monitoring.
+
+## Phase Triggering Options
+**Success Percentage of Previous Phase** - Start the next phase based on a success rate (percentage of devices that completed the previous phase successfully).
+
+**Custom Timing** - Set custom timing for when each phase should begin.
+
+In addition, you can abort a phase if a certain percentage of devices in the previous phase encounter failures.
+<Note>The **Success Percentage** and **Abort Phase** options become visible starting from the second phase.</Note>
+## <a id="abort-phase"></a>Abort Phase
+To enable Abort Phase in any of the phases starting from second phase,
+<Steps> 
+<Step title="Access Abort Phase"> Scroll down to the **Abort Phase** section, enable the **Abort Phase Toggle**. </Step> 
+<Step title="Set Percentage"> Enter a percentage value, then trigger the action. </Step> 
+</Steps>
+
+
+## <a id="auto-retry"></a>Auto Retry
+Enable Auto Retry to automatically retry failed actions due to temporary issues, eliminating the need for manual retries.
+To enable Auto Retry option for any action, 
+<Steps> 
+<Step title="Access Advanced Settings"> Scroll down to the **Advanced Settings** section, enable the **Advanced Settings Toggle**. </Step> 
+<Step title="Enable the toggle"> Enable the **Auto Retry Toggle**. </Step> 
+</Steps>
+
+## Device List Upload
+
+<Warning>This feature is available only in Actions/New Action currently and is not available in Device Management</Warning>
+If you prefer not to select devices manually for each phase, you can upload a CSV file containing the phase details along with associated metadata keys and values for each device.
+
+To use the Device List upload feature:
+
+<Steps> 
+<Step title="Access Device List Upload Section"> Scroll down to the **Device List** section and click on it.</Step> 
+<Step title="Upload Device List File"> Upload a CSV/XLSX file with all the phase details containing metadata keys and values. </Step> 
+<Step title="Review the Device List"> Review the device list generated from the upload, and deselect any devices as needed.</Step>
+</Steps>
+You can proceed with triggering the action on the finalized device list.
+
+# Important Update
+
+When triggering an action on a device with ongoing actions, a warning modal will appear. From this modal, you can choose one of the following options:
+
+**Complete Actions on Selected Devices and Proceed** - This option marks all ongoing actions on the device as complete and immediately starts the new action.
+
+**Proceed Anyway with New Action** - This option queues the new action to begin only once all current actions on the device have either completed or failed.

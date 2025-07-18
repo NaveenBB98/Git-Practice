@@ -1,0 +1,35 @@
+---
+title: Using Filters in Device Management
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 22 2023 15:17:31 GMT+0000 (Coordinated Universal Time)
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/323741be-de42-419d-9356-3029f7cbc932/6141a053-ff5f-40bb-8f52-97fe7573cd0f/images/5a0fc48c-8f37-4d1a-95e4-afb00af929ad.gif)
+
+When managing many devices, finding a specific one can be challenging. The Bytebeam console offers an advanced **Filters** option to help with this.
+
+To apply filters in the console, follow these steps:
+
+<Steps> 
+<Step title="Access Device Management Tab"> Click on the **Device Management** tab at the top. </Step> 
+<Step title="Apply the Filter at the top"> 
+    You can apply the filter in two ways:
+
+    1. **Using Metadata Keys**:  
+       Click on the dropdown at the top and select a metadata key from the dropdown list (e.g., City), enter its value (e.g., Bangalore), and hit **Enter** or click the **Search** icon.
+
+    2. **Using Device Shadow Columns**:  
+       Click on the dropdown at the top and select a column from the `device_shadow` stream in the dropdown list (e.g., Mode), enter its value (e.g., On/Off), and hit **Enter** or click the **Search** icon.
+
+    <Note>
+      The data persists when the device shadow filter is applied, and you can refresh the data manually using the **Refresh** button.
+    </Note>
+  </Step> 
+</Steps>
+Once applied, the filter will appear at the top with the selected keys and values and you can reset the filters using **Reset Filters** button.
+
+## Important Info
+
+<Note>Filters applied using Metadata keys support **partial search** for added convenience.</Note>
+<Note>Use the operator dropdown to select different conditions when applying filters using Device Shadow columns.</Note> 
+<Note>Filters can combine metadata keys and device shadow columns for more specific results.</Note>

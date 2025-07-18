@@ -1,0 +1,60 @@
+---
+title: Whatsapp Notification Rules
+slug: Yh-D-sm
+createdAt: Tue Mar 12 2024 14:22:45 GMT+0000 (Coordinated Universal Time)
+updatedAt: Wed Mar 13 2024 11:12:16 GMT+0000 (Coordinated Universal Time)
+---
+## Overview
+WhatsApp notification rules allow you to send real-time alerts to a specified phone number(s) via WhatsApp when certain conditions or thresholds in your data streams are met.
+
+Ideal for urgent messages, WhatsApp notifications ensure important updates reach recipients directly in their inbox. This method is perfect for delivering timely alerts and ensuring swift action when needed.
+
+## Creating WhatsApp Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/7fe5e6a8-0ea2-47a8-9da6-03e484f3a54d.gif)
+
+To create a WhatsApp Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Creation"> Click on the **+ Notification Rule** button and select the **WhatsApp** option. </Step> 
+<Step title="Fill Details"> 
+<p>
+Enter the notification rule name and the phone number(s) (in format followed by the country code(Ex:+91,+1)) where you want the WhatsApp notifications to be sent. Provide the **Activation Template ID** that corresponds to the pre-approved WhatsApp template. You can also select the created alert rules, enable Notify on Deactivation toggle and notification interval, define how frequently the WhatsApp message should be sent, and specify the timezone. Finally, click **Submit**. 
+</p> 
+<Warning>
+    Enabling the **Notify on Deactivation** toggle allows you to receive notifications when an alert is deactivated, in addition to the existing activation emails.
+  </Warning> 
+</Step> 
+</Steps> 
+
+Your new **WhatsApp Notification Rule** will appear in the Notification Rules table.
+<Warning>Unlike other notification methods, the template for Whatsapp notifications is fixed and cannot be customized.</Warning>
+<Note>You can test the notification by clicking on Test Notification to ensure the WhatsApp message is sent correctly to the specified phone number.</Note>
+<Info>Hover over the notification rule name to view its ID and name in the tooltip. Click on the name to copy both to the clipboard.</Info>
+
+## Editing WhatsApp Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/e3cbd524-c737-4a86-9aaa-968ec994e1f8.gif)
+
+To edit an existing WhatsApp Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Edit"> Find the WhatsApp notification in the **Notification Rules** and click the **Edit** icon next to it. </Step> 
+<Step title="Modify Details"> You can update the phone number(s), change the notification interval, modify the activation template ID, update the timeone and enable or disable toggle for notifying on deactivation. Once you have made the necessary changes, click **Submit** to save your updates. </Step> 
+</Steps>
+<Warning>You can not change the alert rule for the same notification rule once the notification rule is created with it.</Warning>
+<Warning>Note that the WhatsApp notification template cannot be customized. You must use the pre-approved activation template ID provided during setup.</Warning>
+
+## Deleting WhatsApp Notification Rule
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/0b6e26dd-0757-429f-9981-f5ebad137891/7e09c5c1-1ebf-435b-9142-6ee044258c63/images/e8769db4-4845-4e27-a4b6-8c95d98f6ce2.gif)
+
+To delete an existing WhatsApp Notification in the Bytebeam console:
+
+<Steps> 
+<Step title="Access Notification Rules"> Navigate to the **Alerts** tab and click on **Notification Rules**. </Step> 
+<Step title="Initiate Deletion"> Find the WhatsApp notification in the **Notification Rules** and click the **Delete** icon next to it. </Step> 
+<Step title="Confirm Deletion"> Enter the exact text that is shown on the modal and click **Submit** to delete the notification. </Step> 
+</Steps> 

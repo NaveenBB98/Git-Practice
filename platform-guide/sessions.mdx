@@ -1,0 +1,23 @@
+---
+title: Sessions
+slug: EfrW-session
+description: Learn how to use sessions to represent the operational states of your device with this step-by-step guide. Discover how sessions can help determine if a device is running or stopped, and how to define conditions for accurate session tracking. Enhance your
+createdAt: Wed Oct 18 2023 23:56:40 GMT+0000 (Coordinated Universal Time)
+updatedAt: Mon Apr 01 2024 12:44:26 GMT+0000 (Coordinated Universal Time)
+---
+
+Sessions provide a structured way to represent the operational states or modes of a device. For instance, for vehicles, sessions can help determine if a vehicle is in a "running" or "stopped" state. By leveraging the power of conditions, users can accurately define when a device enters or exits a session. Furthermore, sessions enhance the visualization capabilities of the dashboard, allowing users to quickly assess the current state of a device and review its historical session data.
+
+### Creating a Session
+
+![](/assets/F6V5GuArEh9Wniskez14-_screenshot-2023-10-31t163830172.jpg)
+
+1. **Access the Sessions Panel:** Navigate to the main dashboard and select the 'Sessions' tab or panel.
+2. **Initiate Session Creation:** Click on the **+ Create Session Type** button.
+3. **Fill in Session Details:**
+   - **Session Name:** Input a descriptive name for the session (e.g., "Running" or "Stopped").
+   - **Stream:** Choose the relevant stream associated with the session from the dropdown menu.
+   - **Define Conditions:** Under the 'Where' section, specify the conditions that determine the session. For instance, for a vehicle's running session, you might select the "vehicle\_status" stream, Field as "status", and Value as "running".
+   - **Add Filter Rule (Optional):** If additional filtering is necessary, click on the **Add Filter Rule** dropdown to specify more conditions.
+4. **Finalize Creation:** Once all details are correctly filled, click the **Submit** button to save the session. Alternatively, click **Cancel** to discard changes.
+

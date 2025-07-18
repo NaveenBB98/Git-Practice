@@ -1,0 +1,58 @@
+---
+title: Provisioning a Device
+createdAt: Tue Sep 20 2022 07:07:59 GMT+0000 (Coordinated Universal Time)
+updatedAt: Sun Oct 22 2023 15:17:31 GMT+0000 (Coordinated Universal Time)
+---
+
+![](https://usercontent.clueso.io/1f4455e0-789e-4beb-8cd9-4dac96bc47e4/323741be-de42-419d-9356-3029f7cbc932/8dec9d6c-0f75-4a09-bf21-0c827daa0493/images/7f48f125-f23a-4d39-bd09-3ed42a665991.gif)
+
+Provisioning is the initial process of setting up a device so it can communicate securely with the Bytebeam platform. During provisioning, unique identifiers, credentials, and configuration settings are generated and assigned to the device. This process includes:
+
+**Registering the Device**: Adding the device to the Bytebeam console with its metadata and configuration details.
+
+**Configuring Security Credentials**: Generating a configuration file that includes the necessary security credentials, such as certificates and keys, to securely authenticate the device with the platform.
+
+**Connecting to the Cloud**: Once provisioned, the device uses the configuration file to establish a secure connection to the Bytebeam platform.
+
+To provision a device in Bytebeam console,
+
+<Steps>
+  <Step title="Access Device Management Tab">
+    Click on the **Device Management** tab at the top
+  </Step>
+  <Step title="Click on Create Device Button">
+    Click on the **Create Device** button
+  </Step>
+  <Step title="Fill in the desired values for Metadata Keys">
+    Enter the values for **Metadata Keys** or Optionally, you can also&#x20;
+
+- Skip adding Metadata Key values
+- Choose to create a duplicate device by unchecking the "Do not create duplicate device" option
+and finally click on **Submit** button to create the device.
+</Step>
+</Steps>
+
+<Note>
+
+The device configuration file should be downloaded automatically onto your computer. The contents of the file will look similar to this:
+```json JSON
+{
+  "project_id": "demo",
+  "broker": "cloud.bytebeam.io",
+  "port": 8883,
+  "device_id": "1230",
+  "authentication": {
+    "ca_certificate": "-----BEGIN CERTIFICATE-----\\n...certificate contents...",
+    "device_certificate": "-----BEGIN CERTIFICATE-----\\n...certificate contents...",
+    "device_private_key": "-----BEGIN RSA PRIVATE KEY-----\\n...key contents..."
+  }
+}
+```
+
+</Note>
+
+
+
+
+<Note>This file is used by the Bytebeam device SDK to establish a connection with the Cloud platform.</Note>
+

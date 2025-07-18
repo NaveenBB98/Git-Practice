@@ -1,0 +1,22 @@
+---
+title: Pushing data to Bytebeam
+slug: GFrX-pushing-data-to-bytebeam
+description: Learn how you can push data to Bytebeam console.
+createdAt: 2022-09-20T07:07:59.000Z
+updatedAt: 2023-11-01T02:27:28.506Z
+---
+
+To push data to Bytebeam you need to first create a stream. You can do this by following the [Creating a Stream](https://bytebeamio.mintlify.app/platform-guide/streams-tables/creating-a-stream) guide.
+
+Once you have created a stream you can use the `publish_to_bytebeam_stream` function to publish data to the stream.
+
+```cpp
+
+// Publish data to a bytebeam stream
+// bytebeam_client: Bytebeam client object
+// stream: Name of the stream to publish to
+// payload: Data to be published
+bytebeam_err_t publish_to_bytebeam_stream(bytebeam_client* bytebeam_client, char* stream, char* payload)
+```
+
+Bytebeam expects the payload to be in the <a href="https://en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> format. Have a look at the  <a href="https://github.com/bytebeamio/esp-bytebeam-sdk/tree/main/examples/push_data" target="_blank">push\_data</a> in the example project for a full fledged example showing how to use this function.
